@@ -7,26 +7,65 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
 namespace LoginManagement
 {
     using System;
     using System.Collections.Generic;
     
+    [DataContract]
     public partial class User
     {
+        [DataMember]
         public int Id { get; set; }
+
+        [DataMember]
         public string FirstName { get; set; }
+
+        [DataMember]
         public string LastName { get; set; }
+
+        [DataMember]
         public string Password { get; set; }
+
+        [DataMember]
         public string Email { get; set; }
+
+        [DataMember]
         public string Login { get; set; }
+
+        [DataMember]
         public Nullable<int> Year { get; set; }
+
+        [DataMember]
         public string Type { get; set; }
+
+        [DataMember]
         public Nullable<int> RegNumber { get; set; }
+
+        [DataMember]
         public Nullable<int> Section { get; set; }
+
+        [DataMember]
         public int Profile { get; set; }
-    
+
+        [DataMember]
         public virtual Profile Profile1 { get; set; }
+
+        [DataMember]
         public virtual Section Section1 { get; set; }
+
+        public User(int regNumber, string firstName, string lastName, Nullable<int> year, Nullable<int> section, string email, string type, string login, string password)
+        {
+            RegNumber = regNumber;
+            FirstName = firstName;
+            LastName = lastName;
+            Year = year;
+            Section = section;
+            Email = email;
+            Login = login;
+            Password = password;
+        }
+
     }
 }

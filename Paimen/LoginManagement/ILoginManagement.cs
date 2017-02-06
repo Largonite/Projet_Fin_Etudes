@@ -14,5 +14,8 @@ namespace LoginManagement
     {
         [OperationContract]
         void add();
+
+        [OperationContract]
+        bool AddStudentFromCSV(string csv);
     }
 }
