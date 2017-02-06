@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="LoginManagement.LoginManagement" CodeBehind="LoginManagementImpl.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="LoginManagement.LoginManagementImpl" CodeBehind="LoginManagementImpl.svc.cs" %>

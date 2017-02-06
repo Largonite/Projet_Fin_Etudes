@@ -3,6 +3,26 @@ GO
 USE PAIMEN
 GO
 
+DROP TABLE "Profiles_Softwares"
+
+GO
+
+DROP TABLE "Softwares"
+
+GO
+
+DROP TABLE "Users"
+
+GO
+
+DROP TABLE "Profiles"
+
+GO
+
+DROP TABLE "Sections"
+
+GO
+
 set quoted_identifier on
 GO
 
@@ -36,7 +56,7 @@ CREATE TABLE "Users"(
   "Login" nvarchar(7) NOT NULL,
   "Year" "int",
   "Type" nvarchar(15) NOT NULL CHECK ("Type" IN ('Teacher','Student','Guest','Admin')),
-  "RegNumber" "int",
+  "RegNumber" "int" NOT NULL,
   "Section" "int",
   "Profile" "int" NOT NULL,
   CONSTRAINT "PK_User" PRIMARY KEY CLUSTERED (
@@ -57,6 +77,10 @@ CREATE TABLE "Users"(
 GO
 
 CREATE INDEX "UserLogin" ON "Users"("Login")
+
+GO
+
+CREATE INDEX "UserRegNumber" ON "Users"("RegNumber")
 
 GO
 

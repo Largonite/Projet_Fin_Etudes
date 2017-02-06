@@ -160,12 +160,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="true" />
           <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Login" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Year" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RegNumber" Type="Int32" />
+          <Property Name="RegNumber" Type="Int32" Nullable="false" />
           <Property Name="Section" Type="Int32" />
           <Property Name="Profile" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Profile1" Relationship="Self.FK_User_Profile" FromRole="Users" ToRole="Profiles" />

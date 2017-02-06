@@ -13,6 +13,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginManagement", "LoginManagement\LoginManagement.csproj", "{8E81F85B-A7D9-4966-8AB3-3835D2DC214E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI", "WebUI\WebUI.csproj", "{C6399E36-4F1E-4CBF-B026-23874D2C1E91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E81F85B-A7D9-4966-8AB3-3835D2DC214E} = {8E81F85B-A7D9-4966-8AB3-3835D2DC214E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

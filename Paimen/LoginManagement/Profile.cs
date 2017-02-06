@@ -9,10 +9,11 @@
 
 namespace LoginManagement
 {
+    using Dal;
     using System;
     using System.Collections.Generic;
-    
-    public partial class Profile
+
+    public partial class Profile : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Profile()
@@ -28,5 +29,10 @@ namespace LoginManagement
         public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Software> Softwares { get; set; }
+
+        public int GetId()
+        {
+            return this.Id;
+        }
     }
 }
