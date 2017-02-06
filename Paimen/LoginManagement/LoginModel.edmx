@@ -4,217 +4,192 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PaimenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Profiles">
+      <Schema Namespace="LoginModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Courses">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Course_Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Course_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Professor_Professor_Id" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Profiles_Softwares">
+        <EntityType Name="Professors">
           <Key>
-            <PropertyRef Name="IdProfile" />
-            <PropertyRef Name="IdSoftware" />
+            <PropertyRef Name="Professor_Id" />
           </Key>
-          <Property Name="IdProfile" Type="int" Nullable="false" />
-          <Property Name="IdSoftware" Type="int" Nullable="false" />
+          <Property Name="Professor_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Section_Section_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Sections">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Section_Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Code" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Section_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
-        <EntityType Name="Softwares">
+        <EntityType Name="Students">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Student_Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Student_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FisrtName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="YearResult" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Section_Section_Id" Type="int" />
         </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="30" />
-          <Property Name="Login" Type="nvarchar" MaxLength="7" Nullable="false" />
-          <Property Name="Year" Type="int" />
-          <Property Name="Type" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="RegNumber" Type="int" />
-          <Property Name="Section" Type="int" />
-          <Property Name="Profile" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Profile">
-          <End Role="Profiles" Type="Self.Profiles" Multiplicity="1" />
-          <End Role="Profiles_Softwares" Type="Self.Profiles_Softwares" Multiplicity="*" />
+        <Association Name="FK_ProfessorCourse">
+          <End Role="Professors" Type="Self.Professors" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Courses" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Profiles">
-              <PropertyRef Name="Id" />
+            <Principal Role="Professors">
+              <PropertyRef Name="Professor_Id" />
             </Principal>
-            <Dependent Role="Profiles_Softwares">
-              <PropertyRef Name="IdProfile" />
+            <Dependent Role="Courses">
+              <PropertyRef Name="Professor_Professor_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Software">
-          <End Role="Softwares" Type="Self.Softwares" Multiplicity="1" />
-          <End Role="Profiles_Softwares" Type="Self.Profiles_Softwares" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Softwares">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Profiles_Softwares">
-              <PropertyRef Name="IdSoftware" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_Profile">
-          <End Role="Profiles" Type="Self.Profiles" Multiplicity="1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Profiles">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="Profile" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_Section">
-          <End Role="Sections" Type="Self.Sections" Multiplicity="0..1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+        <Association Name="FK_SectionProfessor">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="Professors" Type="Self.Professors" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="Section_Id" />
             </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="Section" />
+            <Dependent Role="Professors">
+              <PropertyRef Name="Section_Section_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PaimenModelStoreContainer">
-          <EntitySet Name="Profiles" EntityType="Self.Profiles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Profiles_Softwares" EntityType="Self.Profiles_Softwares" Schema="dbo" store:Type="Tables" />
+        <Association Name="FK_SectionStudent">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="0..1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Section_Id" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="Section_Section_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LoginModelStoreContainer">
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Professors" EntityType="Self.Professors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Softwares" EntityType="Self.Softwares" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Profile" Association="Self.FK_Profile">
-            <End Role="Profiles" EntitySet="Profiles" />
-            <End Role="Profiles_Softwares" EntitySet="Profiles_Softwares" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ProfessorCourse" Association="Self.FK_ProfessorCourse">
+            <End Role="Professors" EntitySet="Professors" />
+            <End Role="Courses" EntitySet="Courses" />
           </AssociationSet>
-          <AssociationSet Name="FK_Software" Association="Self.FK_Software">
-            <End Role="Softwares" EntitySet="Softwares" />
-            <End Role="Profiles_Softwares" EntitySet="Profiles_Softwares" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_Profile" Association="Self.FK_User_Profile">
-            <End Role="Profiles" EntitySet="Profiles" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_Section" Association="Self.FK_User_Section">
+          <AssociationSet Name="FK_SectionProfessor" Association="Self.FK_SectionProfessor">
             <End Role="Sections" EntitySet="Sections" />
-            <End Role="Users" EntitySet="Users" />
+            <End Role="Professors" EntitySet="Professors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectionStudent" Association="Self.FK_SectionStudent">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="Students" EntitySet="Students" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="PaimenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Profile">
+      <Schema Namespace="LoginModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cours">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Course_Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_Profile" FromRole="Profiles" ToRole="Users" />
-          <NavigationProperty Name="Softwares" Relationship="Self.Profiles_Softwares" FromRole="Profiles" ToRole="Softwares" />
+          <Property Name="Course_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Professor_Professor_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Professor" Relationship="Self.FK_ProfessorCourse" FromRole="Courses" ToRole="Professors" />
+        </EntityType>
+        <EntityType Name="Professor">
+          <Key>
+            <PropertyRef Name="Professor_Id" />
+          </Key>
+          <Property Name="Professor_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Section_Section_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_ProfessorCourse" FromRole="Professors" ToRole="Courses" />
+          <NavigationProperty Name="Section" Relationship="Self.FK_SectionProfessor" FromRole="Professors" ToRole="Sections" />
         </EntityType>
         <EntityType Name="Section">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Section_Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_Section" FromRole="Sections" ToRole="Users" />
+          <Property Name="Section_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Professors" Relationship="Self.FK_SectionProfessor" FromRole="Sections" ToRole="Professors" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_SectionStudent" FromRole="Sections" ToRole="Students" />
         </EntityType>
-        <EntityType Name="Software">
+        <EntityType Name="Student">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Student_Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Profiles" Relationship="Self.Profiles_Softwares" FromRole="Softwares" ToRole="Profiles" />
+          <Property Name="Student_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FisrtName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YearResult" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Section_Section_Id" Type="Int32" />
+          <NavigationProperty Name="Section" Relationship="Self.FK_SectionStudent" FromRole="Students" ToRole="Sections" />
         </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="true" />
-          <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Login" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Year" Type="Int32" />
-          <Property Name="Type" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RegNumber" Type="Int32" Nullable="false" />
-          <Property Name="Section" Type="Int32" />
-          <Property Name="Profile" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Profile1" Relationship="Self.FK_User_Profile" FromRole="Users" ToRole="Profiles" />
-          <NavigationProperty Name="Section1" Relationship="Self.FK_User_Section" FromRole="Users" ToRole="Sections" />
-        </EntityType>
-        <Association Name="FK_User_Profile">
-          <End Role="Profiles" Type="Self.Profile" Multiplicity="1" />
-          <End Role="Users" Type="Self.User" Multiplicity="*" />
+        <Association Name="FK_ProfessorCourse">
+          <End Role="Professors" Type="Self.Professor" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Cours" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Profiles">
-              <PropertyRef Name="Id" />
+            <Principal Role="Professors">
+              <PropertyRef Name="Professor_Id" />
             </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="Profile" />
+            <Dependent Role="Courses">
+              <PropertyRef Name="Professor_Professor_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Section">
-          <End Role="Sections" Type="Self.Section" Multiplicity="0..1" />
-          <End Role="Users" Type="Self.User" Multiplicity="*" />
+        <Association Name="FK_SectionProfessor">
+          <End Role="Sections" Type="Self.Section" Multiplicity="1" />
+          <End Role="Professors" Type="Self.Professor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="Section_Id" />
             </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="Section" />
+            <Dependent Role="Professors">
+              <PropertyRef Name="Section_Section_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Profiles_Softwares">
-          <End Role="Profiles" Type="Self.Profile" Multiplicity="*" />
-          <End Role="Softwares" Type="Self.Software" Multiplicity="*" />
+        <Association Name="FK_SectionStudent">
+          <End Role="Sections" Type="Self.Section" Multiplicity="0..1" />
+          <End Role="Students" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Section_Id" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="Section_Section_Id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PaimenEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Profiles" EntityType="Self.Profile" />
+          <EntitySet Name="Courses" EntityType="Self.Cours" />
+          <EntitySet Name="Professors" EntityType="Self.Professor" />
           <EntitySet Name="Sections" EntityType="Self.Section" />
-          <EntitySet Name="Softwares" EntityType="Self.Software" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_User_Profile" Association="Self.FK_User_Profile">
-            <End Role="Profiles" EntitySet="Profiles" />
-            <End Role="Users" EntitySet="Users" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <AssociationSet Name="FK_ProfessorCourse" Association="Self.FK_ProfessorCourse">
+            <End Role="Professors" EntitySet="Professors" />
+            <End Role="Courses" EntitySet="Courses" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Section" Association="Self.FK_User_Section">
+          <AssociationSet Name="FK_SectionProfessor" Association="Self.FK_SectionProfessor">
             <End Role="Sections" EntitySet="Sections" />
-            <End Role="Users" EntitySet="Users" />
+            <End Role="Professors" EntitySet="Professors" />
           </AssociationSet>
-          <AssociationSet Name="Profiles_Softwares" Association="Self.Profiles_Softwares">
-            <End Role="Profiles" EntitySet="Profiles" />
-            <End Role="Softwares" EntitySet="Softwares" />
+          <AssociationSet Name="FK_SectionStudent" Association="Self.FK_SectionStudent">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="Students" EntitySet="Students" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -222,57 +197,45 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PaimenModelStoreContainer" CdmEntityContainer="PaimenEntities">
-          <EntitySetMapping Name="Profiles">
-            <EntityTypeMapping TypeName="PaimenModel.Profile">
-              <MappingFragment StoreEntitySet="Profiles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+        <EntityContainerMapping StorageEntityContainer="LoginModelStoreContainer" CdmEntityContainer="PaimenEntities">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="LoginModel.Cours">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="Course_Id" ColumnName="Course_Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Professor_Professor_Id" ColumnName="Professor_Professor_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Professors">
+            <EntityTypeMapping TypeName="LoginModel.Professor">
+              <MappingFragment StoreEntitySet="Professors">
+                <ScalarProperty Name="Professor_Id" ColumnName="Professor_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Section_Section_Id" ColumnName="Section_Section_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="PaimenModel.Section">
+            <EntityTypeMapping TypeName="LoginModel.Section">
               <MappingFragment StoreEntitySet="Sections">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Section_Id" ColumnName="Section_Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Softwares">
-            <EntityTypeMapping TypeName="PaimenModel.Software">
-              <MappingFragment StoreEntitySet="Softwares">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="LoginModel.Student">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="Student_Id" ColumnName="Student_Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FisrtName" ColumnName="FisrtName" />
+                <ScalarProperty Name="YearResult" ColumnName="YearResult" />
+                <ScalarProperty Name="Section_Section_Id" ColumnName="Section_Section_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="PaimenModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="RegNumber" ColumnName="RegNumber" />
-                <ScalarProperty Name="Section" ColumnName="Section" />
-                <ScalarProperty Name="Profile" ColumnName="Profile" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="Profiles_Softwares" TypeName="PaimenModel.Profiles_Softwares" StoreEntitySet="Profiles_Softwares">
-            <EndProperty Name="Profiles">
-              <ScalarProperty Name="Id" ColumnName="IdProfile" />
-            </EndProperty>
-            <EndProperty Name="Softwares">
-              <ScalarProperty Name="Id" ColumnName="IdSoftware" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
