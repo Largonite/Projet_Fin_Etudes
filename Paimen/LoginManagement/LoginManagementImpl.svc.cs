@@ -63,7 +63,7 @@ namespace LoginManagement
 
                 string password = GenerateAndEncryptPassword();
 
-                User newStudent = new User(Convert.ToInt32(user[0]), user[1], user[2], Convert.ToInt32(user[3]), idSection, user[5], "Student", login, password);
+                //User newStudent = new User(Convert.ToInt32(user[0]), user[1], user[2], Convert.ToInt32(user[3]), idSection, user[5], "Student", login, password);
             }
             return true;
         }

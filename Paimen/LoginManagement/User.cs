@@ -60,7 +60,7 @@ namespace LoginManagement
             return this.Id;
         }
 
-        public User(int regNumber, string lastName, string firstName, Nullable<int> year, Nullable<int> section, string email, string type, string login, string password ) {
+        /*public User(int regNumber, string lastName, string firstName, Nullable<int> year, Nullable<int> section, string email, string type, string login, string password ) {
             RegNumber = regNumber;
             LastName = lastName;
             FirstName = firstName;
@@ -70,7 +70,7 @@ namespace LoginManagement
             Type = Type;
             Login = login;
             Password = password;
-        }
+        }*/
 
     }
 }
