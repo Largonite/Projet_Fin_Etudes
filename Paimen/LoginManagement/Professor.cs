@@ -12,21 +12,21 @@ namespace LoginManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class Profile
+    public partial class Professor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Profile()
+        public Professor()
         {
-            this.Users = new HashSet<User>();
-            this.Softwares = new HashSet<Software>();
+            this.Courses = new HashSet<Cours>();
         }
     
-        public int Id { get; set; }
+        public int Professor_Id { get; set; }
         public string Name { get; set; }
+        public string FirstName { get; set; }
+        public int Section_Section_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Software> Softwares { get; set; }
+        public virtual ICollection<Cours> Courses { get; set; }
+        public virtual Section Section { get; set; }
     }
 }

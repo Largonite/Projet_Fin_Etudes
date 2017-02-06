@@ -12,18 +12,14 @@ namespace LoginManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class Software
+    public partial class Student
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Software()
-        {
-            this.Profiles = new HashSet<Profile>();
-        }
-    
-        public int Id { get; set; }
+        public int Student_Id { get; set; }
         public string Name { get; set; }
+        public string FisrtName { get; set; }
+        public string YearResult { get; set; }
+        public Nullable<int> Section_Section_Id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profile> Profiles { get; set; }
+        public virtual Section Section { get; set; }
     }
 }
