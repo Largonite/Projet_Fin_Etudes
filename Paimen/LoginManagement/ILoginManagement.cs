@@ -12,6 +12,7 @@ namespace LoginManagement
     [ServiceContract]
     public interface ILoginManagement
     {
-        
+        [OperationContract]
+        void add();
     }
 }
