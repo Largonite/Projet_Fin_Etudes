@@ -17,12 +17,14 @@ namespace LoginManagement
     {
         private GenericDao<User> _userDao;
         private GenericDao<Section> _sectionDao;
+        private GenericDao<Profile> _profilDao;
 
         public LoginManagementImpl()
         {
             PaimenEntities entities = new PaimenEntities();
             this._userDao = new GenericDao<User>(entities);
             this._sectionDao = new GenericDao<Section>(entities);
+            this._profilDao = new GenericDao<Profile>(entities);
         }
 
         public User SignIn(User user)
@@ -46,7 +48,7 @@ namespace LoginManagement
         {
             string[] lines = File.ReadAllLines(csv);
 
-            IList<Section> sections = GetAllSections();
+            IList<Section> sections = this._sectionDao.GetAll();
 
             int idSection = 0;
             foreach(string line in lines)
@@ -55,14 +57,14 @@ namespace LoginManagement
 
                 foreach(Section s in sections)
                 {
-                    if (s.Code == user[4])
+                    if (String.Compare(s.Code, user[4]) == 0)
                     {
                         idSection = s.Id;
                     }
                 }
 
                 string login = GetLogin(user[2], user[1]);
-
+                Profile profile = this._profilDao.Find(p => p.Name.Equals((user[3].ToArray())[0] + user[4]));
                 string password = GenerateAndEncryptPassword();
 
                 User newStudent = new User
@@ -75,17 +77,13 @@ namespace LoginManagement
                     Email = user[5],
                     Type = "Student",
                     Login = login,
-                    Password = password
+                    Password = password,
+                    Profile = profile.Id,
                 };
 
                 this._userDao.Add(newStudent);
             }
             return true;
-        }
-
-        private IList<Section> GetAllSections()
-        {
-            return this._sectionDao.GetAll();
         }
 
         private string GetLogin(string firstName, string lastName)
