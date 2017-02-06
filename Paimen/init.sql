@@ -39,7 +39,7 @@ GO
 
 CREATE TABLE "Profiles"(
   "Id" "int" IDENTITY (1,1) NOT NULL,
-  "Name" nvarchar(15) NOT NULL,
+  "Name" nvarchar(25) NOT NULL,
   CONSTRAINT "PK_Profile" PRIMARY KEY CLUSTERED (
     "Id"
   )
