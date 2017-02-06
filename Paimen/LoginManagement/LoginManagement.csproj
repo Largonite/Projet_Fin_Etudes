@@ -117,6 +117,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dal\GenericDao.cs" />
+    <Compile Include="Dal\IDao.cs" />
+    <Compile Include="Dal\IEntity.cs" />
     <Compile Include="LoginModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -162,7 +165,6 @@
       <DependentUpon>LoginModel.edmx</DependentUpon>
     </Content>
     <Content Include="packages.config" />
-    <Content Include="ClassDiagram1.cd" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

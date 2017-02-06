@@ -10,11 +10,11 @@
 using System.Runtime.Serialization;
 namespace LoginManagement
 {
+    using Dal;
     using System;
     using System.Collections.Generic;
-    
+
     [DataContract]
-    public partial class User
     {
         [DataMember]
         public int Id { get; set; }
@@ -55,10 +55,10 @@ namespace LoginManagement
         [DataMember]
         public virtual Section Section1 { get; set; }
 
-        public User(int regNumber, string firstName, string lastName, Nullable<int> year, Nullable<int> section, string email, string type, string login, string password)
+        public int GetId()
         {
-            RegNumber = regNumber;
-            FirstName = firstName;
+            return this.Id;
+        }
             LastName = lastName;
             Year = year;
             Section = section;

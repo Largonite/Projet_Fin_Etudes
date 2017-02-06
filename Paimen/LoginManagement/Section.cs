@@ -10,11 +10,12 @@ using System.Runtime.Serialization;
 
 namespace LoginManagement
 {
+    using Dal;
     using System;
     using System.Collections.Generic;
-    
+
     [DataContract]
-    public partial class Section
+    public partial class Section : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Section()
@@ -33,5 +34,10 @@ namespace LoginManagement
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
+
+        public int GetId()
+        {
+            return this.Id;
+        }
     }
 }
