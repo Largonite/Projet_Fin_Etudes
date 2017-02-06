@@ -21,9 +21,21 @@ namespace LoginManagement
             this._userDao = new GenericDao<User>(entities);
         }
 
-        public string SignIn(User user)
+        public User SignIn(User user)
         {
-            throw new NotImplementedException();
+            User inDbUser = this._userDao.Find(u => u.RegNumber.Equals(user.RegNumber));
+            if(inDbUser == null)
+            {
+                return null;
+            }
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                if (!user.Password.Equals(inDbUser.Password))
+                {
+                    return null;
+                }
+            }
+            return inDbUser;
         }
     }
 }

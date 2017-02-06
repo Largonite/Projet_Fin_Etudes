@@ -11,8 +11,9 @@ namespace LoginManagement
         /// </summary>
         /// <param name="user">A user with at least RegNumber initialized. If the Password is also initialized, 
         /// the user is considered to be an Admin.</param>
-        /// <returns>A string containing the type of the user (admin, student, ...)</returns>
+        /// <returns>The user with full available data in DataBase or 
+        /// null either if the user does not exist or if the password does not match</returns>
         [OperationContract]
-        string SignIn(User user);
+        User SignIn(User user);
     }
 }
