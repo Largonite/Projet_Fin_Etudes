@@ -59,18 +59,5 @@ namespace LoginManagement
         {
             return this.Id;
         }
-
-        public User(int regNumber, string lastName, string firstName, Nullable<int> year, Nullable<int> section, string email, string type, string login, string password ) {
-            RegNumber = regNumber;
-            LastName = lastName;
-            FirstName = firstName;
-            Year = year;
-            Section = section;
-            Email = email;
-            Type = Type;
-            Login = login;
-            Password = password;
-        }
-
     }
 }
