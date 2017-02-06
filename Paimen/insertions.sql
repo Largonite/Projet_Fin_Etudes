@@ -4,18 +4,43 @@ USE PAIMEN
 GO
 
 INSERT INTO Sections(Code, Name)
-	VALUES ('BIN', 'Bachelier Informatique de Gestion'),
+	VALUES 
+	('BIN', 'Bachelier Informatique de Gestion'),
 	('BDI', 'Bachelier Diététique'),
 	('BIN', 'Bachelier Biochimie');
 
 GO
 
+INSERT INTO Softwares(Name)
+	VALUES
+	('Windows'),
+	('Claroline'),
+	('Nutrilog');
+GO
 
 INSERT INTO Profiles(Name)
 	VALUES ('Admin'),
 		('Informatique de gestion'),
 		('Diététique'),
 		('Biochimie');
+GO
+
+
+INSERT INTO Profiles_Softwares(IdProfile, IdSoftware)
+	VALUES
+	(1, 1),
+	(1, 2),
+	(1, 3),
+
+	(2, 1),
+	(2, 2),
+
+	(3, 1),
+	(3, 2),
+	(3, 3),
+
+	(4, 1),
+	(4, 2);
 
 GO
 
