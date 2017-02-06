@@ -15,5 +15,9 @@ namespace LoginManagement
         /// null either if the user does not exist or if the password does not match</returns>
         [OperationContract]
         User SignIn(User user);
+
+        void CreateProfileType(string typeProfil);
+
+
     }
 }

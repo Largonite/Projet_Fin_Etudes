@@ -14,11 +14,23 @@ namespace LoginManagement
     public class LoginManagementImpl : ILoginManagement
     {
         private GenericDao<User> _userDao;
+        private GenericDao<Profile> _profileDao;
 
         public LoginManagementImpl()
         {
             PaimenEntities entities = new PaimenEntities();
             this._userDao = new GenericDao<User>(entities);
+        }
+
+        public void CreateProfileType(string typeProfil)
+        {
+
+            Profile toAddProfile = new Profile();
+            toAddProfile.Name = typeProfil;
+
+            this._profileDao.Add(toAddProfile);
+            this._profileDao.SaveChanges();
+
         }
 
         public User SignIn(User user)
