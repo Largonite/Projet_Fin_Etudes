@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
+﻿using System.ServiceModel;
 
 namespace LoginManagement
 {
@@ -12,7 +6,13 @@ namespace LoginManagement
     [ServiceContract]
     public interface ILoginManagement
     {
+        /// <summary>
+        /// Allows a user to sign in. 
+        /// </summary>
+        /// <param name="user">A user with at least RegNumber initialized. If the Password is also initialized, 
+        /// the user is considered to be an Admin.</param>
+        /// <returns>A string containing the type of the user (admin, student, ...)</returns>
         [OperationContract]
-        void add();
+        string SignIn(User user);
     }
 }

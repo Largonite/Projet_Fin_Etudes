@@ -9,10 +9,11 @@
 
 namespace LoginManagement
 {
+    using Dal;
     using System;
     using System.Collections.Generic;
-    
-    public partial class User
+
+    public partial class User : IEntity
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -28,5 +29,10 @@ namespace LoginManagement
     
         public virtual Profile Profile1 { get; set; }
         public virtual Section Section1 { get; set; }
+
+        public int GetId()
+        {
+            return this.Id;
+        }
     }
 }
