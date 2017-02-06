@@ -14,7 +14,7 @@ GO
 INSERT INTO Profiles(Name)
 	VALUES ('Informatique de gestion'),
 		('Diététique'),
-		('Biochimie')
+		('Biochimie');
 
 GO
 
