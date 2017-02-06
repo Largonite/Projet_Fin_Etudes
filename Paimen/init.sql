@@ -76,11 +76,11 @@ CREATE TABLE "Users"(
 
 GO
 
-CREATE INDEX "UserLogin" ON "Users"("Login")
+CREATE UNIQUE INDEX "UserLogin" ON "Users"("Login")
 
 GO
 
-CREATE INDEX "UserRegNumber" ON "Users"("RegNumber")
+CREATE UNIQUE INDEX "UserRegNumber" ON "Users"("RegNumber")
 
 GO
 

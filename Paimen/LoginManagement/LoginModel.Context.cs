@@ -28,7 +28,6 @@ namespace LoginManagement
         public virtual DbSet<Profile> Profiles { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Software> Softwares { get; set; }
-
         public virtual DbSet<User> Users { get; set; }
     }
 }
