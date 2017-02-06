@@ -25,9 +25,9 @@ namespace LoginManagement
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Profile> Profiles { get; set; }
+        public virtual DbSet<Cours> Courses { get; set; }
+        public virtual DbSet<Professor> Professors { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
-        public virtual DbSet<Software> Softwares { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
     }
 }

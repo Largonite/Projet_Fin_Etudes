@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace WebUI.Controllers
 {
-    public class ConnexionController : Controller
+    public class ConnectionController : Controller
     {
 
         public ViewResult SignIn()
