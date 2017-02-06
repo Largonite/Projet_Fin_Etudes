@@ -16,11 +16,13 @@ namespace LoginManagement
     public class LoginManagementImpl : ILoginManagement
     {
         private GenericDao<User> _userDao;
+        private GenericDao<Section> _sectionDao;
 
         public LoginManagementImpl()
         {
             PaimenEntities entities = new PaimenEntities();
             this._userDao = new GenericDao<User>(entities);
+            this._sectionDao = new GenericDao<Section>(entities);
         }
 
         public User SignIn(User user)
@@ -44,7 +46,7 @@ namespace LoginManagement
         {
             string[] lines = File.ReadAllLines(csv);
 
-            Section[] sections = GetAllSections();
+            IList<Section> sections = GetAllSections();
 
             int idSection = 0;
             foreach(string line in lines)
@@ -63,14 +65,27 @@ namespace LoginManagement
 
                 string password = GenerateAndEncryptPassword();
 
-                //User newStudent = new User(Convert.ToInt32(user[0]), user[1], user[2], Convert.ToInt32(user[3]), idSection, user[5], "Student", login, password);
+                User newStudent = new User
+                {
+                    RegNumber = Convert.ToInt32(user[0]),
+                    LastName = user[1],
+                    FirstName = user[2],
+                    Year = Convert.ToInt32(user[3]),
+                    Section = idSection,
+                    Email = user[5],
+                    Type = "Student",
+                    Login = login,
+                    Password = password
+                };
+
+                this._userDao.Add(newStudent);
             }
             return true;
         }
 
-        private Section[] GetAllSections()
+        private IList<Section> GetAllSections()
         {
-            return null;
+            return this._sectionDao.GetAll();
         }
 
         private string GetLogin(string firstName, string lastName)
