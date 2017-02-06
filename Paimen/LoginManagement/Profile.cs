@@ -9,24 +9,30 @@
 
 namespace LoginManagement
 {
+    using Dal;
     using System;
     using System.Collections.Generic;
-    
-    public partial class Professor
+
+    public partial class Profile : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Professor()
+        public Profile()
         {
-            this.Courses = new HashSet<Cours>();
+            this.Users = new HashSet<User>();
+            this.Softwares = new HashSet<Software>();
         }
     
-        public int Professor_Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string FirstName { get; set; }
-        public int Section_Section_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cours> Courses { get; set; }
-        public virtual Section Section { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Software> Softwares { get; set; }
+
+        public int GetId()
+        {
+            return this.Id;
+        }
     }
 }
