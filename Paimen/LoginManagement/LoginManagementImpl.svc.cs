@@ -76,18 +76,19 @@ namespace LoginManagement
                 string annee = user[3].Substring(0,1);
                 int anneeInt = Convert.ToInt32(annee);
 
-        User newStudent = new User
+                User newStudent = new User
                 {
                     RegNumber = Convert.ToInt32(user[0]),
                     LastName = user[1],
                     FirstName = user[2],
-                    Year = Convert.ToInt32(user[3].Substring(0,1)),
+                    Year = Convert.ToInt32(user[3].Substring(0, 1)),
                     Section = idSection,
                     Email = user[5],
                     Type = "Student",
                     Login = login,
                     Password = password,
                     Profile = profile.Id,
+                    AddedDate = DateTime.UtcNow.Date,
                 };
                 if (!this._userDao.Add(newStudent))
                 {
@@ -120,7 +121,7 @@ namespace LoginManagement
             if (!this._profilDao.Add(guestProfile))
             {
                 throw new DBException("Une erreur est survenue durant la création du profil!");
-        }
+        }*/
 
         public string GetWindowsScript(DateTime? d, IDictionary<Section, List<int>> sections)
         {

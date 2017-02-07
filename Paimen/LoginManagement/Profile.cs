@@ -13,7 +13,7 @@ namespace LoginManagement
     using System;
     using System.Collections.Generic;
 
-    public partial class Profile :IEntity
+    public partial class Profile : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Profile()
@@ -32,7 +32,7 @@ namespace LoginManagement
 
         public int GetId()
         {
-            return Id;
+            return this.Id;
         }
     }
 }
