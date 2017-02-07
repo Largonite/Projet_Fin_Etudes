@@ -1,23 +1,108 @@
-﻿
+﻿@using WebUI.Models;
+@model SectionProfileModel
 @{
     ViewBag.Title = "UserManagement";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<script src="~/Scripts/UserManagementScript.js"></script>
 <div class="row">
-    <h2>Gestion des utilisateurs</h2>
+    <h3>Ajouter un utilisateur</h3>
+    @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post))
+            {
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                
+                <div class="form-group">
+                    <label for="type">Type d'utilisateur</label><br />
+                    <select id="typeOfUser" class="form-control" name="type">
+                        <option value="Guest">Invité</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Teacher">Prof</option>
+                        <option value="Student">Etudiant</option>
+                    </select>
+                </div>
 
-    <h3>Importer des étudiants depuis un fichier CSV</h3>
-    @using (Html.BeginForm("AddUserFromCSV", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <div class="form-group">
-            <label for="csv">Fichier CSV: </label>
-            <input type="file" accept=".csv" name="csv" />
-        </div>
-        <div style="width:100%;margin-top:5px;">
-            <button type="submit" class="btn btn-success">Valider</button>
-        </div>
-    }
+                <div class="form-group" id="lastName">
+                    <label for="lastName">Nom</label><br />
+                    <input type="text" name="lastName" />
+                </div>
+                <div class="form-group">
+                    <label for="firstName">Préom</label><br />
+                    <input type="text" name="firstName" id="firstName" />
+                </div>
+                <div class="form-group" id="email">
+                    <label for="email">Email</label><br />
+                    <input type="email" name="email" />
+                </div>
+                <div class="form-group" id="login">
+                    <label for="login">Login</label><br />
+                    <input type="text" name="login" />
+                </div>
+                <div class="form-group" id="password">
+                    <label for="password">Mot de passe</label><br />
+                    <input type="text" name="password" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group" id="regNumber">
+                    <label for="regNumber">Matricule</label><br />
+                    <input type="number" name="regNumber" min="0"/>
+                </div>
+                <div class="form-group" id="year">
+                    <label for="year">Année</label><br />
+                    <input type="number" name="year" min="1" max="3" />
+                </div>
+                <div class="form-group" id="section">
+                    <label for="section">Section</label><br />
+                    <select class="form-control" name="section">
+                        @{
+                            foreach (var selected in Model.Sections)
+                            {
+                                <option value="@selected.Id ">@selected.Code - @selected.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group" id="profile">
+                    <label for="profile">Profil</label><br />
+                    <select class="form-control" name="profile">
+                        @{
+                            foreach (var profile in Model.Profiles)
+                            {
+                                <option value="@profile.Id">@profile.Name </option>
+                            }
+                        }
+                    </select>
+                </div>
 
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-success ">Ajouter</button>
+        </div>
+
+     }
+
+
+
+    <div class="col-lg-12">
+        <h2>Gestion des utilisateurs</h2>
+        <div class="col-lg-5">
+
+
+            <h3>Importer des étudiants depuis un fichier CSV</h3>
+            @using (Html.BeginForm("AddUserFromCSV", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    <label for="csv">Fichier CSV: </label>
+                    <input type="file" accept=".csv" name="csv" />
+                </div>
+                <div style="width:100%;margin-top:5px;">
+                    <button type="submit" class="btn btn-success">Valider</button>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 
