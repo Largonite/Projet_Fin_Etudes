@@ -30,7 +30,14 @@ namespace WebUI.Controllers
         [HttpPost]
         public ActionResult UserFromReg(string regNumber, string password="")
         {
-            int regInt = int.Parse(regNumber);
+
+            int regInt;
+            if(!int.TryParse(regNumber, out regInt))
+            {
+                TempData["ErrorMessage"] = "Ce n'est pas un numéro matricule correct!";
+                return RedirectToAction("SignIn");
+            }
+
             User res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
             if (res == null)
             {
