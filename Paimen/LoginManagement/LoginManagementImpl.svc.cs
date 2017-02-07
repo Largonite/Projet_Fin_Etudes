@@ -9,6 +9,7 @@ using System.Text;
 using System.IO;
 using DevOne.Security.Cryptography.BCrypt;
 using System.Web;
+using LoginManagement.Exceptions;
 
 namespace LoginManagement
 {
@@ -45,7 +46,9 @@ namespace LoginManagement
             return inDbUser;
         }
 
-        public bool AddStudentFromCSV(HttpPostedFile csv)
+
+        // Add students from CSV
+        public bool AddStudentFromCSV(HttpPostedFileBase csv)
         {
             string fileContent = new StreamReader(csv.InputStream).ReadToEnd();
             string[] lines = fileContent.Split('\n');
@@ -84,7 +87,7 @@ namespace LoginManagement
                 };
                 if (!this._userDao.Add(newStudent))
                 {
-                    throw new Exceptions.DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
+                    throw new DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
                 }
                 
             }
@@ -98,5 +101,17 @@ namespace LoginManagement
 
             return beginning + end;
         }
+
+        /*
+        public bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares)
+        {
+            Profile guestProfile = new Profile {Name = profileName };
+
+            if (!this._profilDao.Add(guestProfile))
+            {
+                throw new DBException("Une erreur est survenue durant la création du profil!");
+            }
+            return false;
+        }*/
     }
 }

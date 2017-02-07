@@ -22,6 +22,9 @@ namespace LoginManagement
         User SignIn(User user);
 
         [OperationContract]
-        bool AddStudentFromCSV(HttpPostedFile csv);
+        bool AddStudentFromCSV(HttpPostedFileBase csv);
+
+        /*[OperationContract]
+        bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
     }
 }
