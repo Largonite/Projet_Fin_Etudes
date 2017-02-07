@@ -9,9 +9,10 @@
 
 namespace LoginManagement
 {
+    using Dal;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class User : IEntity
     {
         public int Id { get; set; }
