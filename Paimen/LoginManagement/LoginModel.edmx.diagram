@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5f38106ab6024e6d95706d5b0c5cd6e9" Name="Diagram1">
+      <Diagram DiagramId="9512882fd4c84f77a9e5d8d5b9962cff" Name="Diagram1">
         <EntityTypeShape EntityType="PaimenModel.Profile" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PaimenModel.Section" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PaimenModel.Software" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />

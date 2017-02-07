@@ -4,9 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LoginManagement;
-using WebUI.Models;
+using LoginManagement.Exceptions;
+using System.Web.Security;
+using System.Text;
+
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private ILoginManagement _service;
@@ -25,9 +29,10 @@ namespace WebUI.Controllers
 
         public ActionResult Index()
         {
-            User u = (User)TempData["Admin"];
-            if (u == null) return RedirectToAction("SignIn", "Connection");
-            return View(u);
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+            
+            return View((object) ticket.Name);
         }
 
         // GET: UserManager
@@ -44,6 +49,16 @@ namespace WebUI.Controllers
         [HttpPost]
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
         {
+            try
+            {
+                _service.AddStudentFromCSV(csv);
+            }
+            catch (DBException exception)
+            {
+                Console.WriteLine("ECHEC!");
+            }
+            
+            return View("UserManagement");
             return View("UserManagement", model);
         }
 
@@ -56,7 +71,37 @@ namespace WebUI.Controllers
             return View("UserManagement", model);
         }
 
+        [HttpGet]
+        public void DownloadBat()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, null));
 
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
 
+        [HttpGet]
+        public void DownloadClaroline()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=clarolineUsers.csv");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
+
+        [HttpGet]
+        public void DownloadNutriLog()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=nutrilogUsers.csv");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
     }
 }

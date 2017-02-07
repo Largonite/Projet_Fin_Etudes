@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using LoginManagement;
 using WebUI.Models;
+using System.Web.Security;
 
 namespace WebUI.Controllers
 {
@@ -45,7 +46,7 @@ namespace WebUI.Controllers
             }
             if (res.Profile1.Name.Equals("Admin"))
             {
-                TempData["Admin"] = res;
+                FormsAuthentication.SetAuthCookie(res.FirstName + " " + res.LastName, true);
                 return RedirectToAction("Index", "Admin");
             }
             return View("UserInformation",res);

@@ -49,10 +49,10 @@ GO
 
 CREATE TABLE "Users"(
   "Id" "int" IDENTITY (1,1) NOT NULL,
-  "FirstName" nvarchar(50) NOT NULL,
-  "LastName" nvarchar(50) NOT NULL,
-  "Password" nvarchar(50) NOT NULL,
-  "Email" nvarchar(30),
+  "FirstName" nvarchar(255) NOT NULL,
+  "LastName" nvarchar(255) NOT NULL,
+  "Password" nvarchar(255) NOT NULL,
+  "Email" nvarchar(255),
   "Login" nvarchar(7) NOT NULL,
   "Year" "int",
   "Type" nvarchar(15) NOT NULL CHECK ("Type" IN ('Teacher','Student','Guest','Admin')),
