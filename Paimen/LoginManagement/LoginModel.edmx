@@ -50,6 +50,7 @@
           <Property Name="RegNumber" Type="int" Nullable="false" />
           <Property Name="Section" Type="int" />
           <Property Name="Profile" Type="int" Nullable="false" />
+          <Property Name="AddedDate" Type="date" Nullable="false" />
         </EntityType>
         <Association Name="FK_Profile">
           <End Role="Profiles" Type="Self.Profiles" Multiplicity="1" />
@@ -168,6 +169,7 @@
           <Property Name="RegNumber" Type="Int32" Nullable="false" />
           <Property Name="Section" Type="Int32" />
           <Property Name="Profile" Type="Int32" Nullable="false" />
+          <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Profile1" Relationship="Self.FK_User_Profile" FromRole="Users" ToRole="Profiles" />
           <NavigationProperty Name="Section1" Relationship="Self.FK_User_Section" FromRole="Users" ToRole="Sections" />
         </EntityType>
@@ -262,6 +264,7 @@
                 <ScalarProperty Name="RegNumber" ColumnName="RegNumber" />
                 <ScalarProperty Name="Section" ColumnName="Section" />
                 <ScalarProperty Name="Profile" ColumnName="Profile" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -290,7 +293,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

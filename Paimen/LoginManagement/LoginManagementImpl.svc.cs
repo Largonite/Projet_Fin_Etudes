@@ -11,9 +11,6 @@ using DevOne.Security.Cryptography.BCrypt;
 
 namespace LoginManagement
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class LoginManagementImpl : ILoginManagement
     {
         private GenericDao<User> _userDao;
@@ -100,6 +97,31 @@ namespace LoginManagement
         private string GenerateAndEncryptPassword()
         {
             return BCryptHelper.HashPassword(System.Web.Security.Membership.GeneratePassword(10, 5), BCryptHelper.GenerateSalt());
+        }
+
+        public string GetWindowsScript(DateTime d, IDictionary<Section, List<int>> sections)
+        {
+            List<User> users = new List<User>();
+            foreach(KeyValuePair<Section, List<int>> entry in sections)
+            {
+                users.AddRange(this._userDao.FindAll(user => user.Type.Equals("Student") 
+                                                             && d == null ? true : d.Date <= user.AddedDate.Date
+                                                             && user.Section.Equals(entry.Key) 
+                                                             && entry.Value.Contains(user.Year.Value)));
+            }
+
+            StringBuilder builder = new StringBuilder();
+            foreach(User u in users)
+            {
+                builder.Append("dsadd ");
+                builder.Append(u.LastName);
+                builder.Append(" /prenom=");
+                builder.Append(u.FirstName);
+                builder.Append(" /mdp=");
+                builder.Append(u.Password);
+                builder.Append("\n");
+            }
+            return builder.ToString();
         }
     }
 }
