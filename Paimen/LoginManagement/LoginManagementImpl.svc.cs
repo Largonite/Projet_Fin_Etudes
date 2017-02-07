@@ -7,9 +7,9 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.IO;
-using DevOne.Security.Cryptography.BCrypt;
 using System.Web;
 using LoginManagement.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace LoginManagement
 {
@@ -52,33 +52,42 @@ namespace LoginManagement
         public bool AddStudentFromCSV(HttpPostedFileBase csv)
         {
             string fileContent = new StreamReader(csv.InputStream).ReadToEnd();
+            string pattern = "\"";
+            string replacement = "";
+            Regex regex = new Regex(pattern);
+            fileContent = regex.Replace(fileContent, replacement);
             string[] lines = fileContent.Split('\n');
-
+            Console.WriteLine("" + lines.ToString());
             IList<Section> sections = this._sectionDao.GetAll();
 
             int idSection = 0;
-            foreach(string line in lines)
+          
+            for(int i = 1; i < lines.Length - 1; i++)
             {
-                string[] user = line.Split(',');
+                string[] user = lines[i].Split(',');
 
                 foreach(Section s in sections)
                 {
-                    if (String.Compare(s.Code, user[4]) == 0)
+                    if (String.Equals(s.Code, user[4]))
                     {
                         idSection = s.Id;
                     }
                 }
 
                 string login = GetLogin(user[2], user[1]);
-                Profile profile = this._profilDao.Find(p => p.Name.Equals((user[3].ToArray())[0] + user[4]));
+                string profileName = (user[3].ToArray())[0] + user[4];
+                Profile profile = this._profilDao.Find(p => p.Name.Equals(profileName));
                 string password = System.Web.Security.Membership.GeneratePassword(10, 5);
 
-                User newStudent = new User
+                string annee = user[3].Substring(0,1);
+                int anneeInt = Convert.ToInt32(annee);
+
+        User newStudent = new User
                 {
                     RegNumber = Convert.ToInt32(user[0]),
                     LastName = user[1],
                     FirstName = user[2],
-                    Year = Convert.ToInt32(user[3]),
+                    Year = Convert.ToInt32(user[3].Substring(0,1)),
                     Section = idSection,
                     Email = user[5],
                     Type = "Student",
@@ -90,8 +99,8 @@ namespace LoginManagement
                 {
                     throw new DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
                 }
-                
-            }
+                this._userDao.SaveChanges();
+            }     
             return true;
         }
 
@@ -99,8 +108,14 @@ namespace LoginManagement
         {
             char beginning = (firstName.ToArray())[0];
             string end = lastName.Substring(0, Math.Min(lastName.Length, 6)); // Math.Min => si jamais le lastName est inférieur à 6 lettres 
+            string login = beginning + end;
 
-            return beginning + end;
+            if(this._userDao.Find(u => u.Login == login) != null)
+            {
+               login = (firstName.Substring(0, 2)) + end;
+            }
+
+            return login;
         }
 
         /*

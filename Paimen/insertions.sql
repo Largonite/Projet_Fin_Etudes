@@ -7,7 +7,7 @@ INSERT INTO Sections(Code, Name)
 	VALUES 
 	('BIN', 'Bachelier Informatique de Gestion'),
 	('BDI', 'Bachelier Diététique'),
-	('BIN', 'Bachelier Biochimie');
+	('BBMI', 'Bachelier Biochimie');
 
 GO
 
@@ -22,7 +22,13 @@ INSERT INTO Profiles(Name)
 	VALUES ('Admin'),
 		('1BIN'),
 		('1BDI'),
-		('1BBM');
+		('1BBM'),
+		('2BIN'),
+		('2BDI'),
+		('2BBM'),
+		('3BIN'),
+		('3BDI'),
+		('3BBM');
 GO
 
 
