@@ -27,10 +27,27 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public ViewResult UserFromReg(string RegNumber)
+        public ActionResult UserFromReg(string regNumber, string password="")
         {
-            int regInt = int.Parse(RegNumber);
-            User res = this._service.SignIn(new User {RegNumber = regInt, Password="" });
+
+            int regInt;
+            if(!int.TryParse(regNumber, out regInt))
+            {
+                TempData["ErrorMessage"] = "Ce n'est pas un numéro matricule correct!";
+                return RedirectToAction("SignIn");
+            }
+
+            User res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
+            if (res == null)
+            {
+                TempData["ErrorMessage"] = "Mauvais matricule!!!!!";
+                return RedirectToAction("SignIn");
+            }
+            if (res.Profile1.Name.Equals("Admin"))
+            {
+                TempData["Admin"] = res;
+                return RedirectToAction("Index", "Admin");
+            }
             return View("UserInformation",res);
         }
 
