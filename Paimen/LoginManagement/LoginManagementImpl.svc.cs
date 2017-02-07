@@ -194,24 +194,20 @@ namespace LoginManagement
             return _userDao.GetAll().ToList();
         }
 
-        public bool AddUser(string type, string lastName, string firstname, string email, string login, string password, int refNumber, int year, int section, int profile)
+        public bool AddUser(string type, string lastName, string firstname, string email,  int refNumber, int year, int section, int profile)
         {
             if (lastName == null) throw new ArgumentNullException("Le nom ne peut pas être vide.");
             if (firstname == null) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
-            if (login == null) throw new ArgumentNullException("Le login ne peut pas être vide.");
-            if (password == null) throw new ArgumentNullException("Le mot de passe ne peut pas être vide.");
             if (profile == 0) throw new ArgumentNullException("Aucun profil n'a été attribué");
-            if (_userDao.Find(u => u.Login.Equals(login)) == null) throw new ArgumentException("Ce login existe déjà.");
             if (_userDao.Find(u => u.RegNumber.Equals(refNumber)) == null) throw new ArgumentException("Ce matricule existe déjà.");
-
             User toAdd = new User
             {
                 Type = type,
                 LastName = lastName,
                 FirstName = firstname,
                 Email = email,
-                Login = login,
-                Password = password,
+                Login = GetLogin(firstname, lastName),
+                Password = System.Web.Security.Membership.GeneratePassword(10, 5),
                 RegNumber = refNumber,
                 Year = year,
                 Section = section,
