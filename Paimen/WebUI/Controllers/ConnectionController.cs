@@ -36,8 +36,9 @@ namespace WebUI.Controllers
                 TempData["ErrorMessage"] = "Mauvais matricule!!!!!";
                 return RedirectToAction("SignIn");
             }
-            if (res.Profile.Equals("Admin"))
+            if (res.Profile1.Name.Equals("Admin"))
             {
+                TempData["Admin"] = res;
                 return RedirectToAction("Index", "Admin");
             }
             return View("UserInformation",res);
