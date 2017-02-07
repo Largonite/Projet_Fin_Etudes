@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Web;
 
 namespace LoginManagement
 {
@@ -21,6 +22,6 @@ namespace LoginManagement
         User SignIn(User user);
 
         [OperationContract]
-        bool AddStudentFromCSV(string csv);
+        bool AddStudentFromCSV(HttpPostedFile csv);
     }
 }

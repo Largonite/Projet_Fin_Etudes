@@ -8,6 +8,7 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.IO;
 using DevOne.Security.Cryptography.BCrypt;
+using System.Web;
 
 namespace LoginManagement
 {
@@ -44,9 +45,10 @@ namespace LoginManagement
             return inDbUser;
         }
 
-        public bool AddStudentFromCSV(string csv)
+        public bool AddStudentFromCSV(HttpPostedFile csv)
         {
-            string[] lines = File.ReadAllLines(csv);
+            string fileContent = new StreamReader(csv.InputStream).ReadToEnd();
+            string[] lines = fileContent.Split('\n');
 
             IList<Section> sections = this._sectionDao.GetAll();
 
@@ -65,7 +67,7 @@ namespace LoginManagement
 
                 string login = GetLogin(user[2], user[1]);
                 Profile profile = this._profilDao.Find(p => p.Name.Equals((user[3].ToArray())[0] + user[4]));
-                string password = GenerateAndEncryptPassword();
+                string password = System.Web.Security.Membership.GeneratePassword(10, 5);
 
                 User newStudent = new User
                 {
@@ -95,11 +97,6 @@ namespace LoginManagement
             string end = lastName.Substring(0, Math.Min(lastName.Length, 6)); // Math.Min => si jamais le lastName est inférieur à 6 lettres 
 
             return beginning + end;
-        }
-
-        private string GenerateAndEncryptPassword()
-        {
-            return BCryptHelper.HashPassword(System.Web.Security.Membership.GeneratePassword(10, 5), BCryptHelper.GenerateSalt());
         }
     }
 }
