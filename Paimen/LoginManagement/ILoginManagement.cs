@@ -62,5 +62,8 @@ namespace LoginManagement
 
         /*[OperationContract]
         bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
+
+        [OperationContract]
+        List<Section> GetSections();
     }
 }

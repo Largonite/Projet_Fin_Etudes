@@ -203,5 +203,10 @@ namespace LoginManagement
             }
             return users;
          }
+
+        public List<Section> GetSections()
+        {
+            return this._sectionDao.GetAll();
+        }
     }
 }
