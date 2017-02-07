@@ -20,6 +20,16 @@ namespace LoginManagement
         [OperationContract]
         User SignIn(User user);
 
+        /// <summary>
+        /// Allows to retrieve a .bat Windows script. 
+        /// This script contains the command lines to add all the users registered since the specified date (included). 
+        /// If the date is not set (==null), the date of today is considered.
+        /// A Dictionnary<Section, List<Integer>> can be used to specify the sections to consider and the years for each section.
+        /// </summary>
+        /// <returns>A string formatted as .bat script to add the specified users</returns>
+        [OperationContract]
+        string GetWindowsScript(DateTime d, IDictionary<Section,List<int>> sections);
+
         [OperationContract]
         bool AddStudentFromCSV(string csv);
     }
