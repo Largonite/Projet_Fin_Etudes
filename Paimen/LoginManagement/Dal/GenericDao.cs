@@ -58,7 +58,7 @@ namespace LoginManagement.Dal
 
         public T Find(Expression<Func<T,bool>> expression)
         {
-            return this._context.Set<T>().FirstOrDefault(expression);
+            return this._context.Set<T>().Where(expression).FirstOrDefault();
         }
 
         public T Get(int key)

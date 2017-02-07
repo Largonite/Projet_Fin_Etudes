@@ -14,7 +14,7 @@ namespace LoginManagement
     using System;
     using System.Collections.Generic;
 
-    [DataContract]
+   [DataContract]
    public partial class User : IEntity {
         [DataMember]
         public int Id { get; set; }
