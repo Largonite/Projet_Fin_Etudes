@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -14,13 +15,16 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                @Html.ActionLink("Login Management", "SignIn", "Connection", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Login Management", "LogIn", "Connection", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        
+                       
                     </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="~/Connection/Logout">Logout&nbsp;<span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -36,7 +40,5 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-
-    <script src="~/Scripts/bootstrap.min.js"></script>
 </body>
 </html>

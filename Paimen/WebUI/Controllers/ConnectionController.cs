@@ -17,10 +17,17 @@ namespace WebUI.Controllers
             this._service = new LoginManagementImpl();
         }
 
-        public ViewResult SignIn()
+        public ViewResult LogIn()
         {
             return View();
         }
+
+        public void LogOut()
+        {
+            FormsAuthentication.SignOut();
+            FormsAuthentication.RedirectToLoginPage();
+        }
+
         // GET: Connexion
         public ActionResult Index()
         {
@@ -35,14 +42,14 @@ namespace WebUI.Controllers
             if(!int.TryParse(regNumber, out regInt))
             {
                 TempData["ErrorMessage"] = "Ce n'est pas un numéro matricule correct!";
-                return RedirectToAction("SignIn");
+                return RedirectToAction("LogIn");
             }
 
             User res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
             if (res == null)
             {
                 TempData["ErrorMessage"] = "Mauvais matricule!!!!!";
-                return RedirectToAction("SignIn");
+                return RedirectToAction("LogIn");
             }
             if (res.Profile1.Name.Equals("Admin"))
             {
