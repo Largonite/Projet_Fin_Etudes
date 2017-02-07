@@ -7,6 +7,8 @@ using LoginManagement;
 using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
+using Newtonsoft.Json;
+
 
 namespace WebUI.Controllers
 {
@@ -43,7 +45,7 @@ namespace WebUI.Controllers
             }
             catch (DBException exception)
             {
-                Console.WriteLine("ECHEC!");
+                Console.WriteLine(exception.Message);
             }
             
             return View("UserManagement");
@@ -80,6 +82,12 @@ namespace WebUI.Controllers
             this.Response.AddHeader("Content-Disposition", "attachment; filename=nutrilogUsers.csv");
             this.Response.OutputStream.Write(script, 0, script.Length);
             this.Response.Flush();
+        }
+
+        [HttpGet]
+        public string GetSections()
+        {
+            return JsonConvert.SerializeObject(this._service.GetSections());
         }
     }
 }
