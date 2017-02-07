@@ -14,5 +14,6 @@ namespace LoginManagement.Dal
         bool Exists(T element);
         void SaveChanges();
         T Find(Expression<Func<T, bool>> predicate);
+        List<T> FindAll(Expression<Func<T, bool>> predicate);
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using LoginManagement;
 using WebUI.Models;
+using System.Web.Security;
 
 namespace WebUI.Controllers
 {
@@ -29,15 +30,23 @@ namespace WebUI.Controllers
         [HttpPost]
         public ActionResult UserFromReg(string regNumber, string password="")
         {
-            int regInt = int.Parse(regNumber);
+
+            int regInt;
+            if(!int.TryParse(regNumber, out regInt))
+            {
+                TempData["ErrorMessage"] = "Ce n'est pas un numéro matricule correct!";
+                return RedirectToAction("SignIn");
+            }
+
             User res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
             if (res == null)
             {
                 TempData["ErrorMessage"] = "Mauvais matricule!!!!!";
                 return RedirectToAction("SignIn");
             }
-            if (res.Profile.Equals("Admin"))
+            if (res.Profile1.Name.Equals("Admin"))
             {
+                FormsAuthentication.SetAuthCookie(res.FirstName + " " + res.LastName, true);
                 return RedirectToAction("Index", "Admin");
             }
             return View("UserInformation",res);

@@ -67,6 +67,11 @@ namespace LoginManagement.Dal
             return this._context.Set<T>().Where(expression).FirstOrDefault();
         }
 
+        public List<T> FindAll(Expression<Func<T, bool>> predicate)
+        {
+            return this._context.Set<T>().Where(predicate).ToList();
+        }
+
         public T Get(int key)
         {
              return this._context.Set<T>().Find(key);

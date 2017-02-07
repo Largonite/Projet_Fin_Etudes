@@ -26,6 +26,7 @@ namespace LoginManagement
         public int RegNumber { get; set; }
         public Nullable<int> Section { get; set; }
         public int Profile { get; set; }
+        public System.DateTime AddedDate { get; set; }
     
         public virtual Profile Profile1 { get; set; }
         public virtual Section Section1 { get; set; }

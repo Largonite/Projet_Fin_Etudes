@@ -59,6 +59,7 @@ CREATE TABLE "Users"(
   "RegNumber" "int" NOT NULL,
   "Section" "int",
   "Profile" "int" NOT NULL,
+  "AddedDate" DATE NOT NULL,
   CONSTRAINT "PK_User" PRIMARY KEY CLUSTERED (
     "Id"
   ),

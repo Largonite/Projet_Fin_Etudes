@@ -188,6 +188,7 @@
     <Content Include="Views\Connection\SignIn.cshtml" />
     <Content Include="Views\Connection\UserInformation.cshtml" />
     <Content Include="Views\Admin\UserManagement.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

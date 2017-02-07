@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.Text;
 using System.IO;
 using System.Web;
@@ -13,9 +10,6 @@ using System.Text.RegularExpressions;
 
 namespace LoginManagement
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class LoginManagementImpl : ILoginManagement
     {
         private GenericDao<User> _userDao;
@@ -33,7 +27,7 @@ namespace LoginManagement
         public User SignIn(User user)
         {
             User inDbUser = this._userDao.Find(u => u.RegNumber.Equals(user.RegNumber));
-            if(inDbUser == null)
+            if (inDbUser == null)
             {
                 return null;
             }
@@ -66,7 +60,7 @@ namespace LoginManagement
             {
                 string[] user = lines[i].Split(',');
 
-                foreach(Section s in sections)
+                foreach (Section s in sections)
                 {
                     if (String.Equals(s.Code, user[4]))
                     {
@@ -126,8 +120,87 @@ namespace LoginManagement
             if (!this._profilDao.Add(guestProfile))
             {
                 throw new DBException("Une erreur est survenue durant la création du profil!");
+        }
+
+        public string GetWindowsScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            List<User> users = this.GetUsers(d,sections);
+            StringBuilder builder = new StringBuilder();
+            foreach (User u in users)
+            {
+                builder.Append("dsadd ");
+                builder.Append(u.LastName);
+                builder.Append(" /prenom=");
+                builder.Append(u.FirstName);
+                builder.Append(" /mdp=");
+                builder.Append(u.Password);
+                builder.Append("\n");
             }
-            return false;
-        }*/
+            return builder.ToString();
+        }
+
+        public string GetNutrilogScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            List<User> users = this.GetUsers(d, sections);
+            StringBuilder builder = new StringBuilder();
+            builder.Append("Nom;Prenom;Email;Mot de passe;\n");
+            foreach (User u in users)
+            {
+                builder.Append(u.Id);
+                builder.Append(";");
+                builder.Append(u.LastName);
+                builder.Append(";");
+                builder.Append(u.FirstName);
+                builder.Append(";");
+                builder.Append(u.Password);
+                builder.Append(";\n");
+            }
+            return builder.ToString();
+            
+        }
+
+        public string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            List<User> users = this.GetUsers(d, sections);
+            StringBuilder builder = new StringBuilder();
+            builder.Append("Nom;Prenom;Email;Mot de passe;\n");
+            foreach (User u in users)
+            {
+                builder.Append(u.LastName);
+                builder.Append(";");
+                builder.Append(u.FirstName);
+                builder.Append(";");
+                builder.Append(string.IsNullOrEmpty(u.Email) ? "" : u.Email);
+                builder.Append(";");
+                builder.Append(u.Password);
+                builder.Append(";\n");
+            }
+            return builder.ToString();
+        }
+
+        private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            // Both params are null, return the whole script.
+            if (d == null && sections == null)
+            {
+                return this._userDao.GetAll();
+            }
+
+            if(sections == null)
+            {
+                return this._userDao.FindAll(user => d.Value.Date <= user.AddedDate.Date);
+            }
+
+            List<User> users = new List<User>();
+            foreach (KeyValuePair<Section, List<int>> entry in sections)
+            {
+                users.AddRange(this._userDao.FindAll(user => //user.Type.Equals("Student") &&
+                                                              d == null ? true : d.Value.Date <= user.AddedDate.Date
+                                                              && user.Section.Equals(entry.Key)
+                                                              && entry.Value.Contains(user.Year.Value)
+                ));
+            }
+            return users;
+         }
     }
 }
