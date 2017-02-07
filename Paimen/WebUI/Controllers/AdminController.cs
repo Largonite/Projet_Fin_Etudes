@@ -4,10 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LoginManagement;
+using System.Web.Security;
 using System.Text;
 
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private ILoginManagement _service;
@@ -19,9 +21,10 @@ namespace WebUI.Controllers
 
         public ActionResult Index()
         {
-            User u = (User)TempData["Admin"];
-            if (u == null) return RedirectToAction("SignIn", "Connection");
-            return View(u);
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+            
+            return View((object) ticket.Name);
         }
 
         // GET: UserManager
