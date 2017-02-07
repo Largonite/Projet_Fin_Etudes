@@ -28,7 +28,33 @@ namespace LoginManagement
         /// </summary>
         /// <returns>A string formatted as .bat script to add the specified users</returns>
         [OperationContract]
-        string GetWindowsScript(DateTime d, IDictionary<Section,List<int>> sections);
+        string GetWindowsScript(DateTime? d, IDictionary<Section,List<int>> sections);
+
+
+        /// <summary>
+        /// Allows to retrieve a .csv string formatted for Nutrilog. 
+        /// Each line is formatted like "idStudent, LastName, FisrtName, Password"
+        /// with all the users registered since the specified date (included). 
+        /// If the date is not set (== null), the date will not be considered as a criteria.
+        /// A Dictionnary<Section, List<Integer>> can be used to specify the sections to consider
+        /// and the years for each section. If the Dictionnary is null, it will not be considered as a criteria.
+        /// </summary>
+        /// <returns>A string formatted as CSV with the specified users</returns>
+        [OperationContract]
+        string GetNutrilogScript(DateTime? d, IDictionary<Section, List<int>> sections);
+
+
+        /// <summary>
+        /// Allows to retrieve a .csv string formatted for Claroline. 
+        /// Each line is formatted like "LastName, FisrtName, Email, Password"
+        /// with all the users registered since the specified date (included). 
+        /// If the date is not set (== null), the date will not be considered as a criteria.
+        /// A Dictionnary<Section, List<Integer>> can be used to specify the sections to consider
+        /// and the years for each section. If the Dictionnary is null, it will not be considered as a criteria.
+        /// </summary>
+        /// <returns>A string formatted as CSV with the specified users</returns>
+        [OperationContract]
+        string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections);
 
         [OperationContract]
         bool AddStudentFromCSV(string csv);
