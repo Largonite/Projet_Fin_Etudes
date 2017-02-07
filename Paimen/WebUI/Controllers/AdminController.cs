@@ -16,6 +16,13 @@ namespace WebUI.Controllers
             this._service = new LoginManagementImpl();
         }
 
+        public ActionResult Index()
+        {
+            User u = (User)TempData["Admin"];
+            if (u == null) return RedirectToAction("SignIn", "Connection");
+            return View(u);
+        }
+
         // GET: UserManager
         public ActionResult UserManagement()
         {
