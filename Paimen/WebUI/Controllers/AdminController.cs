@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LoginManagement;
+using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
 
@@ -36,6 +37,15 @@ namespace WebUI.Controllers
         [HttpPost]
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
         {
+            try
+            {
+                _service.AddStudentFromCSV(csv);
+            }
+            catch (DBException exception)
+            {
+                Console.WriteLine("ECHEC!");
+            }
+            
             return View("UserManagement");
         }
 

@@ -120,6 +120,7 @@
     <Compile Include="Dal\GenericDao.cs" />
     <Compile Include="Dal\IDao.cs" />
     <Compile Include="Dal\IEntity.cs" />
+    <Compile Include="Exceptions\DBException.cs" />
     <Compile Include="LoginManagementImpl.svc.cs">
       <DependentUpon>LoginManagementImpl.svc</DependentUpon>
     </Compile>

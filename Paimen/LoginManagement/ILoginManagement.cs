@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Web;
 
 namespace LoginManagement
 {
@@ -57,6 +58,12 @@ namespace LoginManagement
         string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections);
 
         [OperationContract]
-        bool AddStudentFromCSV(string csv);
+        bool AddStudentFromCSV(HttpPostedFileBase csv);
+
+        /*[OperationContract]
+        bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
+
+        [OperationContract]
+        List<Section> GetSections();
     }
 }
