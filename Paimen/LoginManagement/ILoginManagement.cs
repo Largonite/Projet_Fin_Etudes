@@ -44,7 +44,7 @@ namespace LoginManagement
 
         [OperationContract]
         bool AddUser(string type, string lastName, string firstname,
-            string email, string login, string password, string refNumber,
+            string email, string login, string password, int refNumber,
             int year, int section, int profile);
     }
 }

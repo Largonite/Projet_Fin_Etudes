@@ -49,10 +49,10 @@ namespace WebUI.Controllers
 
         [HttpPost]
         public ViewResult AddUser(string type, string lastName, string firstname,
-            string email, string login, string password, string refNumber,
+            string email, string login, string password, int refNumber,
             int year, int section, int profile)
         {
-
+            _service.AddUser(type, lastName, firstname, email, login, password, refNumber, year, section, profile);
             return View("UserManagement", model);
         }
 
