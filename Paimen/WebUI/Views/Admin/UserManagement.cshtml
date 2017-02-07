@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "UserManagement";
+}
+<div class="row">
+    <h2>Gestion des utilisateurs</h2>
+
+    <h3>Importer des étudiants depuis un fichier CSV</h3>
+    @using (Html.BeginForm("AddUserFromCSV", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <label for="csv">Fichier CSV: </label>
+            <input type="file" accept=".csv" name="csv" />
+        </div>
+        <div style="width:100%;margin-top:5px;">
+            <button type="submit" class="btn btn-success">Valider</button>
+        </div>
+    }
+
+</div>
+
+
