@@ -15,12 +15,14 @@ namespace LoginManagement
     {
         private GenericDao<User> _userDao;
         private GenericDao<Section> _sectionDao;
+        private GenericDao<Profile> _profileDao;
 
         public LoginManagementImpl()
         {
             PaimenEntities entities = new PaimenEntities();
             this._userDao = new GenericDao<User>(entities);
             this._sectionDao = new GenericDao<Section>(entities);
+            this._profileDao = new GenericDao<Profile>(entities);
         }
 
         public User SignIn(User user)
@@ -122,6 +124,27 @@ namespace LoginManagement
                 builder.Append("\n");
             }
             return builder.ToString();
+        }
+
+        public List<Section> GetAllSection()
+        {
+            return _sectionDao.GetAll().ToList();
+        }
+
+        public List<Profile> GetAllProfile()
+        {
+            return _profileDao.GetAll().ToList();
+        }
+
+        public List<User> GetAllUser()
+        {
+            return _userDao.GetAll().ToList();
+        }
+
+        public bool AddUser(string type, string lastName, string firstname, string email, string login, string password, string refNumber, int year, int section, int profile)
+        {
+
+                return true;
         }
     }
 }

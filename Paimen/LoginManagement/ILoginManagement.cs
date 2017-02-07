@@ -32,5 +32,19 @@ namespace LoginManagement
 
         [OperationContract]
         bool AddStudentFromCSV(string csv);
+
+        [OperationContract]
+        List<Section> GetAllSection();
+
+        [OperationContract]
+        List<Profile> GetAllProfile();
+
+        [OperationContract]
+        List<User> GetAllUser();
+
+        [OperationContract]
+        bool AddUser(string type, string lastName, string firstname,
+            string email, string login, string password, string refNumber,
+            int year, int section, int profile);
     }
 }
