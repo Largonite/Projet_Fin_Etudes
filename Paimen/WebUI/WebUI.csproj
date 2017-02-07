@@ -154,6 +154,8 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\SignInScript.js" />
+    <Content Include="Scripts\Utils.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
