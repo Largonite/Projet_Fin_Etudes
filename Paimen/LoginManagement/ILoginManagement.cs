@@ -71,8 +71,7 @@ namespace LoginManagement
 
         [OperationContract]
         bool AddUser(string type, string lastName, string firstname,
-            string email, string login, string password, int refNumber,
-            int year, int section, int profile);
+            string email,  int refNumber, int year, int section, int profile);
         /*[OperationContract]
         bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
 
