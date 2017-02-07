@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c4700cf4abad4fb19b3fb9ff55ea1f7c" Name="Diagram1">
-        <EntityTypeShape EntityType="LoginModel.Cours" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoginModel.Professor" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoginModel.Section" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoginModel.Student" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
-        <AssociationConnector Association="LoginModel.FK_ProfessorCourse" ManuallyRouted="false" />
-        <AssociationConnector Association="LoginModel.FK_SectionProfessor" ManuallyRouted="false" />
-        <AssociationConnector Association="LoginModel.FK_SectionStudent" ManuallyRouted="false" />
+      <Diagram DiagramId="565c8356405a4bbe836a424c97d290bb" Name="Diagram1">
+        <EntityTypeShape EntityType="PaimenModel.Profile" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaimenModel.Section" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaimenModel.Software" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaimenModel.User" Width="1.5" PointX="6" PointY="2.875" IsExpanded="true" />
+        <AssociationConnector Association="PaimenModel.FK_User_Profile" ManuallyRouted="false" />
+        <AssociationConnector Association="PaimenModel.FK_User_Section" ManuallyRouted="false" />
+        <AssociationConnector Association="PaimenModel.Profiles_Softwares" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
