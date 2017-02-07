@@ -31,10 +31,19 @@ namespace LoginManagement
         string GetWindowsScript(DateTime d, IDictionary<Section,List<int>> sections);
 
         [OperationContract]
-        void AddProfileType(string typeProfile, string software);
+        void AddProfileType(string typeProfile, List<string> softwares);
 
         [OperationContract]
         bool AddStudentFromCSV(string csv);
+
+        [OperationContract]
+        void modifyProfileType(string typeProfile, List<string> softwares);
+
+        [OperationContract]
+        List<Software> GetAllSoftware();
+
+        [OperationContract]
+        List<Profile> GetAllProfile();
 
     }
 }

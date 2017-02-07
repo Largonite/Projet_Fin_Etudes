@@ -27,22 +27,55 @@ namespace LoginManagement
             this._softwareDao = new GenericDao<Software>(entities);
         }
 
-        public void AddProfileType(string typeProfile, string software)
+        public void AddProfileType(string typeProfile, List<string> softwares)
         {
 
+            if ( this._profileDao.Find(p => p.Name.Equals(typeProfile)) != null)
+            {
+                throw new InvalidDataException("Profile name already used");
+            }
+
             Profile toAddProfile = new Profile();
-            Software toAddSoftware = new Software();
 
             toAddProfile.Name = typeProfile;
-            toAddProfile.Softwares.Add(toAddSoftware);
 
-            toAddSoftware.Name = software;
-            toAddSoftware.Profiles.Add(toAddProfile);
+            addSoftwaresToProfile(toAddProfile, softwares);
+            
+        }
 
-            this._profileDao.Add(toAddProfile);
-            this._softwareDao.Add(toAddSoftware);
-            this._softwareDao.SaveChanges();
+        private void addSoftwaresToProfile(Profile profile, List<string> softwares)
+        {
+
+            foreach (string software in softwares)
+            {
+
+                Software softwareInDb = this._softwareDao.Find(s => s.Equals(software));
+
+                profile.Softwares.Add(softwareInDb);
+
+                softwareInDb.Profiles.Add(profile);
+
+                this._profileDao.Add(profile);
+
+            }
+
             this._profileDao.SaveChanges();
+
+        }
+
+        public void modifyProfileType(string typeProfile, List<string> softwares)
+        {
+            Profile profile = this._profileDao.Find(p => p.Name.Equals(typeProfile));
+            if (profile == null) throw new InvalidDataException("Profile name does not exist");
+
+            List<Software> softwaresInDb = this._softwareDao.FindAll(s => s.Profiles.Equals(profile));
+
+            foreach (Software s in softwaresInDb)
+            {
+                if( !softwares.Contains(s.Name)) profile.Softwares.Remove(s);
+            }
+
+            this._softwareDao.SaveChanges();
 
         }
 
@@ -145,6 +178,16 @@ namespace LoginManagement
                 builder.Append("\n");
             }
             return builder.ToString();
+        }
+
+        public List<Software> GetAllSoftware()
+        {
+            return this._softwareDao.GetAll();
+        }
+
+        public List<Profile> GetAllProfile()
+        {
+            return this._profileDao.GetAll();
         }
     }
 }
