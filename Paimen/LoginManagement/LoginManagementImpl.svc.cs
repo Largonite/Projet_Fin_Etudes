@@ -200,6 +200,7 @@ namespace LoginManagement
             if (firstname == null) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
             if (login == null) throw new ArgumentNullException("Le login ne peut pas être vide.");
             if (password == null) throw new ArgumentNullException("Le mot de passe ne peut pas être vide.");
+            if (profile == 0) throw new ArgumentNullException("Aucun profil n'a été attribué");
             if (_userDao.Find(u => u.Login.Equals(login)) == null) throw new ArgumentException("Ce login existe déjà.");
             if (_userDao.Find(u => u.RegNumber.Equals(refNumber)) == null) throw new ArgumentException("Ce matricule existe déjà.");
 
