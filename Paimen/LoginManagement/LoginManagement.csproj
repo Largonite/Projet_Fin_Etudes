@@ -106,8 +106,8 @@
     <Content Include="LoginManagementImpl.svc" />
     <Content Include="LoginModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LoginModel.Context.cs</LastGenOutput>
       <DependentUpon>LoginModel.edmx</DependentUpon>
+      <LastGenOutput>LoginModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="LoginModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -139,17 +139,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Profiles.cs">
+    <Compile Include="Profile.cs">
       <DependentUpon>LoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sections.cs">
+    <Compile Include="Section.cs">
       <DependentUpon>LoginModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Softwares.cs">
+    <Compile Include="Software.cs">
       <DependentUpon>LoginModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Users.cs">
+    <Compile Include="User.cs">
       <DependentUpon>LoginModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

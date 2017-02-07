@@ -9,24 +9,26 @@
 
 namespace LoginManagement
 {
-    using Dal;
     using System;
     using System.Collections.Generic;
-
-    public partial class Sections : IEntity
+    
+    public partial class User : IEntity
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sections()
-        {
-            this.Users = new HashSet<Users>();
-        }
-    
         public int Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public string Login { get; set; }
+        public Nullable<int> Year { get; set; }
+        public string Type { get; set; }
+        public int RegNumber { get; set; }
+        public Nullable<int> Section { get; set; }
+        public int Profile { get; set; }
+        public System.DateTime AddedDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual Profile Profile1 { get; set; }
+        public virtual Section Section1 { get; set; }
 
         public int GetId()
         {

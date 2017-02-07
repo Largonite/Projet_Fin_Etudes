@@ -128,7 +128,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PaimenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Profiles">
+        <EntityType Name="Profile">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -137,7 +137,7 @@
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Profile" FromRole="Profiles" ToRole="Users" />
           <NavigationProperty Name="Softwares" Relationship="Self.Profiles_Softwares" FromRole="Profiles" ToRole="Softwares" />
         </EntityType>
-        <EntityType Name="Sections">
+        <EntityType Name="Section">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -146,7 +146,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Section" FromRole="Sections" ToRole="Users" />
         </EntityType>
-        <EntityType Name="Softwares">
+        <EntityType Name="Software">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -154,7 +154,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Profiles" Relationship="Self.Profiles_Softwares" FromRole="Softwares" ToRole="Profiles" />
         </EntityType>
-        <EntityType Name="Users">
+        <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -170,12 +170,12 @@
           <Property Name="Section" Type="Int32" />
           <Property Name="Profile" Type="Int32" Nullable="false" />
           <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Profiles" Relationship="Self.FK_User_Profile" FromRole="Users" ToRole="Profiles" />
-          <NavigationProperty Name="Sections" Relationship="Self.FK_User_Section" FromRole="Users" ToRole="Sections" />
+          <NavigationProperty Name="Profile1" Relationship="Self.FK_User_Profile" FromRole="Users" ToRole="Profiles" />
+          <NavigationProperty Name="Section1" Relationship="Self.FK_User_Section" FromRole="Users" ToRole="Sections" />
         </EntityType>
         <Association Name="FK_User_Profile">
-          <End Role="Profiles" Type="Self.Profiles" Multiplicity="1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <End Role="Profiles" Type="Self.Profile" Multiplicity="1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Profiles">
               <PropertyRef Name="Id" />
@@ -186,8 +186,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_Section">
-          <End Role="Sections" Type="Self.Sections" Multiplicity="0..1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <End Role="Sections" Type="Self.Section" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
               <PropertyRef Name="Id" />
@@ -198,14 +198,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Profiles_Softwares">
-          <End Role="Profiles" Type="Self.Profiles" Multiplicity="*" />
-          <End Role="Softwares" Type="Self.Softwares" Multiplicity="*" />
+          <End Role="Profiles" Type="Self.Profile" Multiplicity="*" />
+          <End Role="Softwares" Type="Self.Software" Multiplicity="*" />
         </Association>
         <EntityContainer Name="PaimenEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Profiles" EntityType="Self.Profiles" />
-          <EntitySet Name="Sections" EntityType="Self.Sections" />
-          <EntitySet Name="Softwares" EntityType="Self.Softwares" />
-          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="Profiles" EntityType="Self.Profile" />
+          <EntitySet Name="Sections" EntityType="Self.Section" />
+          <EntitySet Name="Softwares" EntityType="Self.Software" />
+          <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="FK_User_Profile" Association="Self.FK_User_Profile">
             <End Role="Profiles" EntitySet="Profiles" />
             <End Role="Users" EntitySet="Users" />
@@ -226,7 +226,7 @@
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PaimenModelStoreContainer" CdmEntityContainer="PaimenEntities">
           <EntitySetMapping Name="Profiles">
-            <EntityTypeMapping TypeName="PaimenModel.Profiles">
+            <EntityTypeMapping TypeName="PaimenModel.Profile">
               <MappingFragment StoreEntitySet="Profiles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -234,7 +234,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="PaimenModel.Sections">
+            <EntityTypeMapping TypeName="PaimenModel.Section">
               <MappingFragment StoreEntitySet="Sections">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -243,7 +243,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Softwares">
-            <EntityTypeMapping TypeName="PaimenModel.Softwares">
+            <EntityTypeMapping TypeName="PaimenModel.Software">
               <MappingFragment StoreEntitySet="Softwares">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -251,7 +251,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="PaimenModel.Users">
+            <EntityTypeMapping TypeName="PaimenModel.User">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -290,7 +290,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />

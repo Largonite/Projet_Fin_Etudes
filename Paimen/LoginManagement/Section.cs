@@ -13,23 +13,20 @@ namespace LoginManagement
     using System;
     using System.Collections.Generic;
 
-    public partial class Users : IEntity
+    public partial class Section : IEntity
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public string Login { get; set; }
-        public Nullable<int> Year { get; set; }
-        public string Type { get; set; }
-        public int RegNumber { get; set; }
-        public Nullable<int> Section { get; set; }
-        public int Profile { get; set; }
-        public System.DateTime AddedDate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Section()
+        {
+            this.Users = new HashSet<User>();
+        }
     
-        public virtual Profiles Profiles { get; set; }
-        public virtual Sections Sections { get; set; }
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
 
         public int GetId()
         {
