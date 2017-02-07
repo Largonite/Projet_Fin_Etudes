@@ -1,4 +1,8 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
 
 namespace LoginManagement
 {
@@ -15,5 +19,8 @@ namespace LoginManagement
         /// null either if the user does not exist or if the password does not match</returns>
         [OperationContract]
         User SignIn(User user);
+
+        [OperationContract]
+        bool AddStudentFromCSV(string csv);
     }
 }
