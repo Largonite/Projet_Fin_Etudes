@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using LoginManagement;
 using System.Web.Security;
+using System.Text;
 
 namespace WebUI.Controllers
 {
@@ -36,6 +37,39 @@ namespace WebUI.Controllers
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
         {
             return View("UserManagement");
+        }
+
+        [HttpGet]
+        public void DownloadBat()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
+
+        [HttpGet]
+        public void DownloadClaroline()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=clarolineUsers.csv");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
+
+        [HttpGet]
+        public void DownloadNutriLog()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=nutrilogUsers.csv");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
         }
     }
 }

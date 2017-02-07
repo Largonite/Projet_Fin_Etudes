@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.Text;
 using System.IO;
 using DevOne.Security.Cryptography.BCrypt;
@@ -26,7 +23,7 @@ namespace LoginManagement
         public User SignIn(User user)
         {
             User inDbUser = this._userDao.Find(u => u.RegNumber.Equals(user.RegNumber));
-            if(inDbUser == null)
+            if (inDbUser == null)
             {
                 return null;
             }
@@ -47,11 +44,11 @@ namespace LoginManagement
             IList<Section> sections = GetAllSections();
 
             int idSection = 0;
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 string[] user = line.Split(',');
 
-                foreach(Section s in sections)
+                foreach (Section s in sections)
                 {
                     if (s.Code == user[4])
                     {
@@ -99,19 +96,11 @@ namespace LoginManagement
             return BCryptHelper.HashPassword(System.Web.Security.Membership.GeneratePassword(10, 5), BCryptHelper.GenerateSalt());
         }
 
-        public string GetWindowsScript(DateTime d, IDictionary<Section, List<int>> sections)
+        public string GetWindowsScript(DateTime? d, IDictionary<Section, List<int>> sections)
         {
-            List<User> users = new List<User>();
-            foreach(KeyValuePair<Section, List<int>> entry in sections)
-            {
-                users.AddRange(this._userDao.FindAll(user => user.Type.Equals("Student") 
-                                                             && d == null ? true : d.Date <= user.AddedDate.Date
-                                                             && user.Section.Equals(entry.Key) 
-                                                             && entry.Value.Contains(user.Year.Value)));
-            }
-
+            List<User> users = this.GetUsers(d,sections);
             StringBuilder builder = new StringBuilder();
-            foreach(User u in users)
+            foreach (User u in users)
             {
                 builder.Append("dsadd ");
                 builder.Append(u.LastName);
@@ -122,6 +111,70 @@ namespace LoginManagement
                 builder.Append("\n");
             }
             return builder.ToString();
+        }
+
+        public string GetNutrilogScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            List<User> users = this.GetUsers(d, sections);
+            StringBuilder builder = new StringBuilder();
+            builder.Append("Nom;Prenom;Email;Mot de passe;\n");
+            foreach (User u in users)
+            {
+                builder.Append(u.Id);
+                builder.Append(";");
+                builder.Append(u.LastName);
+                builder.Append(";");
+                builder.Append(u.FirstName);
+                builder.Append(";");
+                builder.Append(u.Password);
+                builder.Append(";\n");
+            }
+            return builder.ToString();
+            
+        }
+
+        public string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            List<User> users = this.GetUsers(d, sections);
+            StringBuilder builder = new StringBuilder();
+            builder.Append("Nom;Prenom;Email;Mot de passe;\n");
+            foreach (User u in users)
+            {
+                builder.Append(u.LastName);
+                builder.Append(";");
+                builder.Append(u.FirstName);
+                builder.Append(";");
+                builder.Append(string.IsNullOrEmpty(u.Email) ? "" : u.Email);
+                builder.Append(";");
+                builder.Append(u.Password);
+                builder.Append(";\n");
+            }
+            return builder.ToString();
+        }
+
+        private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
+        {
+            // Both params are null, return the whole script.
+            if (d == null && sections == null)
+            {
+                return this._userDao.GetAll();
+            }
+
+            if(sections == null)
+            {
+                return this._userDao.FindAll(user => d.Value.Date <= user.AddedDate.Date);
+            }
+
+            List<User> users = new List<User>();
+            foreach (KeyValuePair<Section, List<int>> entry in sections)
+            {
+                users.AddRange(this._userDao.FindAll(user => //user.Type.Equals("Student") &&
+                                                              d == null ? true : d.Value.Date <= user.AddedDate.Date
+                                                              && user.Section.Equals(entry.Key)
+                                                              && entry.Value.Contains(user.Year.Value)
+                ));
+            }
+            return users;
         }
     }
 }
