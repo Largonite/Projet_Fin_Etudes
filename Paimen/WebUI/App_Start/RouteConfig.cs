@@ -16,7 +16,7 @@ namespace WebUI
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}",
-                defaults: new { controller = "Connection", action = "SignIn"}
+                defaults: new { controller = "Connection", action = "LogIn"}
             );
         }
     }

@@ -185,10 +185,11 @@
     </None>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Connection\SignIn.cshtml" />
+    <Content Include="Views\Connection\LogIn.cshtml" />
     <Content Include="Views\Connection\UserInformation.cshtml" />
     <Content Include="Views\Admin\UserManagement.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
