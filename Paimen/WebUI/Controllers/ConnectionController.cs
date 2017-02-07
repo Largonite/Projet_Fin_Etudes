@@ -54,7 +54,7 @@ namespace WebUI.Controllers
             if (res.Profile1.Name.Equals("Admin"))
             {
                 FormsAuthentication.SetAuthCookie(res.FirstName + " " + res.LastName, true);
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("UserManagement", "Admin");
             }
             return View("UserInformation",res);
         }
