@@ -20,11 +20,11 @@ namespace LoginManagement
         [OperationContract]
         User SignIn(User user);
 
-        void CreateProfileType(string typeProfil);
-
-
+        [OperationContract]
+        void AddProfileType(string typeProfile, string software);
 
         [OperationContract]
         bool AddStudentFromCSV(string csv);
+
     }
 }

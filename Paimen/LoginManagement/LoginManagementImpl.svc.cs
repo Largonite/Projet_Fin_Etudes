@@ -18,21 +18,32 @@ namespace LoginManagement
         private GenericDao<User> _userDao;
         private GenericDao<Section> _sectionDao;
         private GenericDao<Profile> _profileDao;
+        private GenericDao<Software> _softwareDao;
 
         public LoginManagementImpl()
         {
             PaimenEntities entities = new PaimenEntities();
             this._userDao = new GenericDao<User>(entities);
             this._sectionDao = new GenericDao<Section>(entities);
+            this._profileDao = new GenericDao<Profile>(entities);
+            this._softwareDao = new GenericDao<Software>(entities);
         }
 
-        public void CreateProfileType(string typeProfil)
+        public void AddProfileType(string typeProfile, string software)
         {
 
             Profile toAddProfile = new Profile();
-            toAddProfile.Name = typeProfil;
+            Software toAddSoftware = new Software();
+
+            toAddProfile.Name = typeProfile;
+            toAddProfile.Softwares.Add(toAddSoftware);
+
+            toAddSoftware.Name = software;
+            toAddSoftware.Profiles.Add(toAddProfile);
 
             this._profileDao.Add(toAddProfile);
+            this._softwareDao.Add(toAddSoftware);
+            this._softwareDao.SaveChanges();
             this._profileDao.SaveChanges();
 
         }
