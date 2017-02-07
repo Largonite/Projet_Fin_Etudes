@@ -156,6 +156,7 @@
     </None>
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\SignInScript.js" />
+    <Content Include="Scripts\UserManagementScript.js" />
     <Content Include="Scripts\Utils.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -168,6 +169,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\SectionProfileModel.cs" />
+    <Compile Include="Models\UserListModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\LoginServiceReference\Reference.cs">

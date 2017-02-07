@@ -14,14 +14,14 @@ namespace LoginManagement
     {
         private GenericDao<User> _userDao;
         private GenericDao<Section> _sectionDao;
-        private GenericDao<Profile> _profilDao;
+        private GenericDao<Profile> _profileDao;
 
         public LoginManagementImpl()
         {
             PaimenEntities entities = new PaimenEntities();
             this._userDao = new GenericDao<User>(entities);
             this._sectionDao = new GenericDao<Section>(entities);
-            this._profilDao = new GenericDao<Profile>(entities);
+            this._profileDao = new GenericDao<Profile>(entities);
         }
 
         public User SignIn(User user)
@@ -70,7 +70,7 @@ namespace LoginManagement
 
                 string login = GetLogin(user[2], user[1]);
                 string profileName = (user[3].ToArray())[0] + user[4];
-                Profile profile = this._profilDao.Find(p => p.Name.Equals(profileName));
+                Profile profile = this._profileDao.Find(p => p.Name.Equals(profileName));
                 string password = System.Web.Security.Membership.GeneratePassword(10, 5);
 
                 string annee = user[3].Substring(0,1);
@@ -177,6 +177,48 @@ namespace LoginManagement
                 builder.Append(";\n");
             }
             return builder.ToString();
+        }
+
+        public List<Section> GetAllSection()
+        {
+            return _sectionDao.GetAll().ToList();
+        }
+
+        public List<Profile> GetAllProfile()
+        {
+            return _profileDao.GetAll().ToList();
+        }
+
+        public List<User> GetAllUser()
+        {
+            return _userDao.GetAll().ToList();
+        }
+
+        public bool AddUser(string type, string lastName, string firstname, string email, string login, string password, int refNumber, int year, int section, int profile)
+        {
+            if (lastName == null) throw new ArgumentNullException("Le nom ne peut pas être vide.");
+            if (firstname == null) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
+            if (login == null) throw new ArgumentNullException("Le login ne peut pas être vide.");
+            if (password == null) throw new ArgumentNullException("Le mot de passe ne peut pas être vide.");
+            if (_userDao.Find(u => u.Login.Equals(login)) == null) throw new ArgumentException("Ce login existe déjà.");
+            if (_userDao.Find(u => u.RegNumber.Equals(refNumber)) == null) throw new ArgumentException("Ce matricule existe déjà.");
+
+            User toAdd = new User
+            {
+                Type = type,
+                LastName = lastName,
+                FirstName = firstname,
+                Email = email,
+                Login = login,
+                Password = password,
+                RegNumber = refNumber,
+                Year = year,
+                Section = section,
+                Profile = profile
+            };
+            _userDao.Add(toAdd);
+            _userDao.SaveChanges();
+                return true;
         }
 
         private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)

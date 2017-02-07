@@ -7,6 +7,7 @@ using LoginManagement;
 using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
@@ -14,10 +15,17 @@ namespace WebUI.Controllers
     public class AdminController : Controller
     {
         private ILoginManagement _service;
+        private SectionProfileModel model;
+        private UserListModel userListModel;
+
 
         public AdminController()
         {
             this._service = new LoginManagementImpl();
+            List<Section> sections = _service.GetAllSection();
+            List<Profile> profiles = _service.GetAllProfile();
+            model = new SectionProfileModel { Profiles = profiles, Sections = sections };
+            userListModel = new UserListModel { Users = _service.GetAllUser() };
         }
 
         public ActionResult Index()
@@ -30,6 +38,11 @@ namespace WebUI.Controllers
 
         // GET: UserManager
         public ActionResult UserManagement()
+        {
+            return View(model);
+        }
+
+        public ActionResult ListUser()
         {
             return View();
         }
@@ -46,7 +59,16 @@ namespace WebUI.Controllers
                 Console.WriteLine("ECHEC!");
             }
             
-            return View("UserManagement");
+            return View("UserManagement", model);
+        }
+
+        [HttpPost]
+        public ViewResult AddUser(string type, string lastName, string firstname,
+            string email, string login, string password, int refNumber,
+            int year, int section, int profile)
+        {
+            _service.AddUser(type, lastName, firstname, email, login, password, refNumber, year, section, profile);
+            return View("UserManagement", model);
         }
 
         [HttpGet]
