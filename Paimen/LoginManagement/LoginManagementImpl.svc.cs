@@ -70,7 +70,7 @@ namespace LoginManagement
 
                 string login = GetLogin(user[2], user[1]);
                 string profileName = (user[3].ToArray())[0] + user[4];
-                Profile profile = this._profilDao.Find(p => p.Name.Equals(profileName));
+                Profile profile = this._profileDao.Find(p => p.Name.Equals(profileName));
                 string password = System.Web.Security.Membership.GeneratePassword(10, 5);
 
                 string annee = user[3].Substring(0,1);
@@ -245,5 +245,6 @@ namespace LoginManagement
             }
             return users;
          }
+
     }
 }

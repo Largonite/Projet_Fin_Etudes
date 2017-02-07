@@ -7,6 +7,7 @@ using LoginManagement;
 using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
@@ -58,7 +59,6 @@ namespace WebUI.Controllers
                 Console.WriteLine("ECHEC!");
             }
             
-            return View("UserManagement");
             return View("UserManagement", model);
         }
 

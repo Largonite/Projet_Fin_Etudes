@@ -58,7 +58,7 @@ namespace LoginManagement
         string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections);
 
         [OperationContract]
-        bool AddStudentFromCSV(string csv);
+        bool AddStudentFromCSV(HttpPostedFileBase csv);
 
         [OperationContract]
         List<Section> GetAllSection();
