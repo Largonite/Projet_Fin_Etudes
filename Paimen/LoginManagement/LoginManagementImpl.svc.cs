@@ -80,8 +80,11 @@ namespace LoginManagement
                     Password = password,
                     Profile = profile.Id,
                 };
-
-                this._userDao.Add(newStudent);
+                if (!this._userDao.Add(newStudent))
+                {
+                    throw new Exceptions.DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
+                }
+                
             }
             return true;
         }
