@@ -7,6 +7,8 @@ using System.IO;
 using System.Web;
 using LoginManagement.Exceptions;
 using System.Text.RegularExpressions;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace LoginManagement
 {
@@ -15,6 +17,7 @@ namespace LoginManagement
         private GenericDao<User> _userDao;
         private GenericDao<Section> _sectionDao;
         private GenericDao<Profile> _profileDao;
+        private GenericDao<Software> _softwareDao;
 
         public LoginManagementImpl()
         {
@@ -22,6 +25,7 @@ namespace LoginManagement
             this._userDao = new GenericDao<User>(entities);
             this._sectionDao = new GenericDao<Section>(entities);
             this._profileDao = new GenericDao<Profile>(entities);
+            this._softwareDao = new GenericDao<Software>(entities);
         }
 
         public User SignIn(User user)
@@ -91,7 +95,7 @@ namespace LoginManagement
                     Profile = profile.Id,
                     AddedDate = DateTime.UtcNow.Date,
                 };
-                if (!this._userDao.Add(newStudent))
+                if (this._userDao.Add(newStudent) == -1)
                 {
                     throw new DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
                 }
@@ -113,16 +117,6 @@ namespace LoginManagement
 
             return login;
         }
-
-        /*
-        public bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares)
-        {
-            Profile guestProfile = new Profile {Name = profileName };
-
-            if (!this._profilDao.Add(guestProfile))
-            {
-                throw new DBException("Une erreur est survenue durant la création du profil!");
-        }*/
 
         public string GetWindowsScript(DateTime? d, IDictionary<Section, List<int>> sections)
         {
@@ -225,7 +219,7 @@ namespace LoginManagement
 
         private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
         {
-            // Both params are null, return the whole script.
+            // Both params are null, return the whole list.
             if (d == null && sections == null)
             {
                 return this._userDao.GetAll();
@@ -239,18 +233,124 @@ namespace LoginManagement
             List<User> users = new List<User>();
             foreach (KeyValuePair<Section, List<int>> entry in sections)
             {
-                users.AddRange(this._userDao.FindAll(user => //user.Type.Equals("Student") &&
-                                                              d == null ? true : d.Value.Date <= user.AddedDate.Date
-                                                              && user.Section.Equals(entry.Key)
+                users.AddRange(this._userDao.FindAll(user => (d == null ? true : DateTime.Compare(user.AddedDate, d.Value) <= 0)
+                                                             && user.Section1.Code.Equals(entry.Key.Code)
                                                               && entry.Value.Contains(user.Year.Value)
                 ));
             }
             return users;
          }
 
-        public List<Section> GetSections()
+        public Document GetPDFForAllUsers()
+        {
+            IList<User> listUsers = this._userDao.GetAll();
+
+            if(listUsers.Count == 0)
+            {
+                throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
+            }
+
+            FileStream fs = new FileStream("Liste utilisateurs - " + DateTime.Now, FileMode.Create);
+            Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
+            PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
+
+            sendBack.Open();
+
+            foreach (User user in listUsers)
+            {
+                Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
+                Section section = this._sectionDao.Find(s => s.GetId() == user.Section);
+
+                sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
+                sendBack.Add(new Paragraph("Nom : " + user.LastName));
+                sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
+                sendBack.Add(new Paragraph("Matricule : " + user.RegNumber ?? "/"));
+                sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+                sendBack.Add(new Paragraph("Année : " + user.Year ?? "/"));
+                sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
+                sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
+                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+                sendBack.NewPage();
+            }
+
+            return sendBack;
+        }
+
+        public List<Section> GetAllSection()
         {
             return this._sectionDao.GetAll();
+        }
+
+        public List<Software> GetAllSoftware()
+        {
+            return this._softwareDao.GetAll();
+        }
+
+        public bool DeleteSofwtare(int id)
+        {
+            Software soft = this._softwareDao.Find(s => s.Id == id);
+            bool res = this._softwareDao.Delete(soft);
+            if (res)
+            {
+                this._softwareDao.SaveChanges();
+            }
+            return res;
+        }
+
+        public bool SaveSoftware(Software s)
+        {
+            if (this._softwareDao.Update(s))
+            {
+                this._softwareDao.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+  
+
+        public Document GetPDFForStudent(int idStudent)
+        {
+            User user = this._userDao.Find(u => u.GetId() == idStudent);
+            Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
+            Section section = this._sectionDao.Find(s => s.GetId() == user.Section);
+
+            if(user == null || profile == null)
+            {
+                throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
+            }
+
+            FileStream fs = new FileStream(user.FirstName + " - " + user.LastName + " - " + DateTime.Now, FileMode.Create);
+            Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
+            PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
+
+            sendBack.Open();
+
+            sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
+            sendBack.Add(new Paragraph("Nom : " + user.LastName));
+            sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
+            sendBack.Add(new Paragraph("Matricule : " + user.RegNumber ?? "/"));
+            sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+            sendBack.Add(new Paragraph("Année : " + user.Year ?? "/"));
+            sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
+            sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
+            sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+            sendBack.Close();
+            writer.Close();
+            fs.Close();
+
+            return sendBack;
+        }
+
+        public bool AddSoftware(Software s)
+        {
+            if (this._softwareDao.Add(s) != -1)
+            {
+                this._softwareDao.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }

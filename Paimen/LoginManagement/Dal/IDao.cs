@@ -10,7 +10,7 @@ namespace LoginManagement.Dal
         T Get(int key);
         bool Update(T element);
         bool Delete(T element);
-        bool Add(T element);
+        int Add(T element);
         bool Exists(T element);
         void SaveChanges();
         T Find(Expression<Func<T, bool>> predicate);

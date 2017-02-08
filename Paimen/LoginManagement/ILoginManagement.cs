@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTextSharp.text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -57,14 +58,42 @@ namespace LoginManagement
         [OperationContract]
         string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections);
 
+        /// <summary>
+        /// Read a csv file containing student's informations and insert each student in the database.
+        /// </summary>
+        /// <param name="csv"> The csv file to be read </param>
+        /// <returns>Return true in case of success, otherwise throw a DBException</returns>
         [OperationContract]
         bool AddStudentFromCSV(HttpPostedFileBase csv);
 
         [OperationContract]
-        List<Section> GetAllSection();
+        Document GetPDFForStudent(int idStudent);
 
         [OperationContract]
+        Document GetPDFForAllUsers();
+        
+        [OperationContract]
         List<Profile> GetAllProfile();
+
+        /// <summary>
+        /// Allows to retrieve the list of all the softwares in the database
+        /// </summary>
+        /// <returns>A ILis of Software</returns>
+        [OperationContract]
+        List<Software> GetAllSoftware();
+
+        /// <summary>
+        /// Allows to delete a software according to its id
+        /// </summary>
+        /// <returns>true if software is deleted, false otherwise</returns>
+        [OperationContract]
+        bool DeleteSofwtare(int id);
+
+        [OperationContract]
+        bool SaveSoftware(Software s);
+
+        [OperationContract]
+        bool AddSoftware(Software s);
 
         [OperationContract]
         List<User> GetAllUser();
@@ -76,6 +105,6 @@ namespace LoginManagement
         bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
 
         [OperationContract]
-        List<Section> GetSections();
+        List<Section> GetAllSection();
     }
 }
