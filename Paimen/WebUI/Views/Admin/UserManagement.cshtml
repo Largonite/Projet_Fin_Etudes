@@ -172,22 +172,27 @@
                                         @{
                                             for (int i = 1; i < 4; i++)
                                             {
-                                                <td class="sectionTableRowData"><input type="checkbox" name="@i@selected.Code" value="true" /></td>
+                                                <td><input type="checkbox" name="@i@selected.Code" value="true" /></td>
                                             }
                                         }
                                     </tr>
-                                            }
+                                 }
 
                             </tbody>
                         </table>
 
                         foreach (var software in AdminController._softwares)
                         {
-                            <input type="radio" name="radioSoftware" value="@software.Id"/>
-                            <label>@software.Name</label><br />
-                            }
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radioSoftware" value="@software.Id" />
+                                    @software.Name
+                                </label>
+                            </div>
                         }
+
                     <button type="submit">Télécharger</button>
+                }
                 </div>
         </div>
     </div>
