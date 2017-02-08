@@ -6,15 +6,19 @@ using System.Web.Mvc;
 using LoginManagement;
 using WebUI.Models;
 using System.Web.Security;
+using iTextSharp.text;
+using System.IO;
 
 namespace WebUI.Controllers
 {
     public class ConnectionController : Controller
     {
         private ILoginManagement _service;
+        private User res;
         public ConnectionController()
         {
             this._service = new LoginManagementImpl();
+            res = new User();
         }
 
         public ViewResult LogIn()
@@ -45,7 +49,7 @@ namespace WebUI.Controllers
                 return RedirectToAction("LogIn");
             }
 
-            User res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
+            res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
             if (res == null)
             {
                 TempData["ErrorMessage"] = "Mauvais matricule!!!!!";
@@ -62,6 +66,20 @@ namespace WebUI.Controllers
         public ViewResult UserInformation(User u)
         {
             return View(u);
+        }
+
+
+        [HttpGet]
+        public void DownloadPDF()
+        {
+            
+
+            String filename = _service.GetPDFForStudent(res.Id);
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.TransmitFile(filename);
+            Response.End();
         }
     }
 }

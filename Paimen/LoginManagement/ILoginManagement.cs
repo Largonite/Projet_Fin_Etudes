@@ -67,10 +67,10 @@ namespace LoginManagement
         bool AddStudentFromCSV(HttpPostedFileBase csv);
 
         [OperationContract]
-        Document GetPDFForStudent(int idStudent);
+        string GetPDFForStudent(int idStudent);
 
         [OperationContract]
-        Document GetPDFForAllUsers();
+        string GetPDFForAllUsers();
         
         [OperationContract]
         List<Profile> GetAllProfile();

@@ -234,7 +234,7 @@ namespace LoginManagement
             return users;
          }
 
-        public Document GetPDFForAllUsers()
+        public string GetPDFForAllUsers()
         {
             IList<User> listUsers = this._userDao.GetAll();
 
@@ -243,7 +243,9 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-            FileStream fs = new FileStream("Liste utilisateurs - " + DateTime.Now, FileMode.Create);
+            string name = "Liste utilisateurs - " + DateTime.Now;
+
+            FileStream fs = new FileStream(name, FileMode.Create);
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
             PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
 
@@ -267,7 +269,7 @@ namespace LoginManagement
                 sendBack.NewPage();
             }
 
-            return sendBack;
+            return name;
         }
 
         public List<Section> GetAllSection()
@@ -302,7 +304,7 @@ namespace LoginManagement
         }
   
 
-        public Document GetPDFForStudent(int idStudent)
+        public string GetPDFForStudent(int idStudent)
         {
             User user = this._userDao.Find(u => u.GetId() == idStudent);
             Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
@@ -313,7 +315,9 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
 
-            FileStream fs = new FileStream(user.FirstName + " - " + user.LastName + " - " + DateTime.Now, FileMode.Create);
+            string name = user.FirstName + " - " + user.LastName + " - " + DateTime.Now;
+
+            FileStream fs = new FileStream(name , FileMode.Create);
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
             PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
 
@@ -333,7 +337,7 @@ namespace LoginManagement
             writer.Close();
             fs.Close();
 
-            return sendBack;
+            return name;
         }
 
         public bool AddSoftware(Software s)
