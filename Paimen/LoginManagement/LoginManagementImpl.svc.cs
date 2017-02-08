@@ -15,6 +15,7 @@ namespace LoginManagement
         private GenericDao<User> _userDao;
         private GenericDao<Section> _sectionDao;
         private GenericDao<Profile> _profileDao;
+        private GenericDao<Software> _softwareDao;
 
         public LoginManagementImpl()
         {
@@ -22,6 +23,7 @@ namespace LoginManagement
             this._userDao = new GenericDao<User>(entities);
             this._sectionDao = new GenericDao<Section>(entities);
             this._profileDao = new GenericDao<Profile>(entities);
+            this._softwareDao = new GenericDao<Software>(entities);
         }
 
         public User SignIn(User user)
@@ -246,6 +248,32 @@ namespace LoginManagement
         public List<Section> GetSections()
         {
             return this._sectionDao.GetAll();
+        }
+
+        public IList<Software> GetAllSoftware()
+        {
+            return this._softwareDao.GetAll();
+        }
+
+        public bool DeleteSofwtare(int id)
+        {
+            Software soft = this._softwareDao.Find(s => s.Id == id);
+            bool res = this._softwareDao.Delete(soft);
+            if (res)
+            {
+                this._softwareDao.SaveChanges();
+            }
+            return res;
+        }
+
+        public bool SaveSoftware(Software s)
+        {
+            if (this._softwareDao.Update(s))
+            {
+                this._softwareDao.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace WebUI.Controllers
     public class AdminController : Controller
     {
         private ILoginManagement _service;
-        private SectionProfileModel model;
+        private SectionProfileModel sectionProfileModel;
         private UserListModel userListModel;
 
 
@@ -44,13 +44,54 @@ namespace WebUI.Controllers
         // GET: UserManager
         public ActionResult UserManagement()
         {
-            return View(model);
+            return View(sectionProfileModel);
+        }
+
+        public ViewResult SoftwareManagement()
+        {
+            IList<Software> softwares = _service.GetAllSoftware();
+            return View(softwares);
+        }
+
+        public ActionResult DeleteSoftware(int id, string name)
+        {
+            bool res = _service.DeleteSofwtare(id);
+            if (res)
+            {
+                TempData["SuccessMessage"] = string.Format("{0} avec l'id {1} à été supprimé", name, id);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible de supprimer {0} !", name);
+            }
+            return RedirectToAction("SoftwareManagement");
+
+        }
+
+        public string SaveSoftware(Software s)
+        {
+            Software s1 = this._service.GetAllSoftware().Where(soft => soft.Id == s.Id).First();
+            string oldName = s1.Name;
+            s.Profiles = s1.Profiles;
+            bool r = this._service.SaveSoftware(s);
+            if (r)
+            {
+                TempData["SuccessMessage"] = string.Format("{0} a été modifié en {1}", oldName,s.Name);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible de modifier {0} !", s1.Name);
+            }
+            return "SoftwareManagement";
         }
 
         public ActionResult ListUser()
         {
             return View();
         }
+
+
+
 
         [HttpPost]
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
@@ -64,7 +105,7 @@ namespace WebUI.Controllers
                 Console.WriteLine(exception.Message);
             }
             
-            return View("UserManagement", model);
+            return View("UserManagement", sectionProfileModel);
         }
 
         [HttpPost]
@@ -72,7 +113,7 @@ namespace WebUI.Controllers
             string email, int refNumber,int year, int section, int profile)
         {
             _service.AddUser(type, lastName, firstname, email, refNumber, year, section, profile);
-            return View("UserManagement", model);
+            return View("UserManagement", sectionProfileModel);
         }
 
         [HttpGet]

@@ -100,7 +100,7 @@ namespace LoginManagement.Dal
             if(previous == null)
                 return false;
 
-            foreach(PropertyInfo property in previous.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach(var property in element.GetType().GetProperties())
             {
                 property.SetValue(previous, property.GetValue(element, null));
             }

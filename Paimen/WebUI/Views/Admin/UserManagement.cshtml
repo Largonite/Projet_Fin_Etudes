@@ -8,7 +8,7 @@
 <div class="row">
     <h3>Ajouter un utilisateur</h3>
     @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post))
-    {
+            {
         <div class="col-lg-12">
             <div class="col-lg-6">
                 
@@ -27,8 +27,8 @@
                     <input class ="form-control" type="text" name="lastName" />
                 </div>
                 <div class="form-group">
-                    <label for="firstName">Préom</label><br />
-                    <input type="text" name="firstName" id="firstName" />
+                    <label for="firstName">Prénom</label><br />
+                    <input  class ="form-control" type="text" name="firstName" id="firstName" />
                 </div>
                 <div class="form-group" id="email">
                     <label for="email">Email</label><br />
@@ -78,7 +78,7 @@
             <button type="submit" class="btn btn-success ">Ajouter</button>
         </div>
 
-                            }
+     }
 
 
 
