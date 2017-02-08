@@ -16,21 +16,19 @@ namespace WebUI.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        private ILoginManagement _service;
-        private SectionProfileModel sectionProfileModel;
-        private UserListModel userListModel;
-
+        private readonly ILoginManagement _service;
+        public static List<Section> _sections;
+        public static List<Profile> _profiles;
+        public static List<Software> _softwares;
+        public static List<User> _users;
 
         public AdminController()
         {
             this._service = new LoginManagementImpl();
-            List<Section> sections = _service.GetAllSection();
-            List<Profile> profiles = _service.GetAllProfile();
-            SectionProfileModel.Profiles = profiles;
-            SectionProfileModel.Sections = sections;
-            SectionProfileModel.Softwares = _service.GetAllSoftware();
-            sectionProfileModel = new SectionProfileModel();// { Profiles = profiles, Sections = sections };
-            userListModel = new UserListModel { Users = _service.GetAllUser() };
+            _sections = _service.GetAllSection();
+            _profiles = _service.GetAllProfile();
+            _softwares = _service.GetAllSoftware();
+            _users = _service.GetAllUser();
         }
 
         public ActionResult Index()
@@ -44,13 +42,12 @@ namespace WebUI.Controllers
         // GET: UserManager
         public ActionResult UserManagement()
         {
-            return View(sectionProfileModel);
+            return View();
         }
 
         public ViewResult SoftwareManagement()
         {
-            IList<Software> softwares = _service.GetAllSoftware();
-            return View(softwares);
+            return View(_softwares);
         }
 
         public ActionResult DeleteSoftware(int id, string name)
@@ -99,14 +96,6 @@ namespace WebUI.Controllers
             return RedirectToAction("SoftwareManagement");
         }
 
-        public ActionResult ListUser()
-        {
-            return View();
-        }
-
-
-
-
         [HttpPost]
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
         {
@@ -119,7 +108,7 @@ namespace WebUI.Controllers
                 Console.WriteLine(exception.Message);
             }
             
-            return View("UserManagement", sectionProfileModel);
+            return View("UserManagement");
         }
 
         [HttpPost]
@@ -137,7 +126,7 @@ namespace WebUI.Controllers
             }
             if (ajout)
                 TempData["SuccessMessage"] = "Ajout effectué";
-            return View("UserManagement", sectionProfileModel);
+            return View("UserManagement");
         }
 
         [HttpGet]
@@ -150,7 +139,7 @@ namespace WebUI.Controllers
             {
                 int.TryParse(param.Substring(0, 1), out year);
                 sectionString = param.Substring(1);
-                Section sec = SectionProfileModel.Sections.FirstOrDefault(s => s.Code.Equals(sectionString));
+                Section sec = _sections.FirstOrDefault(s => s.Code.Equals(sectionString));
                 if (sec != null)
                 {
                     if (sections.ContainsKey(sec))

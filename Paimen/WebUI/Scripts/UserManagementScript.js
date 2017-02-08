@@ -1,4 +1,8 @@
 ﻿$(function () {
+    $(document).ready(function () {
+        $('.dt').DataTable();
+    });
+
     typeOfUserChanged("Guest");
     $("#typeOfUser").change(function () {
         typeOfUserChanged($(this).val());
