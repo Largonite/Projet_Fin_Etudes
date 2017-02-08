@@ -276,5 +276,15 @@ namespace LoginManagement
             }
             return false;
         }
+
+        public bool AddSoftware(Software s)
+        {
+            if (this._softwareDao.Add(s))
+            {
+                this._softwareDao.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }

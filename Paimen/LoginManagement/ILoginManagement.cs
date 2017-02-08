@@ -84,6 +84,9 @@ namespace LoginManagement
         bool SaveSoftware(Software s);
 
         [OperationContract]
+        bool AddSoftware(Software s);
+
+        [OperationContract]
         List<User> GetAllUser();
 
         [OperationContract]

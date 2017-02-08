@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <script src="~/Scripts/UserManagementScript.js"></script>
+<script>
+    $(".sb li").removeClass("activeSb");
+    $("#UserManagement").addClass("activeSb");
+</script>
 <div class="row">
     <h3>Ajouter un utilisateur</h3>
     @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post))
