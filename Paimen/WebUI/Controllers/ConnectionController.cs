@@ -8,17 +8,16 @@ using WebUI.Models;
 using System.Web.Security;
 using iTextSharp.text;
 using System.IO;
+using System.Diagnostics;
 
 namespace WebUI.Controllers
 {
     public class ConnectionController : Controller
     {
         private ILoginManagement _service;
-        private User res;
         public ConnectionController()
         {
             this._service = new LoginManagementImpl();
-            res = new User();
         }
 
         public ViewResult LogIn()
@@ -49,7 +48,7 @@ namespace WebUI.Controllers
                 return RedirectToAction("LogIn");
             }
 
-            res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
+            User res = this._service.SignIn(new User {RegNumber = regInt, Password = password });
             if (res == null)
             {
                 TempData["ErrorMessage"] = "Mauvais matricule!!!!!";
@@ -70,15 +69,21 @@ namespace WebUI.Controllers
 
 
         [HttpGet]
-        public void DownloadPDF()
+        public void DownloadPDF(int idUser)
         {
-            
+            /*
+             *             this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();*/
 
-            String filename = _service.GetPDFForStudent(res.Id);
+            //String filename = _service.GetPDFForStudent(idUser);
+            //Debug.WriteLine(filename);
+            byte[] pdf = this._service.GetPDFForStudent(idUser);
             Response.Clear();
             Response.ContentType = "application/pdf";
             Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
-            Response.TransmitFile(filename);
+            Response.OutputStream.Write(pdf, 0, pdf.Length);
             Response.End();
         }
     }

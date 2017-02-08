@@ -10,6 +10,9 @@
             <label>@Model.FirstName @Model.LastName</label>
             @using (Html.BeginForm("DownLoadPDF", "Connection", FormMethod.Get))
             {
+            
+                <input name="idUser" type="hidden" value=@Model.Id />
+           
             <div class="pull-right">
                 <button class="btn btn-info btn-sm" type="submit" name="button" value="pdf">Exporter en pdf </button>
             </div>
