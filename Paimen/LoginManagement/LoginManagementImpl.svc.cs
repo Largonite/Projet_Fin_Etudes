@@ -31,12 +31,11 @@ namespace LoginManagement
             {
                 return null;
             }
-            if (!string.IsNullOrEmpty(user.Password))
+            if (inDbUser.Type.Equals("Admin") 
+                && !string.IsNullOrEmpty(user.Password) 
+                && user.Password.Equals(inDbUser.Password))
             {
-                if (!user.Password.Equals(inDbUser.Password))
-                {
-                    return null;
-                }
+                return inDbUser;
             }
             return inDbUser;
         }
