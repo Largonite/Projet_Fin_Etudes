@@ -8,12 +8,11 @@ using LoginManagement;
 using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
-using WebUI.Models;
 using Newtonsoft.Json;
 
 
 namespace WebUI.Controllers
-{
+{   
     [Authorize]
     public class AdminController : Controller
     {
@@ -54,7 +53,7 @@ namespace WebUI.Controllers
         }
 
         // creer publc-ic action resut
-        public ActionResult ProfilManagement()
+        public ActionResult ProfileManagement()
         {
             return View(profileSofwareModel);
         }
@@ -122,9 +121,38 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public ViewResult AddProfileType(string typeProfile, List<string> software)
+        public ActionResult AddProfileType(string typeProfile, List<string> softwares)
         {
-            return View("ProfilManagement");
+            try {
+                _service.AddProfileType(typeProfile, softwares);
+                TempData["SuccessMessage"] = "Création réussie";
+            } catch (ArgumentException exp)
+            {
+                TempData["ErrorMessage"] = "Echec de la création";
+            }
+            return RedirectToAction("ProfileManagement", profileSofwareModel);
+        }
+
+        [HttpPost]
+        public ViewResult ModifyProfileType(string typeProfile, List<String> softwares)
+        {
+            try
+            {
+                this._service.modifyProfileType(typeProfile, softwares);
+                TempData["SuccessMessage"] = "Modification réussie";
+            }catch (Exception exp)
+            {
+                TempData["ErrorMessage"] = "Echec de la modification";
+            }
+            
+            return View("ProfileManagement", profileSofwareModel);
+        }
+
+        [HttpPost]
+        public ActionResult RemoveProfileType(string typeProfile)
+        {
+            this._service.removeProfileType(typeProfile);
+            return RedirectToAction("ProfileManagement", profileSofwareModel);
         }
 
     }

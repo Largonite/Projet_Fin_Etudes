@@ -79,16 +79,16 @@ namespace LoginManagement
         void AddProfileType(string typeProfile, List<string> softwares);
 
         [OperationContract]
-        bool AddStudentFromCSV(string csv);
+        void modifyProfileType(string typeProfile, List<string> softwares);
 
         [OperationContract]
-        void modifyProfileType(string typeProfile, List<string> softwares);
+        void removeProfileType(string typeProfile);
 
         [OperationContract]
         List<Software> GetAllSoftware();
 
         [OperationContract]
-        List<Profile> GetAllProfile();
+        List<Section> GetSections();
 
     }
 }
