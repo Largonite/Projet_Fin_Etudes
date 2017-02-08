@@ -266,6 +266,11 @@ namespace LoginManagement
                 sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
                 sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
                 sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+                sendBack.NewPage();
+            }
+
+            return sendBack;
         }
 
          public List<Section> GetSections()
@@ -298,11 +303,7 @@ namespace LoginManagement
             }
             return false;
         }
-                sendBack.NewPage();
-            }
-
-            return sendBack;
-        }
+  
 
         public Document GetPDFForStudent(int idStudent)
         {
