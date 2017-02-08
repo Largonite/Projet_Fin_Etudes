@@ -108,30 +108,30 @@
             </div>
         </div>
         <div id="edit" class="tab-pane fade">
-            EDIT
+            
         </div>
         <div class="tab-pane fade" id="download">
-            DOWNLOAD
             <div class="col-lg-12">
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>
-                                BA1
-                            </th>
-                            <th>
-                                BA2
-                            </th>
-                            <th>
-                                BA3
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @using (Html.BeginForm("DownLoadBat", "Admin", FormMethod.Get))
+                @using (Html.BeginForm("DownLoad", "Admin", FormMethod.Get))
             {
-                foreach (var selected in SectionProfileModel.Sections)
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    BA1
+                                </th>
+                                <th>
+                                    BA2
+                                </th>
+                                <th>
+                                    BA3
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var selected in SectionProfileModel.Sections)
                 {
                                 <tr>
                                     <td>@selected.Code - @selected.Name</td>
@@ -143,79 +143,21 @@
                                     }
                                 </tr>
                                         }
-                                        <tr>
-                                            <td />
-                                            <td><button type="submit" name="button" value="bat">Télécharger bat</button></td>
-                                            <td><button type="submit" name="button" value="claco">Télécharger bat</button></td>
-                                            <td><button type="submit" name="button" value="nutri">Télécharger bat</button></td>
-                                        </tr>
-                                        }
-                    </tbody>
-                </table>
+                            <tr>
+                                <td></td>
+                            </tr>
 
-                <a href="/Admin/DownloadBat">Download bat file</a><br />
-                <a href="/Admin/DownloadClaroline">Download Claroline file</a><br />
-                <a href="/Admin/DownloadNutriLog">Download Nutrilog file</a><br />
+                        </tbody>
+                    </table>
+                                        foreach (var software in SectionProfileModel.Softwares)
+                                        {
+                                            <input type="radio" name="radioSoftware" value="@software.Id" />
+                                            <label>@software.Name</label><br />
+                                            }
+                                        }
+                <button type="submit">Télécharger</button>
             </div>
         </div>
-    </div>
-</div>
-                <div class="form-group">
-                    <label for="csv">Fichier CSV: </label>
-                    <input type="file" accept=".csv" name="csv" />
-                </div>
-                <div style="width:100%;margin-top:5px;">
-                    <button type="submit" class="btn btn-success">Valider</button>
-                </div>
-            }
-        </div>
-    </div>
-    <hr/>
-    <div class="col-lg-12">
-@using (Html.BeginForm("DownLoad", "Admin", FormMethod.Get))
-            {
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>
-                        BA1
-                    </th>
-                    <th>
-                        BA2
-                    </th>
-                    <th>
-                        BA3
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-           
-                @foreach (var selected in SectionProfileModel.Sections)
-                {
-                    <tr><td>@selected.Code - @selected.Name</td>
-                        @{
-                            for (int i = 1; i < 4; i++)
-                            {
-                                <td><input type="checkbox" name="@i@selected.Code" value="true" /></td>
-                            }
-                        }
-                    </tr>
-                            }
-                <tr>
-                    <td></td>
-                </tr>
-
-            </tbody>
-        </table>
-            foreach (var software in SectionProfileModel.Softwares)
-            {
-                <input type="radio" name="radioSoftware" value="@software.Id" /> 
-                <label>@software.Name</label><br />
-            }
-        }
-        <button type="submit">Télécharger</button>
-    </div>
-</div>
 
 
+    </div>
