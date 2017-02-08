@@ -1,10 +1,10 @@
-﻿@model LoginManagement.User
+﻿@model string
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Index</h2>
-Bonjour @Model.FirstName @Model.LastName<br />
+Bonjour @Model<br />
 
-<a href="/Admin/UserManagement">Ajouter utilisateurs</a>
-
+<a href="/Admin/UserManagement">Ajouter utilisateurs</a><br/>

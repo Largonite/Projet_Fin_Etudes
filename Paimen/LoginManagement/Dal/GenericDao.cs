@@ -18,6 +18,12 @@ namespace LoginManagement.Dal
 
         public bool Add(T element)
         {
+            if(element.GetId() == 0)
+            {
+                this._context.Set<T>().Add(element);
+                return true;
+            }
+
             if(!this.Exists(element))
             {
                 this._context.Set<T>().Add(element);

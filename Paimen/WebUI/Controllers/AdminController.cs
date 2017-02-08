@@ -5,31 +5,50 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Models;
 using LoginManagement;
+using LoginManagement.Exceptions;
+using System.Web.Security;
+using System.Text;
+using WebUI.Models;
+using Newtonsoft.Json;
+
 
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private ILoginManagement _service;
+        private SectionProfileModel model;
+        private UserListModel userListModel;
         private ProfileSoftwareModel profileSofwareModel;
+
 
         public AdminController()
         {
             this._service = new LoginManagementImpl();
+            List<Section> sections = _service.GetAllSection();
             List<Profile> profiles = _service.GetAllProfile();
+            model = new SectionProfileModel { Profiles = profiles, Sections = sections };
+            userListModel = new UserListModel { Users = _service.GetAllUser() };
             List<Software> softwares = _service.GetAllSoftware();
             profileSofwareModel = new ProfileSoftwareModel { Profiles = profiles, Softwares = softwares };
         }
 
         public ActionResult Index()
         {
-            User u = (User)TempData["Admin"];
-            if (u == null) return RedirectToAction("SignIn", "Connection");
-            return View(u);
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+            
+            return View((object) ticket.Name);
         }
 
         // GET: UserManager
         public ActionResult UserManagement()
+        {
+            return View(model);
+        }
+
+        public ActionResult ListUser()
         {
             return View();
         }
@@ -43,7 +62,63 @@ namespace WebUI.Controllers
         [HttpPost]
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
         {
-            return View("UserManagement");
+            try
+            {
+                _service.AddStudentFromCSV(csv);
+            }
+            catch (DBException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            
+            return View("UserManagement", model);
+        }
+
+        [HttpPost]
+        public ViewResult AddUser(string type, string lastName, string firstname,
+            string email, int refNumber,int year, int section, int profile)
+        {
+            _service.AddUser(type, lastName, firstname, email, refNumber, year, section, profile);
+            return View("UserManagement", model);
+        }
+
+        [HttpGet]
+        public void DownloadBat()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
+
+        [HttpGet]
+        public void DownloadClaroline()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=clarolineUsers.csv");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
+
+        [HttpGet]
+        public void DownloadNutriLog()
+        {
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(null, null));
+
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=nutrilogUsers.csv");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();
+        }
+
+        [HttpGet]
+        public string GetSections()
+        {
+            return JsonConvert.SerializeObject(this._service.GetSections());
         }
 
         [HttpPost]

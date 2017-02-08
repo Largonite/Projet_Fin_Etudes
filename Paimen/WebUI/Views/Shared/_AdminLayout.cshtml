@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,25 +7,28 @@
     <title>@ViewBag.Title</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/simple-sidebar.css" rel="stylesheet" type="text/css"/>
     <script src="~/Scripts/Utils.js"></script>
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="padding-right:20px;">
             <div class="navbar-header">
-                @Html.ActionLink("Login Management", "SignIn", "Connection", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Login Management", "LogIn", "Connection", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        
+                       
                     </li>
                 </ul>
-            </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="~/Connection/Logout">Logout&nbsp;<span class="glyphicon glyphicon-log-out"></span></a></li>
+                </ul>
         </div>
     </div>
+
     @if (TempData["SuccessMessage"] != null) //check for a message in the TempData, at this point, the message should come from the edit/delete method of the AdminController
     {
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
@@ -33,10 +37,25 @@
     {
         <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
     }
-    <div class="container body-content">
-        @RenderBody()
-    </div>
+    <div id="wrapper">
 
-    <script src="~/Scripts/bootstrap.min.js"></script>
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="~/Admin/UserManagement"  id="UserManagement">User Management</a>
+                </li>
+                <li>
+                    <a id="ProfileManagement" href="~/Admin/ProfileManagement">Profile Management</a>
+                </li>
+                <li>
+                    <a id="SoftwareManagement" href="~/Admin/SoftwareManagement">Software Management</a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="page-content-wrapper" class="container-fluid body-content">
+            @RenderBody()
+        </div>
+    </div>
 </body>
 </html>

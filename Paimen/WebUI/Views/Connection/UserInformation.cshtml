@@ -4,7 +4,12 @@
     ViewBag.Title = "UserInformation";
 }
 
-<h2>UserInformation</h2>
-@Model.FirstName
-@Model.LastName
-@Model.RegNumber
+<h2>@Model.FirstName @Model.LastName Informations</h2>
+
+Matricule : @Model.RegNumber<br />
+Section : @Model.Section<br />
+Login : @Model.Login <br />
+Mot de passe : @Model.Password<br />
+Email : @Model.Email<br />
+Programmes : 
+
