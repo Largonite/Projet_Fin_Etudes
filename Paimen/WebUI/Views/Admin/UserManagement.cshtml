@@ -165,7 +165,7 @@
                             </thead>
                             <tbody>
 
-                                @foreach (var selected in SectionProfileModel.Sections)
+                                @foreach (var selected in AdminController._sections)
                                 {
                                     <tr>
                                         <td class="sectionTableRowData">@selected.Code - @selected.Name</td>
@@ -181,7 +181,7 @@
                             </tbody>
                         </table>
 
-                        foreach (var software in SectionProfileModel.Softwares)
+                        foreach (var software in AdminController._softwares)
                         {
                             <input type="radio" name="radioSoftware" value="@software.Id"/>
                             <label>@software.Name</label><br />
