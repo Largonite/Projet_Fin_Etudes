@@ -280,7 +280,7 @@ namespace LoginManagement
             return this._sectionDao.GetAll();
         }
 
-        public IList<Software> GetAllSoftwares()
+        public List<Software> GetAllSoftwares()
         {
             return this._softwareDao.GetAll();
         }

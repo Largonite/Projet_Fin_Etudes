@@ -82,7 +82,7 @@ namespace LoginManagement
         /// </summary>
         /// <returns>A ILis of Software</returns>
         [OperationContract]
-        IList<Software> GetAllSoftwares();
+        List<Software> GetAllSoftwares();
 
         /// <summary>
         /// Allows to delete a software according to its id

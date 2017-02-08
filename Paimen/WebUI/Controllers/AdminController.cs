@@ -26,8 +26,8 @@ namespace WebUI.Controllers
         {
             this._service = new LoginManagementImpl();
             _sections = _service.GetAllSection();
-            _profiles = _service.GetAllProfile();
-            _softwares = _service.GetAllSoftware();
+            _profiles = _service.GetAllProfiles();
+            _softwares = _service.GetAllSoftwares();
             _users = _service.GetAllUser();
         }
 
