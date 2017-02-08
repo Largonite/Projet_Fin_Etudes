@@ -246,7 +246,14 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-            FileStream fs = new FileStream("Liste utilisateurs - " + DateTime.Now, FileMode.Create);
+            string name = "../../PDF/ListeUtilisateurs.pdf";
+
+            if (File.Exists(name))
+            {
+                File.Delete(name);
+            }
+
+            FileStream fs = new FileStream(name, FileMode.Create);
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
             PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
 
@@ -316,7 +323,14 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
 
-            FileStream fs = new FileStream(user.FirstName + " - " + user.LastName + " - " + DateTime.Now, FileMode.Create);
+            string name = "../../PDF/InformationsUser.pdf";
+
+            if (File.Exists(name))
+            {
+                File.Delete(name);
+            }
+
+            FileStream fs = new FileStream(name, FileMode.Create);
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
             PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
 
