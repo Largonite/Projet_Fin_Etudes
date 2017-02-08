@@ -110,14 +110,10 @@ namespace LoginManagement
         void AddProfileType(string typeProfile, List<string> softwares);
 
         [OperationContract]
-        void modifyProfileType(string typeProfile, List<string> softwares);
+        void ModifyProfileType(string typeProfile, List<string> softwares);
 
         [OperationContract]
-        void removeProfileType(string typeProfile);
-
-        [OperationContract]
-        List<Software> GetAllSoftware();
-
+        void RemoveProfileType(string typeProfile);
 
     }
 }

@@ -44,11 +44,11 @@ namespace LoginManagement
 
             toAddProfile = this._profileDao.Find(p => p.Name.Equals(typeProfile));
 
-            addSoftwaresToProfile(toAddProfile, softwares);
+            AddSoftwaresToProfile(toAddProfile, softwares);
             
         }
 
-        private void addSoftwaresToProfile(Profile profile, List<string> softwares)
+        private void AddSoftwaresToProfile(Profile profile, List<string> softwares)
         {
 
             foreach (string software in softwares)
@@ -66,7 +66,7 @@ namespace LoginManagement
 
         }
 
-        public void modifyProfileType(string typeProfile, List<string> softwares)
+        public void ModifyProfileType(string typeProfile, List<string> softwares)
         {
 
             int typeProfileId = Convert.ToInt32(typeProfile);
@@ -79,12 +79,12 @@ namespace LoginManagement
                 if( !softwares.Contains("" + s.Id)) profile.Softwares.Remove(s);
             }
 
-            addSoftwaresToProfile(profile, softwares);
+            AddSoftwaresToProfile(profile, softwares);
             this._softwareDao.SaveChanges();
 
         }
 
-        public void removeProfileType(string typeProfile)
+        public void RemoveProfileType(string typeProfile)
         {
             int typeProfileId = Convert.ToInt32(typeProfile);
             Profile profile = this._profileDao.Find(p => p.Id.Equals(typeProfileId));
@@ -372,11 +372,6 @@ namespace LoginManagement
             return this._sectionDao.GetAll();
         }
 
-        public List<Software> GetAllSoftwares()
-        {
-            return this._softwareDao.GetAll();
-        }
-
         public bool DeleteSofwtare(int id)
         {
             Software soft = this._softwareDao.Find(s => s.Id == id);
@@ -454,5 +449,6 @@ namespace LoginManagement
             }
             return false;
         }
+
     }
 }

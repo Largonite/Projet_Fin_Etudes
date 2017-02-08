@@ -1,5 +1,4 @@
 ﻿@using WebUI.Models;
-@model ProfileSoftwareModel
 @{
     ViewBag.Title = "ProfilManagement";
 }
@@ -14,7 +13,7 @@
                 <input type="text" name="typeProfile" /><br />
                 <select multiple class="form-control" name="softwares">
                     @{
-                        foreach (var soft in Model.Softwares)
+                        foreach (var soft in WebUI.Controllers.AdminController._softwares)
                         {
                             <option value="@soft.Id">@soft.Name</option>
                         }
@@ -35,7 +34,7 @@
             <div class="form-group">
                 <select class="form-control" name="typeProfile">
                     @{ 
-                        foreach (var profile in Model.Profiles)
+                        foreach (var profile in WebUI.Controllers.AdminController._profiles)
                         {
                             <option value="@profile.Id">@profile.Name</option>
                         }
@@ -43,7 +42,7 @@
                 </select>
                 <select multiple class="form-group" name="softwares">
                     @{ 
-                        foreach (var soft in Model.Softwares)
+                        foreach (var soft in WebUI.Controllers.AdminController._softwares)
                         {
                             <option value="@soft.Id">@soft.Name</option>
                         }
@@ -63,7 +62,7 @@
             <div class="form-group">
                 <select class="form-control" name="typeProfile">
                     @{
-                        foreach (var profile in Model.Profiles)
+                        foreach (var profile in WebUI.Controllers.AdminController._profiles)
                         {
                             <option value="@profile.Id">@profile.Name</option>
                         }

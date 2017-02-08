@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebUI.Models;
 using LoginManagement;
 using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
 using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace WebUI.Controllers
 {   
@@ -25,7 +23,7 @@ namespace WebUI.Controllers
         public AdminController()
         {
             this._service = new LoginManagementImpl();
-            _sections = _service.GetAllSection();
+            _sections = _service.GetAllSections();
             _profiles = _service.GetAllProfiles();
             _softwares = _service.GetAllSoftwares();
             _users = _service.GetAllUser();
@@ -99,7 +97,7 @@ namespace WebUI.Controllers
         // creer publc-ic action resut
         public ActionResult ProfileManagement()
         {
-            return View(profileSofwareModel);
+            return View();
         }
 
         [HttpPost]
@@ -236,7 +234,7 @@ namespace WebUI.Controllers
             {
                 TempData["ErrorMessage"] = "Echec de la création";
             }
-            return RedirectToAction("ProfileManagement", profileSofwareModel);
+            return RedirectToAction("ProfileManagement");
         }
 
         [HttpPost]
@@ -244,21 +242,21 @@ namespace WebUI.Controllers
         {
             try
             {
-                this._service.modifyProfileType(typeProfile, softwares);
+                this._service.ModifyProfileType(typeProfile, softwares);
                 TempData["SuccessMessage"] = "Modification réussie";
             }catch (Exception exp)
             {
                 TempData["ErrorMessage"] = "Echec de la modification";
             }
             
-            return View("ProfileManagement", profileSofwareModel);
+            return View("ProfileManagement");
         }
 
         [HttpPost]
         public ActionResult RemoveProfileType(string typeProfile)
         {
-            this._service.removeProfileType(typeProfile);
-            return RedirectToAction("ProfileManagement", profileSofwareModel);
+            this._service.RemoveProfileType(typeProfile);
+            return RedirectToAction("ProfileManagement");
         }
 
     }
