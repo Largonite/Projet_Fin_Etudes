@@ -61,17 +61,17 @@ namespace LoginManagement
         bool AddStudentFromCSV(HttpPostedFileBase csv);
 
         [OperationContract]
-        List<Section> GetAllSection();
+        List<Section> GetAllSections();
 
         [OperationContract]
-        List<Profile> GetAllProfile();
+        List<Profile> GetAllProfiles();
 
         /// <summary>
         /// Allows to retrieve the list of all the softwares in the database
         /// </summary>
         /// <returns>A ILis of Software</returns>
         [OperationContract]
-        IList<Software> GetAllSoftware();
+        IList<Software> GetAllSoftwares();
 
         /// <summary>
         /// Allows to delete a software according to its id

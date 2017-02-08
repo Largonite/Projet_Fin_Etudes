@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using LoginManagement;
 
 namespace WebUI.Models
@@ -10,8 +7,6 @@ namespace WebUI.Models
     {
         public static List<Section> Sections { get; set; }
         public static List<Profile> Profiles { get; set; }
-        public static List<Software> Softwares { get; set; }
-        public bool IsSelected { get; set; }
-        public string YearSection { get; set; }
+        public static IList<Software> Softwares { get; set; }
     }
 }

@@ -118,7 +118,7 @@
                 </tr>
             </thead>
             <tbody>
-            @using (Html.BeginForm("DownLoadBat", "Admin", FormMethod.Get))
+            @using (Html.BeginForm("DownLoad", "Admin", FormMethod.Get))
             {
                 foreach (var selected in SectionProfileModel.Sections)
                 {
@@ -131,10 +131,15 @@
                         }
                     </tr>
                 }
+                <tr></tr>
                 <tr>
-                    <td/><td><button type="submit" name="button" value="bat">Télécharger bat</button></td>
-                    <td><button type="submit" name="button" value="claco">Télécharger bat</button></td>
-                    <td><button type="submit" name="button" value="nutri">Télécharger bat</button></td>
+                    @foreach(var software in SectionProfileModel.Softwares)
+                    {
+                        <td><input type="radio" name="radioSoftware" value="@software.Id" @*value="true"*@ /> <label>@software.Name</label></td>
+                    }
+                </tr>
+                <tr>
+                    <td><button type="submit">Télécharger</button></td>
                 </tr>
             }
             </tbody>
