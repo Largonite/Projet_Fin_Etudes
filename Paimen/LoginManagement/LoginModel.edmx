@@ -47,7 +47,7 @@
           <Property Name="Login" Type="nvarchar" MaxLength="7" Nullable="false" />
           <Property Name="Year" Type="int" />
           <Property Name="Type" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="RegNumber" Type="int" Nullable="false" />
+          <Property Name="RegNumber" Type="int" />
           <Property Name="Section" Type="int" />
           <Property Name="Profile" Type="int" Nullable="false" />
           <Property Name="AddedDate" Type="date" Nullable="false" />
@@ -166,7 +166,7 @@
           <Property Name="Login" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Year" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RegNumber" Type="Int32" Nullable="false" />
+          <Property Name="RegNumber" Type="Int32" />
           <Property Name="Section" Type="Int32" />
           <Property Name="Profile" Type="Int32" Nullable="false" />
           <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -293,7 +293,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

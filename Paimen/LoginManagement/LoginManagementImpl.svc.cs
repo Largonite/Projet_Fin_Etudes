@@ -26,7 +26,7 @@ namespace LoginManagement
 
         public User SignIn(User user)
         {
-            User inDbUser = this._userDao.Find(u => u.RegNumber.Equals(user.RegNumber));
+            User inDbUser = this._userDao.Find(u => u.RegNumber.Value.Equals(user.RegNumber.Value));
             if (inDbUser == null)
             {
                 return null;
@@ -195,12 +195,12 @@ namespace LoginManagement
             return _userDao.GetAll().ToList();
         }
 
-        public bool AddUser(string type, string lastName, string firstname, string email,  int refNumber, int year, int section, int profile)
+        public bool AddUser(string type, string lastName, string firstname, string email, Nullable<int> refNumber, Nullable<int> year, Nullable<int> section, int profile)
         {
-            if (lastName == null) throw new ArgumentNullException("Le nom ne peut pas être vide.");
-            if (firstname == null) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
+            if (lastName.Equals("")) throw new ArgumentNullException("Le nom ne peut pas être vide.");
+            if (firstname.Equals("")) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
             if (profile == 0) throw new ArgumentNullException("Aucun profil n'a été attribué");
-            if (_userDao.Find(u => u.RegNumber.Equals(refNumber)) == null) throw new ArgumentException("Ce matricule existe déjà.");
+            if (refNumber != null && _userDao.Find(u => u.RegNumber.Value.Equals(refNumber.Value)) != null) throw new ArgumentException("Ce matricule existe déjà.");
             User toAdd = new User
             {
                 Type = type,
@@ -212,11 +212,15 @@ namespace LoginManagement
                 RegNumber = refNumber,
                 Year = year,
                 Section = section,
-                Profile = profile
+                Profile = profile,
+                AddedDate = DateTime.UtcNow.Date
             };
-            _userDao.Add(toAdd);
-            _userDao.SaveChanges();
-                return true;
+            if (!this._userDao.Add(toAdd))
+            {
+                throw new DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
+            }
+            this._userDao.SaveChanges();
+            return true;
         }
 
         private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
