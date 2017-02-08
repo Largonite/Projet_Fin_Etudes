@@ -128,9 +128,19 @@ namespace WebUI.Controllers
 
         [HttpPost]
         public ViewResult AddUser(string type, string lastName, string firstname,
-            string email, int refNumber,int year, int section, int profile)
+            string email, Nullable<int> regNumber, Nullable<int> year, Nullable<int> section, int profile)
         {
-            _service.AddUser(type, lastName, firstname, email, refNumber, year, section, profile);
+            bool ajout = false; 
+            try
+            {
+                ajout = _service.AddUser(type, lastName, firstname, email, regNumber, year, section, profile);
+            }
+            catch(Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+            if (ajout)
+                TempData["SuccessMessage"] = "Ajout effectué";
             return View("UserManagement", sectionProfileModel);
         }
 

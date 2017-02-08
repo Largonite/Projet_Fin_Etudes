@@ -10,90 +10,156 @@
     $("#UserManagement").addClass("activeSb");
 </script>
 <div class="row">
-    <h3>Ajouter un utilisateur</h3>
-    @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post))
+    <h2>Gestion des utilisateurs</h2>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#add">Ajouter des utilisateurs</a></li>
+        <li><a data-toggle="tab" href="#edit">Gestion des utilisateurs</a></li>
+        <li><a data-toggle="tab" href="#download">Téléchargements</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="add" class="tab-pane fade in active">
+            <h3>Ajouter un utilisateur</h3>
+            @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post))
             {
-        <div class="col-lg-12">
-            <div class="col-lg-6">
-                
-                <div class="form-group">
-                    <label for="type">Type d'utilisateur</label><br />
-                    <select id="typeOfUser" class="form-control" name="type">
-                        <option value="Guest">Invité</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Teacher">Prof</option>
-                        <option value="Student">Etudiant</option>
-                    </select>
+                <div class="col-lg-12">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="type">Type d'utilisateur</label><br />
+                            <select id="typeOfUser" class="form-control" name="type">
+                                <option value="Guest">Invité</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Teacher">Prof</option>
+                                <option value="Student">Etudiant</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="lastName">
+                            <label for="lastName">Nom</label><br />
+                            <input class="form-control" type="text" name="lastName" />
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">Prénom</label><br />
+                            <input class="form-control" type="text" name="firstName" id="firstName" />
+                        </div>
+                        <div class="form-group" id="email">
+                            <label for="email">Email</label><br />
+                            <input class="form-control" type="email" name="email" />
+                        </div>
+                        <div class="form-group" id="profile">
+                            <label for="profile">Profil</label><br />
+                            <select class="form-control" name="profile">
+                                @{
+                                    foreach (var profile in SectionProfileModel.Profiles)
+                                    {
+                                        <option value="@profile.Id">@profile.Name </option>
+                                    }
+                                }
+                            </select>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group" id="regNumber">
+                            <label for="regNumber">Matricule</label><br />
+                            <input class="form-control" type="number" name="regNumber" min="0" />
+                        </div>
+                        <div class="form-group" id="year">
+                            <label for="year">Année</label><br />
+                            <input class="form-control" type="number" name="year" min="1" max="3" />
+                        </div>
+
+
+                        <div class="form-group" id="section">
+                            <label for="section">Section</label><br />
+                            <select class="form-control" name="section">
+                                @{
+                                    foreach (var selected in SectionProfileModel.Sections)
+                                    {
+                                        <option value="@selected.Id ">@selected.Code - @selected.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <button type="submit" class="btn btn-success ">Ajouter</button>
                 </div>
 
-                <div class="form-group" id="lastName">
-                    <label for="lastName">Nom</label><br />
-                    <input class ="form-control" type="text" name="lastName" />
+                                    }
+            <div class="col-lg-12">
+                <div class="col-lg-5">
+                    <h4>Importer des étudiants depuis un fichier CSV</h4>
+                    @using (Html.BeginForm("AddUserFromCSV", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                        <div class="form-group">
+                            <label for="csv">Fichier CSV: </label>
+                            <input type="file" accept=".csv" name="csv" />
+                        </div>
+                        <div style="width:100%;margin-top:5px;">
+                            <button type="submit" class="btn btn-success">Valider</button>
+                        </div>
+                    }
                 </div>
-                <div class="form-group">
-                    <label for="firstName">Prénom</label><br />
-                    <input  class ="form-control" type="text" name="firstName" id="firstName" />
-                </div>
-                <div class="form-group" id="email">
-                    <label for="email">Email</label><br />
-                    <input class ="form-control" type="email" name="email" />
-                </div>
-                <div class="form-group" id="profile">
-                    <label for="profile">Profil</label><br />
-                    <select class="form-control" name="profile">
-                        @{
-                            foreach (var profile in SectionProfileModel.Profiles)
-                            {
-                                <option value="@profile.Id">@profile.Name </option>
-                            }
-                        }
-                    </select>
-
-
-                </div>
-                
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group" id="regNumber">
-                    <label for="regNumber">Matricule</label><br />
-                    <input class ="form-control" type="number" name="regNumber" min="0"/>
-                </div>
-                <div class="form-group" id="year">
-                    <label for="year">Année</label><br />
-                    <input class ="form-control" type="number" name="year" min="1" max="3" />
-                </div>
-                
-
-                <div class="form-group" id="section">
-                    <label for="section">Section</label><br />
-                    <select class="form-control" name="section">
-                        @{
-                            foreach (var selected in SectionProfileModel.Sections)
-                            {
-                                <option value="@selected.Id ">@selected.Code - @selected.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
-
             </div>
         </div>
-        <div class="col-lg-12">
-            <button type="submit" class="btn btn-success ">Ajouter</button>
+        <div id="edit" class="tab-pane fade">
+            EDIT
         </div>
-
-     }
-
-
-
-    <div class="col-lg-12">
-        <h2>Gestion des utilisateurs</h2>
-        <div class="col-lg-5">
-
-
-            <h3>Importer des étudiants depuis un fichier CSV</h3>
-            @using (Html.BeginForm("AddUserFromCSV", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        <div class="tab-pane fade" id="download">
+            DOWNLOAD
+            <div class="col-lg-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                BA1
+                            </th>
+                            <th>
+                                BA2
+                            </th>
+                            <th>
+                                BA3
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @using (Html.BeginForm("DownLoadBat", "Admin", FormMethod.Get))
             {
+                foreach (var selected in SectionProfileModel.Sections)
+                {
+                                <tr>
+                                    <td>@selected.Code - @selected.Name</td>
+                                    @{
+                                        for (int i = 1; i < 4; i++)
+                                        {
+                                            <td><input type="checkbox" name="@i@selected.Code" value="true" /></td>
+                                        }
+                                    }
+                                </tr>
+                                        }
+                                        <tr>
+                                            <td />
+                                            <td><button type="submit" name="button" value="bat">Télécharger bat</button></td>
+                                            <td><button type="submit" name="button" value="claco">Télécharger bat</button></td>
+                                            <td><button type="submit" name="button" value="nutri">Télécharger bat</button></td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+
+                <a href="/Admin/DownloadBat">Download bat file</a><br />
+                <a href="/Admin/DownloadClaroline">Download Claroline file</a><br />
+                <a href="/Admin/DownloadNutriLog">Download Nutrilog file</a><br />
+            </div>
+        </div>
+    </div>
+</div>
                 <div class="form-group">
                     <label for="csv">Fichier CSV: </label>
                     <input type="file" accept=".csv" name="csv" />
