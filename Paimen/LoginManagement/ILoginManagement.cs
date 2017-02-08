@@ -67,10 +67,10 @@ namespace LoginManagement
         bool AddStudentFromCSV(HttpPostedFileBase csv);
 
         [OperationContract]
-        Document GetPDFForStudent(int idStudent);
+        byte[] GetPDFForStudent(int idStudent);
 
         [OperationContract]
-        Document GetPDFForAllUsers();
+        byte[] GetPDFForAllUsers();
         
         [OperationContract]
         List<Profile> GetAllProfile();
@@ -100,7 +100,9 @@ namespace LoginManagement
 
         [OperationContract]
         bool AddUser(string type, string lastName, string firstname,
-            string email,  int refNumber, int year, int section, int profile);
+            string email, Nullable<int> refNumber, Nullable<int> year, Nullable<int> section, int profile);
+        /*[OperationContract]
+        bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
 
         [OperationContract]
         List<Section> GetAllSection();

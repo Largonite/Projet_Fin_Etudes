@@ -30,7 +30,7 @@ namespace LoginManagement
 
         public User SignIn(User user)
         {
-            User inDbUser = this._userDao.Find(u => u.RegNumber.Equals(user.RegNumber));
+            User inDbUser = this._userDao.Find(u => u.RegNumber.Value.Equals(user.RegNumber.Value));
             if (inDbUser == null)
             {
                 return null;
@@ -174,11 +174,6 @@ namespace LoginManagement
             return builder.ToString();
         }
 
-        public List<Section> GetAllSection()
-        {
-            return _sectionDao.GetAll().ToList();
-        }
-
         public List<Profile> GetAllProfile()
         {
             return _profileDao.GetAll().ToList();
@@ -189,12 +184,12 @@ namespace LoginManagement
             return _userDao.GetAll().ToList();
         }
 
-        public bool AddUser(string type, string lastName, string firstname, string email,  int refNumber, int year, int section, int profile)
+        public bool AddUser(string type, string lastName, string firstname, string email, Nullable<int> refNumber, Nullable<int> year, Nullable<int> section, int profile)
         {
-            if (lastName == null) throw new ArgumentNullException("Le nom ne peut pas être vide.");
-            if (firstname == null) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
+            if (lastName.Equals("")) throw new ArgumentNullException("Le nom ne peut pas être vide.");
+            if (firstname.Equals("")) throw new ArgumentNullException("Le prénom ne peut pas être vide.");
             if (profile == 0) throw new ArgumentNullException("Aucun profil n'a été attribué");
-            if (_userDao.Find(u => u.RegNumber.Equals(refNumber)) == null) throw new ArgumentException("Ce matricule existe déjà.");
+            if (refNumber != null && _userDao.Find(u => u.RegNumber.Value.Equals(refNumber.Value)) != null) throw new ArgumentException("Ce matricule existe déjà.");
             User toAdd = new User
             {
                 Type = type,
@@ -206,11 +201,13 @@ namespace LoginManagement
                 RegNumber = refNumber,
                 Year = year,
                 Section = section,
-                Profile = profile
+                Profile = profile,
+                AddedDate = DateTime.UtcNow.Date
             };
-            _userDao.Add(toAdd);
-            _userDao.SaveChanges();
-                return true;
+
+            this._userDao.Add(toAdd);
+            this._userDao.SaveChanges();
+            return true;
         }
 
         private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
@@ -237,7 +234,7 @@ namespace LoginManagement
             return users;
          }
 
-        public Document GetPDFForAllUsers()
+        public byte[] GetPDFForAllUsers()
         {
             IList<User> listUsers = this._userDao.GetAll();
 
@@ -246,23 +243,25 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-            string name = "../../PDF/ListeUtilisateurs.pdf";
+            string name = "ListeUtilisateurs.pdf";
 
             if (File.Exists(name))
             {
                 File.Delete(name);
             }
 
-            FileStream fs = new FileStream(name, FileMode.Create);
+           // FileStream fs = new FileStream(name, FileMode.Create);
+            MemoryStream stream = new MemoryStream();
+            
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
-            PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
+            PdfWriter writer = PdfWriter.GetInstance(sendBack, stream);
 
             sendBack.Open();
 
             foreach (User user in listUsers)
             {
-                Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
-                Section section = this._sectionDao.Find(s => s.GetId() == user.Section);
+                Profile profile = this._profileDao.Find(p => p.Id == user.Id);
+                Section section = this._sectionDao.Find(s => s.Id == user.Section);
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
@@ -276,11 +275,11 @@ namespace LoginManagement
 
                 sendBack.NewPage();
             }
-
-            return sendBack;
+            return stream.ToArray();
+            //return name;
         }
 
-        public List<Section> GetSections()
+        public List<Section> GetAllSection()
         {
             return this._sectionDao.GetAll();
         }
@@ -312,27 +311,29 @@ namespace LoginManagement
         }
   
 
-        public Document GetPDFForStudent(int idStudent)
+        public byte[] GetPDFForStudent(int idStudent)
         {
-            User user = this._userDao.Find(u => u.GetId() == idStudent);
-            Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
-            Section section = this._sectionDao.Find(s => s.GetId() == user.Section);
+            User user = this._userDao.Find(u => u.Id == idStudent);
+            Profile profile = this._profileDao.Find(p => p.Id == user.Id);
+            Section section = this._sectionDao.Find(s => s.Id == user.Section);
 
             if(user == null || profile == null)
             {
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
 
-            string name = "../../PDF/InformationsUser.pdf";
+
+            string name = Directory.GetCurrentDirectory() ; //"../PDF/InformationsUser.pdf";
 
             if (File.Exists(name))
             {
                 File.Delete(name);
             }
 
-            FileStream fs = new FileStream(name, FileMode.Create);
+            //FileStream fs = new FileStream(name, FileMode.Create);
+            MemoryStream stream = new MemoryStream();
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
-            PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
+            PdfWriter writer = PdfWriter.GetInstance(sendBack, stream);
 
             sendBack.Open();
 
@@ -345,12 +346,12 @@ namespace LoginManagement
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
             sendBack.Add(new Paragraph("Profil : " + profile.Name));
-
+            // fs.ToString.B
             sendBack.Close();
             writer.Close();
-            fs.Close();
+            //fs.Close();
 
-            return sendBack;
+            return stream.ToArray() ;
         }
 
         public bool AddSoftware(Software s)

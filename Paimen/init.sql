@@ -81,10 +81,6 @@ CREATE UNIQUE INDEX "UserLogin" ON "Users"("Login")
 
 GO
 
-CREATE UNIQUE INDEX "UserRegNumber" ON "Users"("RegNumber")
-
-GO
-
 CREATE TABLE "Softwares"(
   "Id" "int" IDENTITY(1,1) NOT NULL,
   "Name" nvarchar(50) NOT NULL,
