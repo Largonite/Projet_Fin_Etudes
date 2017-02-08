@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/simple-sidebar.css" rel="stylesheet" type="text/css"/>
     <script src="~/Scripts/Utils.js"></script>
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" style="padding-right:20px;">
@@ -29,33 +29,35 @@
         </div>
     </div>
 
-    @if (TempData["SuccessMessage"] != null) //check for a message in the TempData, at this point, the message should come from the edit/delete method of the AdminController
-    {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-    }
-    @if (TempData["ErrorMessage"] != null) //check for a message in the TempData, at this point, the message should come from the edit/delete method of the AdminController
-    {
-        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-    }
-    <div id="wrapper">
-
+    <div id="wrapper" class="sb">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li>
-                    <a href="~/Admin/UserManagement"  id="UserManagement">User Management</a>
+                <li id="UserManagement">
+                    <a href="~/Admin/UserManagement">User Management</a>
                 </li>
-                <li>
-                    <a id="ProfileManagement" href="~/Admin/ProfileManagement">Profile Management</a>
+                <li  id="ProfileManagement">
+                    <a href="~/Admin/ProfileManagement">Profile Management</a>
                 </li>
-                <li>
-                    <a id="SoftwareManagement" href="~/Admin/SoftwareManagement">Software Management</a>
+                <li id="SoftwareManagement">
+                    <a href="~/Admin/SoftwareManagement">Software Management</a>
                 </li>
             </ul>
         </div>
 
         <div id="page-content-wrapper" class="container-fluid body-content">
+            @if (TempData["SuccessMessage"] != null) //check for a message in the TempData, at this point, the message should come from the edit/delete method of the AdminController
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+            @if (TempData["ErrorMessage"] != null) //check for a message in the TempData, at this point, the message should come from the edit/delete method of the AdminController
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
             @RenderBody()
         </div>
     </div>
 </body>
 </html>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
