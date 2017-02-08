@@ -7,6 +7,12 @@
     $("#typeOfUser").change(function () {
         typeOfUserChanged($(this).val());
     });
+   
+    $(".sectionTableRowData").on("click", function () {
+        $(this).parent().find(":input").each(function () {
+            $(this).attr("checked", "checked");
+        });
+    });
 });
 
 function typeOfUserChanged(type) {
