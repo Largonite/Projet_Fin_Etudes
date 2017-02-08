@@ -174,11 +174,6 @@ namespace LoginManagement
             return builder.ToString();
         }
 
-        public List<Section> GetAllSection()
-        {
-            return _sectionDao.GetAll().ToList();
-        }
-
         public List<Profile> GetAllProfile()
         {
             return _profileDao.GetAll().ToList();
@@ -209,10 +204,8 @@ namespace LoginManagement
                 Profile = profile,
                 AddedDate = DateTime.UtcNow.Date
             };
-            if (!this._userDao.Add(toAdd))
-            {
-                throw new DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
-            }
+
+            this._userDao.Add(toAdd);
             this._userDao.SaveChanges();
             return true;
         }

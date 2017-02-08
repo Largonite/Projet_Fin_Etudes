@@ -137,7 +137,7 @@ namespace WebUI.Controllers
             }
             if (ajout)
                 TempData["SuccessMessage"] = "Ajout effectué";
-            return View("UserManagement", model);
+            return View("UserManagement", sectionProfileModel);
         }
 
         [HttpGet]
@@ -198,7 +198,7 @@ namespace WebUI.Controllers
         [HttpGet]
         public string GetSections()
         {
-            return JsonConvert.SerializeObject(this._service.GetSections());
+            return JsonConvert.SerializeObject(this._service.GetAllSection());
         }
     }
 }
