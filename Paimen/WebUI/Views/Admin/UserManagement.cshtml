@@ -111,6 +111,7 @@
             
         </div>
         <div class="tab-pane fade" id="download">
+
             <div class="panel-body">
                     <h4>Sélectionnez les utilisateurs pour lesquels vous voulez générer le script</h4>
                     @using (Html.BeginForm("DownLoad", "Admin", FormMethod.Get))
@@ -147,6 +148,7 @@
 
                             </tbody>
                         </table>
+
                         foreach (var software in SectionProfileModel.Softwares)
                         {
                             <input type="radio" name="radioSoftware" value="@software.Id"/>
