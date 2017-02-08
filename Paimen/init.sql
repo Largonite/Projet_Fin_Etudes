@@ -56,7 +56,7 @@ CREATE TABLE "Users"(
   "Login" nvarchar(7) NOT NULL,
   "Year" "int",
   "Type" nvarchar(15) NOT NULL CHECK ("Type" IN ('Teacher','Student','Guest','Admin')),
-  "RegNumber" "int" NOT NULL,
+  "RegNumber" "int" ,
   "Section" "int",
   "Profile" "int" NOT NULL,
   "AddedDate" DATE NOT NULL,

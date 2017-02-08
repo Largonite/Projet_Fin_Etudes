@@ -7,7 +7,7 @@ INSERT INTO Sections(Code, Name)
 	VALUES 
 	('BIN', 'Bachelier Informatique de Gestion'),
 	('BDI', 'Bachelier Diététique'),
-	('BBMI', 'Bachelier Biochimie');
+	('BBM', 'Bachelier Biochimie');
 
 GO
 

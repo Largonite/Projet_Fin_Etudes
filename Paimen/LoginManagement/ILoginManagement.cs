@@ -71,5 +71,35 @@ namespace LoginManagement
 
         [OperationContract]
         Document GetPDFForAllUsers();
+        
+        [OperationContract]
+        List<Profile> GetAllProfile();
+
+        /// <summary>
+        /// Allows to retrieve the list of all the softwares in the database
+        /// </summary>
+        /// <returns>A ILis of Software</returns>
+        [OperationContract]
+        IList<Software> GetAllSoftware();
+
+        /// <summary>
+        /// Allows to delete a software according to its id
+        /// </summary>
+        /// <returns>true if software is deleted, false otherwise</returns>
+        [OperationContract]
+        bool DeleteSofwtare(int id);
+
+        [OperationContract]
+        bool SaveSoftware(Software s);
+
+        [OperationContract]
+        List<User> GetAllUser();
+
+        [OperationContract]
+        bool AddUser(string type, string lastName, string firstname,
+            string email,  int refNumber, int year, int section, int profile);
+
+        [OperationContract]
+        List<Section> GetSections();
     }
 }
