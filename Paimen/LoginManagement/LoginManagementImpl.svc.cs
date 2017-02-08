@@ -174,7 +174,12 @@ namespace LoginManagement
             return builder.ToString();
         }
 
-        public List<Profile> GetAllProfile()
+        public List<Section> GetAllSections()
+        {
+            return _sectionDao.GetAll().ToList();
+        }
+
+        public List<Profile> GetAllProfiles()
         {
             return _profileDao.GetAll().ToList();
         }
@@ -275,7 +280,7 @@ namespace LoginManagement
             return this._sectionDao.GetAll();
         }
 
-        public List<Software> GetAllSoftware()
+        public IList<Software> GetAllSoftwares()
         {
             return this._softwareDao.GetAll();
         }
