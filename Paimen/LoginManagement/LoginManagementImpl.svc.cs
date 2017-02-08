@@ -243,12 +243,6 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-            string name = "ListeUtilisateurs.pdf";
-
-            if (File.Exists(name))
-            {
-                File.Delete(name);
-            }
 
            // FileStream fs = new FileStream(name, FileMode.Create);
             MemoryStream stream = new MemoryStream();
@@ -256,12 +250,25 @@ namespace LoginManagement
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
             PdfWriter writer = PdfWriter.GetInstance(sendBack, stream);
 
+            Image vinci = Image.GetInstance(Properties.Resources.Vinci, System.Drawing.Imaging.ImageFormat.Png);
+            Image ipl = Image.GetInstance(Properties.Resources.IPL, System.Drawing.Imaging.ImageFormat.Jpeg);
+
             sendBack.Open();
 
             foreach (User user in listUsers)
             {
                 Profile profile = this._profileDao.Find(p => p.Id == user.Id);
                 Section section = this._sectionDao.Find(s => s.Id == user.Section);
+
+                vinci.SetAbsolutePosition(1, 700);
+                ipl.SetAbsolutePosition(450, 690);
+                sendBack.Add(vinci);
+                sendBack.Add(ipl);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    sendBack.Add(new Paragraph("\n"));
+                }
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
@@ -322,21 +329,25 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
 
+            Image vinci = Image.GetInstance(Properties.Resources.Vinci, System.Drawing.Imaging.ImageFormat.Png);
+            Image ipl = Image.GetInstance(Properties.Resources.IPL, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            string name = Directory.GetCurrentDirectory() ; //"../PDF/InformationsUser.pdf";
-
-            if (File.Exists(name))
-            {
-                File.Delete(name);
-            }
-
-            //FileStream fs = new FileStream(name, FileMode.Create);
             MemoryStream stream = new MemoryStream();
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
             PdfWriter writer = PdfWriter.GetInstance(sendBack, stream);
 
             sendBack.Open();
 
+            vinci.SetAbsolutePosition(1, 700);
+            ipl.SetAbsolutePosition(450, 690);
+            sendBack.Add(vinci);
+            sendBack.Add(ipl);
+
+            for(int i = 0; i < 7; i++)
+            {
+                sendBack.Add(new Paragraph("\n"));
+            }
+            
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
             sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
@@ -346,10 +357,9 @@ namespace LoginManagement
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
             sendBack.Add(new Paragraph("Profil : " + profile.Name));
-            // fs.ToString.B
+            
             sendBack.Close();
             writer.Close();
-            //fs.Close();
 
             return stream.ToArray() ;
         }
