@@ -1,0 +1,58 @@
+﻿@using LoginManagement;
+@model IList<Software>
+
+@{
+    ViewBag.Title = "Software Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="~/Scripts/CRUD.js"></script>
+<script>
+    $(".sb li").removeClass("activeSb");
+    $("#SoftwareManagement").addClass("activeSb");
+</script>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <label>Software Management</label>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("AddSoftware", "Admin", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                <div class="form-group">
+                    <label for="name">
+                        Nom du logiciel :
+                    </label>
+                    @Html.TextBox("name", null, new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-success">Ajouter</button>
+            }
+            <table class="dt display table table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>CRUD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <tr>
+                            <td name="Id" isId="true">@s.Id</td>
+                            <td name="name">@s.Name</td>
+                            <td class="text-center noInput">
+                                <button type="button" class="submitButton btn btn-success btn-circle validate hidden" submitUrl="SaveSoftware"><i class="glyphicon glyphicon-ok"></i></button>
+                                <button type="button" class="btn btn-danger btn-circle cancel hidden"><i class="glyphicon glyphicon-remove"></i></button>
+                                <button type="button" class="btn btn-success btn-circle edit"><i class="glyphicon glyphicon-edit"></i></button>
+                                <button type="button" class="btn btn-danger btn-circle remove" onclick="confirmDelete('Are you sure to delete software with id : '+@s.Id,'@Url.Action("DeleteSoftware", "Admin", new { id = s.Id, name=s.Name })')"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/SoftwareManagement.js"></script>

@@ -96,6 +96,12 @@
 
 }
 
+.activeSb{
+    text-decoration: none;
+    color:#fff;
+    background: #17191f;
+}
+
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 18px;

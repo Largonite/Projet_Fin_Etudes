@@ -9,28 +9,26 @@ using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
 using Newtonsoft.Json;
-
+using System.Diagnostics;
 
 namespace WebUI.Controllers
 {   
     [Authorize]
     public class AdminController : Controller
     {
-        private ILoginManagement _service;
-        private SectionProfileModel model;
-        private UserListModel userListModel;
-        private ProfileSoftwareModel profileSofwareModel;
-
+        private readonly ILoginManagement _service;
+        public static List<Section> _sections;
+        public static List<Profile> _profiles;
+        public static List<Software> _softwares;
+        public static List<User> _users;
 
         public AdminController()
         {
             this._service = new LoginManagementImpl();
-            List<Section> sections = _service.GetAllSection();
-            List<Profile> profiles = _service.GetAllProfile();
-            model = new SectionProfileModel { Profiles = profiles, Sections = sections };
-            userListModel = new UserListModel { Users = _service.GetAllUser() };
-            List<Software> softwares = _service.GetAllSoftware();
-            profileSofwareModel = new ProfileSoftwareModel { Profiles = profiles, Softwares = softwares };
+            _sections = _service.GetAllSection();
+            _profiles = _service.GetAllProfiles();
+            _softwares = _service.GetAllSoftwares();
+            _users = _service.GetAllUser();
         }
 
         public ActionResult Index()
@@ -44,12 +42,58 @@ namespace WebUI.Controllers
         // GET: UserManager
         public ActionResult UserManagement()
         {
-            return View(model);
+            return View();
         }
 
-        public ActionResult ListUser()
+        public ViewResult SoftwareManagement()
         {
-            return View();
+            return View(_softwares);
+        }
+
+        public ActionResult DeleteSoftware(int id, string name)
+        {
+            bool res = _service.DeleteSofwtare(id);
+            if (res)
+            {
+                TempData["SuccessMessage"] = string.Format("{0} avec l'id {1} à été supprimé", name, id);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible de supprimer {0} !", name);
+            }
+            return RedirectToAction("SoftwareManagement");
+
+        }
+
+        public string SaveSoftware(Software s)
+        {
+            Software s1 = this._service.GetAllSoftwares().Where(soft => soft.Id == s.Id).First();
+            string oldName = s1.Name;
+            s.Profiles = s1.Profiles;
+            bool r = this._service.SaveSoftware(s);
+            if (r)
+            {
+                TempData["SuccessMessage"] = string.Format("{0} a été modifié en {1}", oldName,s.Name);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible de modifier {0} !", s1.Name);
+            }
+            return "SoftwareManagement";
+        }
+
+        public ActionResult AddSoftware(string name)
+        {
+            Software s = new Software { Name = name };
+            if (this._service.AddSoftware(s))
+            {
+                TempData["SuccessMessage"] = string.Format("{0} a été ajouté ",name);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible d'ajouter {0} !", name);
+            }
+            return RedirectToAction("SoftwareManagement");
         }
 
         // creer publc-ic action resut
@@ -70,21 +114,83 @@ namespace WebUI.Controllers
                 Console.WriteLine(exception.Message);
             }
             
-            return View("UserManagement", model);
+            return View("UserManagement");
         }
 
         [HttpPost]
         public ViewResult AddUser(string type, string lastName, string firstname,
-            string email, int refNumber,int year, int section, int profile)
+            string email, Nullable<int> regNumber, Nullable<int> year, Nullable<int> section, int profile)
         {
-            _service.AddUser(type, lastName, firstname, email, refNumber, year, section, profile);
-            return View("UserManagement", model);
+            bool ajout = false; 
+            try
+            {
+                ajout = _service.AddUser(type, lastName, firstname, email, regNumber, year, section, profile);
+            }
+            catch(Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+            if (ajout)
+                TempData["SuccessMessage"] = "Ajout effectué";
+            return View("UserManagement");
         }
 
         [HttpGet]
-        public void DownloadBat()
+        public void Download()
         {
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, null));
+            List<int> softwaresPks = new List<int>();
+            IDictionary<Section, List<int>> sections = this.GetConstraints();
+            string softwarePK = Request.QueryString["radioSoftware"];
+            Software software = this._service.GetAllSoftwares().First(s => s.Id == int.Parse(softwarePK));
+            switch (software.Name)
+            {
+                case "Windows": this.DownloadBat(sections);
+                    break;
+                case "Nutrilog": this.DownloadNutriLog(sections);
+                    break;
+                case "Claroline": this.DownloadClaroline(sections);
+                    break;
+                default: return;
+            }
+            //int temp;
+            //Request.QueryString.AllKeys.Where(key => int.TryParse(key, out temp)).ToList().ForEach(pk => softwaresPks.Add(int.Parse(pk)));
+            //softwaresPks.ForEach(pk => this.downloads[pk].Invoke(sections));
+        }
+
+        private IDictionary<Section, List<int>> GetConstraints()
+        {
+            IDictionary<Section, List<int>> sections = new Dictionary<Section, List<int>>();
+            int year;
+            string sectionString;
+            foreach (string param in Request.QueryString.AllKeys)
+            {
+                if (param.Length > 1 && int.TryParse(param.Substring(0, 1), out year))
+                {
+                sectionString = param.Substring(1);
+                Section sec = _sections.FirstOrDefault(s => s.Code.Equals(sectionString));
+                if (sec != null)
+                {
+                    if (sections.ContainsKey(sec))
+                    {
+                        sections[sec].Add(year);
+                    }
+                    else
+                    {
+                        List<int> years = new List<int>();
+                        years.Add(year);
+                        sections.Add(sec, years);
+                    }
+                }
+                }
+            }
+            return sections;
+            }
+
+        [HttpGet]
+        public void DownloadBat(IDictionary<Section, List<int>> sections)
+        {
+            
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
@@ -93,9 +199,9 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public void DownloadClaroline()
+        public void DownloadClaroline(IDictionary<Section, List<int>> sections)
         {
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(null, null));
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(null, sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=clarolineUsers.csv");
@@ -104,9 +210,9 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public void DownloadNutriLog()
+        public void DownloadNutriLog(IDictionary<Section, List<int>> sections)
         {
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(null, null));
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(null, sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=nutrilogUsers.csv");
@@ -117,7 +223,7 @@ namespace WebUI.Controllers
         [HttpGet]
         public string GetSections()
         {
-            return JsonConvert.SerializeObject(this._service.GetSections());
+            return JsonConvert.SerializeObject(this._service.GetAllSections());
         }
 
         [HttpPost]

@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using LoginManagement;
 using WebUI.Models;
 using System.Web.Security;
+using iTextSharp.text;
+using System.IO;
+using System.Diagnostics;
 
 namespace WebUI.Controllers
 {
@@ -62,6 +65,26 @@ namespace WebUI.Controllers
         public ViewResult UserInformation(User u)
         {
             return View(u);
+        }
+
+
+        [HttpGet]
+        public void DownloadPDF(int idUser)
+        {
+            /*
+             *             this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();*/
+
+            //String filename = _service.GetPDFForStudent(idUser);
+            //Debug.WriteLine(filename);
+            byte[] pdf = this._service.GetPDFForStudent(idUser);
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.OutputStream.Write(pdf, 0, pdf.Length);
+            Response.End();
         }
     }
 }

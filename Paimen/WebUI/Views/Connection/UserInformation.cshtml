@@ -4,12 +4,46 @@
     ViewBag.Title = "UserInformation";
 }
 
-<h2>@Model.FirstName @Model.LastName Informations</h2>
-
-Matricule : @Model.RegNumber<br />
-Section : @Model.Section<br />
-Login : @Model.Login <br />
-Mot de passe : @Model.Password<br />
-Email : @Model.Email<br />
-Programmes : 
+<div class="row col-lg-6 col-lg-offset-3">
+    <div class="panel panel-default" style="margin-top:15px;">
+        <div class="panel-heading">
+            <label>@Model.FirstName @Model.LastName</label>
+            @using (Html.BeginForm("DownLoadPDF", "Connection", FormMethod.Get))
+            {
+            
+                <input name="idUser" type="hidden" value=@Model.Id />
+           
+            <div class="pull-right">
+                <button class="btn btn-info btn-sm" type="submit" name="button" value="pdf">Exporter en pdf </button>
+            </div>
+            }
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Matricule</dt>
+                <dd>@Model.RegNumber</dd>
+                <dt>Section</dt>
+                <dd>@Model.Section1.Name</dd>
+                <dt>Login</dt>
+                <dd>@Model.Login</dd>
+                <dt>Mot de passe</dt>
+                <dd>@Model.Password</dd>
+                <dt>Email</dt>
+                <dd>@Model.Email</dd>
+                <dt>Programmes</dt>
+                <dd>
+                    @{
+                        if (Model.Profile1.Softwares != null && Model.Profile1.Softwares.Count != 0)
+                        {
+                            foreach (var s in Model.Profile1.Softwares)
+                            {
+                                <div>@s.Name</div>
+                            }
+                        }
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
 

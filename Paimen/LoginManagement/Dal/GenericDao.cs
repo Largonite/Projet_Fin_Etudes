@@ -16,20 +16,20 @@ namespace LoginManagement.Dal
             this._context = context;
         }
 
-        public bool Add(T element)
+        public int Add(T element)
         {
             if(element.GetId() == 0)
             {
                 this._context.Set<T>().Add(element);
-                return true;
+                return element.GetId();
             }
 
             if(!this.Exists(element))
             {
                 this._context.Set<T>().Add(element);
-                return true;
+                return element.GetId();
             }
-            return false;
+            return -1;
         }
 
         public bool Delete(T element)
@@ -100,7 +100,7 @@ namespace LoginManagement.Dal
             if(previous == null)
                 return false;
 
-            foreach(PropertyInfo property in previous.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach(var property in element.GetType().GetProperties())
             {
                 property.SetValue(previous, property.GetValue(element, null));
             }
