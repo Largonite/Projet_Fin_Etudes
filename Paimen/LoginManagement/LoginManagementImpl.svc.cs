@@ -239,7 +239,7 @@ namespace LoginManagement
             return users;
          }
 
-        public Document GetPDFForAllUsers()
+        public byte[] GetPDFForAllUsers()
         {
             IList<User> listUsers = this._userDao.GetAll();
 
@@ -248,16 +248,32 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-            FileStream fs = new FileStream("Liste utilisateurs - " + DateTime.Now, FileMode.Create);
+
+           // FileStream fs = new FileStream(name, FileMode.Create);
+            MemoryStream stream = new MemoryStream();
+            
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
-            PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
+            PdfWriter writer = PdfWriter.GetInstance(sendBack, stream);
+
+            Image vinci = Image.GetInstance(Properties.Resources.Vinci, System.Drawing.Imaging.ImageFormat.Png);
+            Image ipl = Image.GetInstance(Properties.Resources.IPL, System.Drawing.Imaging.ImageFormat.Jpeg);
 
             sendBack.Open();
 
             foreach (User user in listUsers)
             {
-                Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
-                Section section = this._sectionDao.Find(s => s.GetId() == user.Section);
+                Profile profile = this._profileDao.Find(p => p.Id == user.Id);
+                Section section = this._sectionDao.Find(s => s.Id == user.Section);
+
+                vinci.SetAbsolutePosition(1, 700);
+                ipl.SetAbsolutePosition(450, 690);
+                sendBack.Add(vinci);
+                sendBack.Add(ipl);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    sendBack.Add(new Paragraph("\n"));
+                }
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
@@ -271,8 +287,8 @@ namespace LoginManagement
 
                 sendBack.NewPage();
             }
-
-            return sendBack;
+            return stream.ToArray();
+            //return name;
         }
 
         public List<Section> GetAllSection()
@@ -280,7 +296,7 @@ namespace LoginManagement
             return this._sectionDao.GetAll();
         }
 
-        public IList<Software> GetAllSoftwares()
+        public List<Software> GetAllSoftwares()
         {
             return this._softwareDao.GetAll();
         }
@@ -307,23 +323,36 @@ namespace LoginManagement
         }
   
 
-        public Document GetPDFForStudent(int idStudent)
+        public byte[] GetPDFForStudent(int idStudent)
         {
-            User user = this._userDao.Find(u => u.GetId() == idStudent);
-            Profile profile = this._profileDao.Find(p => p.GetId() == user.GetId());
-            Section section = this._sectionDao.Find(s => s.GetId() == user.Section);
+            User user = this._userDao.Find(u => u.Id == idStudent);
+            Profile profile = this._profileDao.Find(p => p.Id == user.Id);
+            Section section = this._sectionDao.Find(s => s.Id == user.Section);
 
             if(user == null || profile == null)
             {
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
 
-            FileStream fs = new FileStream(user.FirstName + " - " + user.LastName + " - " + DateTime.Now, FileMode.Create);
+            Image vinci = Image.GetInstance(Properties.Resources.Vinci, System.Drawing.Imaging.ImageFormat.Png);
+            Image ipl = Image.GetInstance(Properties.Resources.IPL, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            MemoryStream stream = new MemoryStream();
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
-            PdfWriter writer = PdfWriter.GetInstance(sendBack, fs);
+            PdfWriter writer = PdfWriter.GetInstance(sendBack, stream);
 
             sendBack.Open();
 
+            vinci.SetAbsolutePosition(1, 700);
+            ipl.SetAbsolutePosition(450, 690);
+            sendBack.Add(vinci);
+            sendBack.Add(ipl);
+
+            for(int i = 0; i < 7; i++)
+            {
+                sendBack.Add(new Paragraph("\n"));
+            }
+            
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
             sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
@@ -333,12 +362,11 @@ namespace LoginManagement
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
             sendBack.Add(new Paragraph("Profil : " + profile.Name));
-
+            
             sendBack.Close();
             writer.Close();
-            fs.Close();
 
-            return sendBack;
+            return stream.ToArray() ;
         }
 
         public bool AddSoftware(Software s)

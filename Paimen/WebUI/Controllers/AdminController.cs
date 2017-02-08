@@ -16,25 +16,19 @@ namespace WebUI.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        private ILoginManagement _service;
-        private SectionProfileModel sectionProfileModel;
-        private UserListModel userListModel;
-        //private IDictionary<int, Action<IDictionary<Section, List<int>>>> downloads;
+        private readonly ILoginManagement _service;
+        public static List<Section> _sections;
+        public static List<Profile> _profiles;
+        public static List<Software> _softwares;
+        public static List<User> _users;
 
         public AdminController()
         {
             this._service = new LoginManagementImpl();
-            List<Section> sections = _service.GetAllSections();
-            List<Profile> profiles = _service.GetAllProfiles();
-            SectionProfileModel.Profiles = profiles;
-            SectionProfileModel.Sections = sections;
-            SectionProfileModel.Softwares = _service.GetAllSoftwares();
-            //model = new SectionProfileModel();// { Profiles = profiles, Sections = sections };
-            userListModel = new UserListModel { Users = _service.GetAllUser() };
-            //this.downloads = new Dictionary<int, Action<IDictionary<Section, List<int>>>>();
-            //downloads.Add(1, this.DownloadBat);
-            //downloads.Add(2, this.DownloadClaroline);
-            //downloads.Add(3, this.DownloadNutriLog);
+            _sections = _service.GetAllSection();
+            _profiles = _service.GetAllProfiles();
+            _softwares = _service.GetAllSoftwares();
+            _users = _service.GetAllUser();
         }
 
         public ActionResult Index()
@@ -48,13 +42,12 @@ namespace WebUI.Controllers
         // GET: UserManager
         public ActionResult UserManagement()
         {
-            return View(sectionProfileModel);
+            return View();
         }
 
         public ViewResult SoftwareManagement()
         {
-            IList<Software> softwares = _service.GetAllSoftwares();
-            return View(softwares);
+            return View(_softwares);
         }
 
         public ActionResult DeleteSoftware(int id, string name)
@@ -103,14 +96,6 @@ namespace WebUI.Controllers
             return RedirectToAction("SoftwareManagement");
         }
 
-        public ActionResult ListUser()
-        {
-            return View();
-        }
-
-
-
-
         [HttpPost]
         public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
         {
@@ -123,7 +108,7 @@ namespace WebUI.Controllers
                 Console.WriteLine(exception.Message);
             }
             
-            return View("UserManagement", sectionProfileModel);
+            return View("UserManagement");
         }
 
         [HttpPost]
@@ -141,7 +126,7 @@ namespace WebUI.Controllers
             }
             if (ajout)
                 TempData["SuccessMessage"] = "Ajout effectué";
-            return View("UserManagement", sectionProfileModel);
+            return View("UserManagement");
         }
 
         [HttpGet]
@@ -175,25 +160,25 @@ namespace WebUI.Controllers
             {
                 if (param.Length > 1 && int.TryParse(param.Substring(0, 1), out year))
                 {
-                    sectionString = param.Substring(1);
-                    Section sec = SectionProfileModel.Sections.FirstOrDefault(s => s.Code.Equals(sectionString));
-                    if (sec != null)
+                sectionString = param.Substring(1);
+                Section sec = _sections.FirstOrDefault(s => s.Code.Equals(sectionString));
+                if (sec != null)
+                {
+                    if (sections.ContainsKey(sec))
                     {
-                        if (sections.ContainsKey(sec))
-                        {
-                            sections[sec].Add(year);
-                        }
-                        else
-                        {
-                            List<int> years = new List<int>();
-                            years.Add(year);
-                            sections.Add(sec, years);
-                        }
+                        sections[sec].Add(year);
                     }
+                    else
+                    {
+                        List<int> years = new List<int>();
+                        years.Add(year);
+                        sections.Add(sec, years);
+                    }
+                }
                 }
             }
             return sections;
-        }
+            }
 
         [HttpGet]
         public void DownloadBat(IDictionary<Section, List<int>> sections)
