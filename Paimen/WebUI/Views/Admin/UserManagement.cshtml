@@ -106,6 +106,8 @@
     </div>
     <hr/>
     <div class="col-lg-12">
+@using (Html.BeginForm("DownLoad", "Admin", FormMethod.Get))
+            {
         <table>
             <thead>
                 <tr>
@@ -122,9 +124,8 @@
                 </tr>
             </thead>
             <tbody>
-            @using (Html.BeginForm("DownLoad", "Admin", FormMethod.Get))
-            {
-                foreach (var selected in SectionProfileModel.Sections)
+           
+                @foreach (var selected in SectionProfileModel.Sections)
                 {
                     <tr><td>@selected.Code - @selected.Name</td>
                         @{
@@ -134,24 +135,20 @@
                             }
                         }
                     </tr>
-                }
-                <tr></tr>
+                            }
                 <tr>
-                    @foreach(var software in SectionProfileModel.Softwares)
-                    {
-                        <td><input type="radio" name="radioSoftware" value="@software.Id" @*value="true"*@ /> <label>@software.Name</label></td>
-                    }
+                    <td></td>
                 </tr>
-                <tr>
-                    <td><button type="submit">Télécharger</button></td>
-                </tr>
-            }
+
             </tbody>
         </table>
-
-        <a href="/Admin/DownloadBat">Download bat file</a><br />
-        <a href="/Admin/DownloadClaroline">Download Claroline file</a><br />
-        <a href="/Admin/DownloadNutriLog">Download Nutrilog file</a><br />
+            foreach (var software in SectionProfileModel.Softwares)
+            {
+                <input type="radio" name="radioSoftware" value="@software.Id" /> 
+                <label>@software.Name</label><br />
+            }
+        }
+        <button type="submit">Télécharger</button>
     </div>
 </div>
 
