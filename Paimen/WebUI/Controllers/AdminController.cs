@@ -222,7 +222,7 @@ namespace WebUI.Controllers
         [HttpGet]
         public string GetSections()
         {
-            return JsonConvert.SerializeObject(this._service.GetSections());
+            return JsonConvert.SerializeObject(this._service.GetAllSections());
         }
     }
 }
