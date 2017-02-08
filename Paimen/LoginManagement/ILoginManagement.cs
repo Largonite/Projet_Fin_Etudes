@@ -80,7 +80,7 @@ namespace LoginManagement
         /// </summary>
         /// <returns>A ILis of Software</returns>
         [OperationContract]
-        IList<Software> GetAllSoftware();
+        List<Software> GetAllSoftware();
 
         /// <summary>
         /// Allows to delete a software according to its id
@@ -103,6 +103,6 @@ namespace LoginManagement
             string email,  int refNumber, int year, int section, int profile);
 
         [OperationContract]
-        List<Section> GetSections();
+        List<Section> GetAllSection();
     }
 }

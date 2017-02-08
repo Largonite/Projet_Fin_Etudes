@@ -278,7 +278,7 @@ namespace LoginManagement
             return this._sectionDao.GetAll();
         }
 
-        public IList<Software> GetAllSoftware()
+        public List<Software> GetAllSoftware()
         {
             return this._softwareDao.GetAll();
         }
@@ -341,7 +341,7 @@ namespace LoginManagement
 
         public bool AddSoftware(Software s)
         {
-            if (this._softwareDao.Add(s))
+            if (this._softwareDao.Add(s) != -1)
             {
                 this._softwareDao.SaveChanges();
                 return true;
