@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTextSharp.text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -57,10 +58,20 @@ namespace LoginManagement
         [OperationContract]
         string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections);
 
+        /// <summary>
+        /// Read a csv file containing student's informations and insert each student in the database.
+        /// </summary>
+        /// <param name="csv"> The csv file to be read </param>
+        /// <returns>Return true in case of success, otherwise throw a DBException</returns>
         [OperationContract]
         bool AddStudentFromCSV(HttpPostedFileBase csv);
 
         [OperationContract]
+        Document GetPDFForStudent(int idStudent);
+
+        [OperationContract]
+        Document GetPDFForAllUsers();
+        
         List<Section> GetAllSections();
 
         [OperationContract]
@@ -84,15 +95,16 @@ namespace LoginManagement
         bool SaveSoftware(Software s);
 
         [OperationContract]
+        bool AddSoftware(Software s);
+
+        [OperationContract]
         List<User> GetAllUser();
 
         [OperationContract]
         bool AddUser(string type, string lastName, string firstname,
             string email,  int refNumber, int year, int section, int profile);
-        /*[OperationContract]
-        bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
 
         [OperationContract]
-        List<Section> GetSections();
+        List<Section> GetAllSection();
     }
 }

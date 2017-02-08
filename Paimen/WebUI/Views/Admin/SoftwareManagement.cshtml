@@ -18,6 +18,16 @@
             <label>Software Management</label>
         </div>
         <div class="panel-body">
+            @using (Html.BeginForm("AddSoftware", "Admin", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                <div class="form-group">
+                    <label for="name">
+                        Nom du logiciel :
+                    </label>
+                    @Html.TextBox("name", null, new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-success">Ajouter</button>
+            }
             <table class="dt display " width="100%">
                 <thead>
                     <tr>

@@ -89,6 +89,20 @@ namespace WebUI.Controllers
             return "SoftwareManagement";
         }
 
+        public ActionResult AddSoftware(string name)
+        {
+            Software s = new Software { Name = name };
+            if (this._service.AddSoftware(s))
+            {
+                TempData["SuccessMessage"] = string.Format("{0} a été ajouté ",name);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible d'ajouter {0} !", name);
+            }
+            return RedirectToAction("SoftwareManagement");
+        }
+
         public ActionResult ListUser()
         {
             return View();

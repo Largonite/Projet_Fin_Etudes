@@ -16,20 +16,20 @@ namespace LoginManagement.Dal
             this._context = context;
         }
 
-        public bool Add(T element)
+        public int Add(T element)
         {
             if(element.GetId() == 0)
             {
                 this._context.Set<T>().Add(element);
-                return true;
+                return element.GetId();
             }
 
             if(!this.Exists(element))
             {
                 this._context.Set<T>().Add(element);
-                return true;
+                return element.GetId();
             }
-            return false;
+            return -1;
         }
 
         public bool Delete(T element)
