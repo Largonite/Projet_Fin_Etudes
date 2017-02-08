@@ -28,8 +28,8 @@ namespace WebUI.Controllers
             List<Profile> profiles = _service.GetAllProfile();
             SectionProfileModel.Profiles = profiles;
             SectionProfileModel.Sections = sections;
-            SectionProfileModel.Softwares = _service.GetAllSoftwares();
-            model = new SectionProfileModel();// { Profiles = profiles, Sections = sections };
+            SectionProfileModel.Softwares = _service.GetAllSoftware();
+            sectionProfileModel = new SectionProfileModel();// { Profiles = profiles, Sections = sections };
             userListModel = new UserListModel { Users = _service.GetAllUser() };
         }
 
