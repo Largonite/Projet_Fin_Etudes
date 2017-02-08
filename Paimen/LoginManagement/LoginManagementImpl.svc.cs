@@ -221,7 +221,7 @@ namespace LoginManagement
 
         private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
         {
-            // Both params are null, return the whole script.
+            // Both params are null, return the whole list.
             if (d == null && sections == null)
             {
                 return this._userDao.GetAll();
@@ -235,10 +235,9 @@ namespace LoginManagement
             List<User> users = new List<User>();
             foreach (KeyValuePair<Section, List<int>> entry in sections)
             {
-                users.AddRange(this._userDao.FindAll(user => //user.Type.Equals("Student") &&
-                                                              d == null ? true : d.Value.Date <= user.AddedDate.Date
-                                                              && user.Section.Equals(entry.Key)
-                                                              && entry.Value.Contains(user.Year.Value)
+                users.AddRange(this._userDao.FindAll(user => (d == null ? true : DateTime.Compare(user.AddedDate, d.Value) <= 0)
+                                                             && user.Section1.Code.Equals(entry.Key.Code)
+                                                             && entry.Value.Contains(user.Year.Value)
                 ));
             }
             return users;

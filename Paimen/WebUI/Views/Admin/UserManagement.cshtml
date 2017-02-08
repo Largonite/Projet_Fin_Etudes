@@ -38,7 +38,7 @@
                     <label for="profile">Profil</label><br />
                     <select class="form-control" name="profile">
                         @{
-                            foreach (var profile in Model.Profiles)
+                            foreach (var profile in SectionProfileModel.Profiles)
                             {
                                 <option value="@profile.Id">@profile.Name </option>
                             }
@@ -64,7 +64,7 @@
                     <label for="section">Section</label><br />
                     <select class="form-control" name="section">
                         @{
-                            foreach (var selected in Model.Sections)
+                            foreach (var selected in SectionProfileModel.Sections)
                             {
                                 <option value="@selected.Id ">@selected.Code - @selected.Name</option>
                             }
@@ -118,20 +118,25 @@
                 </tr>
             </thead>
             <tbody>
-                @{
-                    foreach (var selected in Model.Sections)
-                    {
-                        <tr><td>@selected.Code - @selected.Name</td>
-                            @{
-                                for (int i = 1; i < 4; i++)
-                                {
-                                    <td><input type="checkbox" name="@i@selected.Code "/></td>
-                                }
+            @using (Html.BeginForm("DownLoadBat", "Admin", FormMethod.Get))
+            {
+                foreach (var selected in SectionProfileModel.Sections)
+                {
+                    <tr><td>@selected.Code - @selected.Name</td>
+                        @{
+                            for (int i = 1; i < 4; i++)
+                            {
+                                <td><input type="checkbox" name="@i@selected.Code" value="true" /></td>
                             }
-                        </tr>
-                        
-                    }
+                        }
+                    </tr>
                 }
+                <tr>
+                    <td/><td><button type="submit" name="button" value="bat">Télécharger bat</button></td>
+                    <td><button type="submit" name="button" value="claco">Télécharger bat</button></td>
+                    <td><button type="submit" name="button" value="nutri">Télécharger bat</button></td>
+                </tr>
+            }
             </tbody>
         </table>
 

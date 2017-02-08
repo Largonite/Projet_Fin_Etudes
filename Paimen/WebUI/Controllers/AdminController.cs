@@ -9,7 +9,7 @@ using System.Web.Security;
 using System.Text;
 using WebUI.Models;
 using Newtonsoft.Json;
-
+using System.Diagnostics;
 
 namespace WebUI.Controllers
 {
@@ -26,7 +26,10 @@ namespace WebUI.Controllers
             this._service = new LoginManagementImpl();
             List<Section> sections = _service.GetAllSection();
             List<Profile> profiles = _service.GetAllProfile();
-            model = new SectionProfileModel { Profiles = profiles, Sections = sections };
+            SectionProfileModel.Profiles = profiles;
+            SectionProfileModel.Sections = sections;
+            SectionProfileModel.Softwares = _service.GetAllSoftwares();
+            model = new SectionProfileModel();// { Profiles = profiles, Sections = sections };
             userListModel = new UserListModel { Users = _service.GetAllUser() };
         }
 
@@ -75,7 +78,29 @@ namespace WebUI.Controllers
         [HttpGet]
         public void DownloadBat()
         {
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, null));
+            IDictionary<Section, List<int>> sections = new Dictionary<Section, List<int>>();
+            int year;
+            string sectionString;
+            foreach (string param in Request.QueryString.AllKeys)
+            {
+                int.TryParse(param.Substring(0, 1), out year);
+                sectionString = param.Substring(1);
+                Section sec = SectionProfileModel.Sections.FirstOrDefault(s => s.Code.Equals(sectionString));
+                if (sec != null)
+                {
+                    if (sections.ContainsKey(sec))
+                    {
+                        sections[sec].Add(year);
+                    }
+                    else
+                    {
+                        List<int> years = new List<int>();
+                        years.Add(year);
+                        sections.Add(sec, years);
+                    }
+                }
+            }
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
