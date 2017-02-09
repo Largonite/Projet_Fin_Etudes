@@ -270,10 +270,11 @@ namespace WebUI.Controllers
 
             //String filename = _service.GetPDFForStudent(idUser);
             //Debug.WriteLine(filename);
+            User u = _service.GetAllUser().Where(us => us.Id == idUser).FirstOrDefault();
             byte[] pdf = this._service.GetPDFForStudent(idUser);
             Response.Clear();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.AppendHeader("Content-Disposition", "attachment; filename=login_"+u.FirstName+"_"+u.LastName+"_"+".pdf");
             Response.OutputStream.Write(pdf, 0, pdf.Length);
             Response.End();
         }
@@ -283,7 +284,7 @@ namespace WebUI.Controllers
             byte[] pdf = this._service.GetPDFForAllUsers();
             Response.Clear();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.AppendHeader("Content-Disposition", "attachment; filename=Users_login.pdf");
             Response.OutputStream.Write(pdf, 0, pdf.Length);
             Response.End();
         }
