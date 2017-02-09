@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var s in Model)
+                    @foreach (Software s in Model)
                     {
                         <tr>
                             <td name="Id" isId="true">@s.Id</td>
@@ -46,7 +46,7 @@
                                 <button type="button" class="submitButton btn btn-success btn-circle validate hidden" submitUrl="SaveSoftware"><i class="glyphicon glyphicon-ok"></i></button>
                                 <button type="button" class="btn btn-danger btn-circle cancel hidden"><i class="glyphicon glyphicon-remove"></i></button>
                                 <button type="button" class="btn btn-success btn-circle edit"><i class="glyphicon glyphicon-edit"></i></button>
-                                <button type="button" class="btn btn-danger btn-circle remove" onclick="confirmDelete('Are you sure to delete software with id : '+@s.Id,'@Url.Action("DeleteSoftware", "Admin", new { id = s.Id, name=s.Name })')"><i class="glyphicon glyphicon-trash"></i></button>
+                                <button type="button" class="btn btn-danger btn-circle remove" onclick="confirmDelete('Etes-vous certain de vouloir supprimer le locigiel @s.Name','@Url.Action("DeleteSoftware", "Admin", new { id = s.Id, name=s.Name })')"><i class="glyphicon glyphicon-trash"></i></button>
                             </td>
                         </tr>
                     }
