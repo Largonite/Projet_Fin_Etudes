@@ -178,6 +178,10 @@ namespace LoginManagement
         private string GetLogin(string firstName, string lastName)
         {
             char beginning = (firstName.ToArray())[0];
+            string pattern = " ";
+            string replacement = "";
+            Regex regex = new Regex(pattern);
+            lastName = regex.Replace(lastName, replacement);
             string end = lastName.Substring(0, Math.Min(lastName.Length, 6)); // Math.Min => si jamais le lastName est inférieur à 6 lettres 
             string login = beginning + end;
 
@@ -324,8 +328,6 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-
-           // FileStream fs = new FileStream(name, FileMode.Create);
             MemoryStream stream = new MemoryStream();
             
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
@@ -353,18 +355,50 @@ namespace LoginManagement
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
-                sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
-                sendBack.Add(new Paragraph("Matricule : " + user.RegNumber ?? "/"));
-                sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+                if (user.Email.Equals("") || user.Email == null)
+                {
+                    sendBack.Add(new Paragraph("Email : /"));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Email : " + user.Email));
+                }
+
+                if (user.RegNumber.Equals("") || user.RegNumber == null)
+                {
+                    sendBack.Add(new Paragraph("Matricule : /"));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Matricule : " + user.RegNumber));
+                }
+
+
+                if (section != null)
+                {
+                    sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Section : /"));
+                }
+
                 sendBack.Add(new Paragraph("Année : " + user.Year ?? "/"));
                 sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
                 sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
-                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+                if (profile != null)
+                {
+                    sendBack.Add(new Paragraph("Profil : " + profile.Name));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Profil : /"));
+                }
 
                 sendBack.NewPage();
             }
             return stream.ToArray();
-            //return name;
         }
 
         public List<Section> GetAllSection()
@@ -426,13 +460,43 @@ namespace LoginManagement
             
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
-            sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
-            sendBack.Add(new Paragraph("Matricule : " + user.RegNumber ?? "/"));
-            sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+            if(user.Email.Equals("") || user.Email == null)
+            {
+                sendBack.Add(new Paragraph("Email : /"));
+            }else
+            {
+                sendBack.Add(new Paragraph("Email : " + user.Email));
+            }
+            
+            if(user.RegNumber.Equals("") || user.RegNumber == null)
+            {
+                sendBack.Add(new Paragraph("Matricule : /"));
+            }else
+            {
+                sendBack.Add(new Paragraph("Matricule : " + user.RegNumber));
+            }
+
+            
+            if (section != null)
+            {
+                sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+            }else
+            {
+                sendBack.Add(new Paragraph("Section : /"));
+            }
+
             sendBack.Add(new Paragraph("Année : " + user.Year ?? "/"));
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
-            sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+            if(profile != null)
+            {
+                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+            }else
+            {
+                sendBack.Add(new Paragraph("Profil : /"));
+            }
+            
             
             sendBack.Close();
             writer.Close();
