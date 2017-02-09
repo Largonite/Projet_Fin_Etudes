@@ -270,7 +270,14 @@ namespace WebUI.Controllers
         [HttpPost]
         public ActionResult RemoveProfileType(string typeProfile)
         {
-            this._service.RemoveProfileType(typeProfile);
+            try
+            {
+                this._service.RemoveProfileType(typeProfile);
+                TempData["SuccessMessage"] = "Profil supprimé";
+            }catch (Exception exp)
+            {
+                TempData["ErrorMessage"] = "Echec de la suprression";
+            }
             return RedirectToAction("ProfileManagement");
         }
 
