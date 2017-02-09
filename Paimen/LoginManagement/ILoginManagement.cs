@@ -1,10 +1,6 @@
-﻿using iTextSharp.text;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Web;
 
 namespace LoginManagement
 {
@@ -30,7 +26,7 @@ namespace LoginManagement
         /// </summary>
         /// <returns>A string formatted as .bat script to add the specified users</returns>
         [OperationContract]
-        string GetWindowsScript(DateTime? d, IDictionary<Section,List<int>> sections);
+        string GetWindowsScript(IDictionary<Section,List<int>> sections);
 
 
         /// <summary>
@@ -43,7 +39,7 @@ namespace LoginManagement
         /// </summary>
         /// <returns>A string formatted as CSV with the specified users</returns>
         [OperationContract]
-        string GetNutrilogScript(DateTime? d, IDictionary<Section, List<int>> sections);
+        string GetNutrilogScript(IDictionary<Section, List<int>> sections);
 
 
         /// <summary>
@@ -56,7 +52,7 @@ namespace LoginManagement
         /// </summary>
         /// <returns>A string formatted as CSV with the specified users</returns>
         [OperationContract]
-        string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections);
+        string GetClarolineScript(IDictionary<Section, List<int>> sections);
 
         /// <summary>
         /// Read a csv file containing student's informations and insert each student in the database.
@@ -64,7 +60,7 @@ namespace LoginManagement
         /// <param name="csv"> The csv file to be read </param>
         /// <returns>Return true in case of success, otherwise throw a DBException</returns>
         [OperationContract]
-        bool AddStudentFromCSV(HttpPostedFileBase csv);
+        bool AddStudentFromCSV(string fileContent);
 
         [OperationContract]
         byte[] GetPDFForStudent(int idStudent);
@@ -98,6 +94,9 @@ namespace LoginManagement
         bool AddSoftware(Software s);
 
         [OperationContract]
+        bool DeleteUser(int id);
+
+        [OperationContract]
         List<User> GetAllUser();
 
         [OperationContract]
@@ -114,6 +113,9 @@ namespace LoginManagement
 
         [OperationContract]
         void RemoveProfileType(string typeProfile);
+
+        [OperationContract]
+        void SetProfile(IDictionary<Section, List<int>> sections, Profile profile);
 
     }
 }
