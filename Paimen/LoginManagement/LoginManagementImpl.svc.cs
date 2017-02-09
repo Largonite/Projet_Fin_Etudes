@@ -355,7 +355,7 @@ namespace LoginManagement
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
-                if (user.Email.Equals("") || user.Email == null)
+                if (user.Email == null || user.Email.Equals(""))
                 {
                     sendBack.Add(new Paragraph("Email : /"));
                 }
