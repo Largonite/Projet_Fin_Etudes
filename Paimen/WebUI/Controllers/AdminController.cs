@@ -7,12 +7,10 @@ using LoginManagement;
 using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
-using WebUI.Models;
 using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace WebUI.Controllers
-{
+{   
     [Authorize]
     public class AdminController : Controller
     {
@@ -25,7 +23,7 @@ namespace WebUI.Controllers
         public AdminController()
         {
             this._service = new LoginManagementImpl();
-            _sections = _service.GetAllSection();
+            _sections = _service.GetAllSections();
             _profiles = _service.GetAllProfiles();
             _softwares = _service.GetAllSoftwares();
             _users = _service.GetAllUser();
@@ -94,6 +92,12 @@ namespace WebUI.Controllers
                 TempData["ErrorMessage"] = string.Format("Impossible d'ajouter {0} !", name);
             }
             return RedirectToAction("SoftwareManagement");
+        }
+
+        // creer publc-ic action resut
+        public ActionResult ProfileManagement()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -219,5 +223,41 @@ namespace WebUI.Controllers
         {
             return JsonConvert.SerializeObject(this._service.GetAllSections());
         }
+
+        [HttpPost]
+        public ActionResult AddProfileType(string typeProfile, List<string> softwares)
+        {
+            try {
+                _service.AddProfileType(typeProfile, softwares);
+                TempData["SuccessMessage"] = "Création réussie";
+            } catch (ArgumentException exp)
+            {
+                TempData["ErrorMessage"] = "Echec de la création";
+            }
+            return RedirectToAction("ProfileManagement");
+        }
+
+        [HttpPost]
+        public ViewResult ModifyProfileType(string typeProfile, List<String> softwares)
+        {
+            try
+            {
+                this._service.ModifyProfileType(typeProfile, softwares);
+                TempData["SuccessMessage"] = "Modification réussie";
+            }catch (Exception exp)
+            {
+                TempData["ErrorMessage"] = "Echec de la modification";
+            }
+            
+            return View("ProfileManagement");
+        }
+
+        [HttpPost]
+        public ActionResult RemoveProfileType(string typeProfile)
+        {
+            this._service.RemoveProfileType(typeProfile);
+            return RedirectToAction("ProfileManagement");
+        }
+
     }
 }

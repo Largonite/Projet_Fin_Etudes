@@ -107,6 +107,13 @@ namespace LoginManagement
         bool AddProfileForGuest(int guestId, string profileName, IList<int> IdSoftwares);*/
 
         [OperationContract]
-        List<Section> GetAllSection();
+        void AddProfileType(string typeProfile, List<string> softwares);
+
+        [OperationContract]
+        void ModifyProfileType(string typeProfile, List<string> softwares);
+
+        [OperationContract]
+        void RemoveProfileType(string typeProfile);
+
     }
 }
