@@ -248,8 +248,6 @@ namespace LoginManagement
                 throw new NoSuchUserException("Aucun utilisateurs n'a été trouvé!");
             }
 
-
-           // FileStream fs = new FileStream(name, FileMode.Create);
             MemoryStream stream = new MemoryStream();
             
             Document sendBack = new Document(PageSize.A4, 25, 25, 30, 30); //Page size and page margin
@@ -288,7 +286,6 @@ namespace LoginManagement
                 sendBack.NewPage();
             }
             return stream.ToArray();
-            //return name;
         }
 
         public List<Section> GetAllSection()
