@@ -457,30 +457,43 @@ namespace LoginManagement
             {
                 sendBack.Add(new Paragraph("\n"));
             }
-            
+
+            vinci.SetAbsolutePosition(1, 700);
+            ipl.SetAbsolutePosition(450, 690);
+            sendBack.Add(vinci);
+            sendBack.Add(ipl);
+
+            for (int i = 0; i < 7; i++)
+            {
+                sendBack.Add(new Paragraph("\n"));
+            }
+
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
-            if(user.Email == null || user.Email.Equals(""))
+            if (user.Email == null || user.Email.Equals(""))
             {
                 sendBack.Add(new Paragraph("Email : /"));
-            }else
+            }
+            else
             {
                 sendBack.Add(new Paragraph("Email : " + user.Email));
             }
-            
+
             if (user.RegNumber == null || user.RegNumber.Equals(""))
             {
                 sendBack.Add(new Paragraph("Matricule : /"));
-            }else
+            }
+            else
             {
                 sendBack.Add(new Paragraph("Matricule : " + user.RegNumber));
             }
 
-            
+
             if (section != null)
             {
                 sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
-            }else
+            }
+            else
             {
                 sendBack.Add(new Paragraph("Section : /"));
             }
@@ -489,15 +502,16 @@ namespace LoginManagement
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
 
-            if(profile != null)
+            if (profile != null)
             {
                 sendBack.Add(new Paragraph("Profil : " + profile.Name));
-            }else
+            }
+            else
             {
                 sendBack.Add(new Paragraph("Profil : /"));
             }
-            
-            
+
+
             sendBack.Close();
             writer.Close();
 
