@@ -302,5 +302,13 @@ namespace WebUI.Controllers
             Response.End();
         }
 
+        public ViewResult SetProfile()
+        {
+            Profile profile = this._service.GetAllProfiles().FirstOrDefault(p => int.Parse(Request.QueryString["profile"]) == p.Id);
+            IDictionary<Section, List<int>> sections = this.GetConstraints();
+            this._service.SetProfile(sections, profile);
+            return View("ProfileManagement");
+        }
+
     }
 }
