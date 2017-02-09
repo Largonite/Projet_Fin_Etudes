@@ -178,6 +178,10 @@ namespace LoginManagement
         private string GetLogin(string firstName, string lastName)
         {
             char beginning = (firstName.ToArray())[0];
+            string pattern = " ";
+            string replacement = "";
+            Regex regex = new Regex(pattern);
+            lastName = regex.Replace(lastName, replacement);
             string end = lastName.Substring(0, Math.Min(lastName.Length, 6)); // Math.Min => si jamais le lastName est inférieur à 6 lettres 
             string login = beginning + end;
 
