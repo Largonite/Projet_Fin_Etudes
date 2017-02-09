@@ -355,13 +355,46 @@ namespace LoginManagement
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
-                sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
-                sendBack.Add(new Paragraph("Matricule : " + user.RegNumber ?? "/"));
-                sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+                if (user.Email.Equals("") || user.Email == null)
+                {
+                    sendBack.Add(new Paragraph("Email : /"));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Email : " + user.Email));
+                }
+
+                if (user.RegNumber.Equals("") || user.RegNumber == null)
+                {
+                    sendBack.Add(new Paragraph("Matricule : /"));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Matricule : " + user.RegNumber));
+                }
+
+
+                if (section != null)
+                {
+                    sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Section : /"));
+                }
+
                 sendBack.Add(new Paragraph("Année : " + user.Year ?? "/"));
                 sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
                 sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
-                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+                if (profile != null)
+                {
+                    sendBack.Add(new Paragraph("Profil : " + profile.Name));
+                }
+                else
+                {
+                    sendBack.Add(new Paragraph("Profil : /"));
+                }
 
                 sendBack.NewPage();
             }
@@ -427,13 +460,43 @@ namespace LoginManagement
             
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
-            sendBack.Add(new Paragraph("Email : " + user.Email ?? "/"));
-            sendBack.Add(new Paragraph("Matricule : " + user.RegNumber ?? "/"));
-            sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+            if(user.Email.Equals("") || user.Email == null)
+            {
+                sendBack.Add(new Paragraph("Email : /"));
+            }else
+            {
+                sendBack.Add(new Paragraph("Email : " + user.Email));
+            }
+            
+            if(user.RegNumber.Equals("") || user.RegNumber == null)
+            {
+                sendBack.Add(new Paragraph("Matricule : /"));
+            }else
+            {
+                sendBack.Add(new Paragraph("Matricule : " + user.RegNumber));
+            }
+
+            
+            if (section != null)
+            {
+                sendBack.Add(new Paragraph("Section : " + section.Name ?? "/"));
+            }else
+            {
+                sendBack.Add(new Paragraph("Section : /"));
+            }
+
             sendBack.Add(new Paragraph("Année : " + user.Year ?? "/"));
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
-            sendBack.Add(new Paragraph("Profil : " + profile.Name));
+
+            if(profile != null)
+            {
+                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+            }else
+            {
+                sendBack.Add(new Paragraph("Profil : /"));
+            }
+            
             
             sendBack.Close();
             writer.Close();
