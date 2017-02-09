@@ -350,8 +350,8 @@ namespace LoginManagement
 
             foreach (User user in listUsers)
             {
-                Profile profile = this._profileDao.Find(p => p.Id == user.Id);
-                Section section = this._sectionDao.Find(s => s.Id == user.Section);
+                Profile profile = user.Profile1;
+                Section section = user.Section1;
 
                 vinci.SetAbsolutePosition(1, 700);
                 ipl.SetAbsolutePosition(450, 690);
@@ -441,10 +441,9 @@ namespace LoginManagement
         public byte[] GetPDFForStudent(int idStudent)
         {
             User user = this._userDao.Find(u => u.Id == idStudent);
-            Profile profile = this._profileDao.Find(p => p.Id == user.Id);
             Section section = this._sectionDao.Find(s => s.Id == user.Section);
 
-            if(user == null || profile == null)
+            if(user == null || user.Profile1 == null)
             {
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
@@ -512,9 +511,9 @@ namespace LoginManagement
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
 
-            if (profile != null)
+            if (user.Profile1 != null)
             {
-                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+                sendBack.Add(new Paragraph("Profil : " + user.Profile1.Name));
             }
             else
             {
