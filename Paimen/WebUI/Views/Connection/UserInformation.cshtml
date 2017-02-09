@@ -8,15 +8,9 @@
     <div class="panel panel-default" style="margin-top:15px;">
         <div class="panel-heading">
             <label>@Model.FirstName @Model.LastName</label>
-            @using (Html.BeginForm("DownLoadPDF", "Connection", FormMethod.Get))
-            {
-            
-                <input name="idUser" type="hidden" value=@Model.Id />
-           
             <div class="pull-right">
-                <button class="btn btn-info btn-sm" type="submit" name="button" value="pdf">Exporter en pdf </button>
+                <button class="btn btn-info btn-sm" type="submit" onClick="window.open('@Url.Action("DownloadPDF", "Connection", new { idUser = @Model.Id})')" name="button" value="pdf">Exporter en pdf </button>
             </div>
-            }
         </div>
         <div class="panel-body">
             <dl class="dl-horizontal">
