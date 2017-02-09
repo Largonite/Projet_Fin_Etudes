@@ -1,0 +1,78 @@
+﻿@using WebUI.Models;
+@{
+    ViewBag.Title = "ProfilManagement";
+}
+<div class="row">
+    <h2>Gestion des profils</h2>
+    <section>
+        <h3>Créer un profil</h3>
+        @using (Html.BeginForm("AddProfileType", "Admin", FormMethod.Post))
+        {
+            <div class="form-group">
+                <label for="typeProfile">Profil: </label>
+                <input type="text" name="typeProfile" /><br />
+                <select multiple class="form-control" name="softwares">
+                    @{
+                        foreach (var soft in WebUI.Controllers.AdminController._softwares)
+                        {
+                            <option value="@soft.Id">@soft.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div style="width:100%;margin-top:5px;">
+                <button type="submit" class="btn btn-success">Ajouter</button>
+            </div>
+                        }
+    </section>
+
+    <section>
+        <h3>Modifier un profil</h3>
+        @using(Html.BeginForm("ModifyProfileType", "Admin", FormMethod.Post))
+        {
+            <div class="form-group">
+                <select class="form-control" name="typeProfile">
+                    @{ 
+                        foreach (var profile in WebUI.Controllers.AdminController._profiles)
+                        {
+                            <option value="@profile.Id">@profile.Name</option>
+                        }
+                    }
+                </select>
+                <select multiple class="form-group" name="softwares">
+                    @{ 
+                        foreach (var soft in WebUI.Controllers.AdminController._softwares)
+                        {
+                            <option value="@soft.Id">@soft.Name</option>
+                        }
+                    }
+                </select>
+                <div style="width:100%;margin-top:5px;">
+                    <button type="submit" class="btn btn-success">Modifier</button>
+                </div>
+            </div>
+        }
+    </section>
+
+    <section>
+        <h3>Supprimer un profil</h3>
+        @using (Html.BeginForm("RemoveProfileType", "Admin", FormMethod.Post))
+        {
+            <div class="form-group">
+                <select class="form-control" name="typeProfile">
+                    @{
+                        foreach (var profile in WebUI.Controllers.AdminController._profiles)
+                        {
+                            <option value="@profile.Id">@profile.Name</option>
+                        }
+                    }
+                </select>
+                <div style="width:100%;margin-top:5px;">
+                    <button type="submit" class="btn btn-success">Supprimer</button>
+                </div>
+            </div>
+        }
+    </section>
+
+</div>

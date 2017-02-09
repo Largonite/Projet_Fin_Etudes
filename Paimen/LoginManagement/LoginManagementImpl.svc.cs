@@ -28,6 +28,77 @@ namespace LoginManagement
             this._softwareDao = new GenericDao<Software>(entities);
         }
 
+        public void AddProfileType(string typeProfile, List<string> softwares)
+        {
+
+            if ( this._profileDao.Find(p => p.Name.Equals(typeProfile)) != null)
+            {
+                throw new ArgumentException("Profile name already used");
+            }
+
+            Profile toAddProfile = new Profile();
+
+            toAddProfile.Name = typeProfile;
+            this._profileDao.Add(toAddProfile);
+            this._profileDao.SaveChanges();
+
+            toAddProfile = this._profileDao.Find(p => p.Name.Equals(typeProfile));
+
+            AddSoftwaresToProfile(toAddProfile, softwares);
+            
+        }
+
+        private void AddSoftwaresToProfile(Profile profile, List<string> softwares)
+        {
+
+            foreach (string software in softwares)
+            {
+                int idSoft = Convert.ToInt32(software);
+                Software softwareInDb = this._softwareDao.Find(s => s.Id.Equals(idSoft));
+
+                profile.Softwares.Add(softwareInDb);
+
+                softwareInDb.Profiles.Add(profile);
+
+            }
+
+            this._profileDao.SaveChanges();
+
+        }
+
+        public void ModifyProfileType(string typeProfile, List<string> softwares)
+        {
+
+            int typeProfileId = Convert.ToInt32(typeProfile);
+            Profile profile = this._profileDao.Find(p => p.Id.Equals(typeProfileId));
+            if (profile == null) throw new ArgumentException("Profile name does not exist");
+
+            // remove the revoked softwares
+            foreach (Software s in profile.Softwares.ToArray())
+            {
+                if( !softwares.Contains("" + s.Id)) profile.Softwares.Remove(s);
+            }
+
+            AddSoftwaresToProfile(profile, softwares);
+            this._softwareDao.SaveChanges();
+
+        }
+
+        public void RemoveProfileType(string typeProfile)
+        {
+            int typeProfileId = Convert.ToInt32(typeProfile);
+            Profile profile = this._profileDao.Find(p => p.Id.Equals(typeProfileId));
+            if (profile == null) return;
+
+            foreach(Software software in profile.Softwares.ToArray())
+            {
+                profile.Softwares.Remove(software);
+            }
+
+            this._profileDao.Delete(profile);
+            this._profileDao.SaveChanges();
+        }
+
         public User SignIn(User user)
         {
             User inDbUser = this._userDao.Find(u => u.RegNumber.Value.Equals(user.RegNumber.Value));
@@ -184,6 +255,11 @@ namespace LoginManagement
             return _profileDao.GetAll().ToList();
         }
 
+        public List<Software> GetAllSoftwares()
+        {
+            return this._softwareDao.GetAll();
+        }
+
         public List<User> GetAllUser()
         {
             return _userDao.GetAll().ToList();
@@ -296,11 +372,6 @@ namespace LoginManagement
             return this._sectionDao.GetAll();
         }
 
-        public List<Software> GetAllSoftwares()
-        {
-            return this._softwareDao.GetAll();
-        }
-
         public bool DeleteSofwtare(int id)
         {
             Software soft = this._softwareDao.Find(s => s.Id == id);
@@ -378,5 +449,6 @@ namespace LoginManagement
             }
             return false;
         }
+
     }
 }
