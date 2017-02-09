@@ -565,6 +565,7 @@ namespace LoginManagement
             List<User> users = this.GetUsers(sections);
             users.ForEach(u => u.Profile1 = profile);
             users.ForEach(u => this._userDao.Update(u));
+            this._userDao.SaveChanges();
         }
     }
 }
