@@ -8,6 +8,7 @@ using LoginManagement.Exceptions;
 using System.Web.Security;
 using System.Text;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace WebUI.Controllers
 {   
@@ -101,18 +102,19 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public ViewResult AddUserFromCSV(HttpPostedFileBase csv)
+        public ActionResult AddUserFromCSV(HttpPostedFileBase csv)
         {
             try
             {
-                _service.AddStudentFromCSV(csv);
+                string fileContent = new StreamReader(csv.InputStream).ReadToEnd();
+                _service.AddStudentFromCSV(fileContent);
             }
             catch (DBException exception)
             {
                 Console.WriteLine(exception.Message);
             }
             
-            return View("UserManagement");
+            return RedirectToAction("UserManagement");
         }
 
         [HttpPost]
@@ -150,9 +152,6 @@ namespace WebUI.Controllers
                     break;
                 default: return;
             }
-            //int temp;
-            //Request.QueryString.AllKeys.Where(key => int.TryParse(key, out temp)).ToList().ForEach(pk => softwaresPks.Add(int.Parse(pk)));
-            //softwaresPks.ForEach(pk => this.downloads[pk].Invoke(sections));
         }
 
         private IDictionary<Section, List<int>> GetConstraints()
@@ -262,14 +261,6 @@ namespace WebUI.Controllers
         [HttpGet]
         public void DownloadPDF(int idUser)
         {
-            /*
-             *             this.Response.ContentType = "application/octet-stream";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
-            this.Response.OutputStream.Write(script, 0, script.Length);
-            this.Response.Flush();*/
-
-            //String filename = _service.GetPDFForStudent(idUser);
-            //Debug.WriteLine(filename);
             byte[] pdf = this._service.GetPDFForStudent(idUser);
             Response.Clear();
             Response.ContentType = "application/pdf";

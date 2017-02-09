@@ -64,7 +64,7 @@ namespace LoginManagement
         /// <param name="csv"> The csv file to be read </param>
         /// <returns>Return true in case of success, otherwise throw a DBException</returns>
         [OperationContract]
-        bool AddStudentFromCSV(HttpPostedFileBase csv);
+        bool AddStudentFromCSV(string fileContent);
 
         [OperationContract]
         byte[] GetPDFForStudent(int idStudent);

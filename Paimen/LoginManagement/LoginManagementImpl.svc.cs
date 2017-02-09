@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using System.Web;
 using LoginManagement.Exceptions;
 using System.Text.RegularExpressions;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Diagnostics;
 
 namespace LoginManagement
 {
@@ -119,9 +119,8 @@ namespace LoginManagement
 
 
         // Add students from CSV
-        public bool AddStudentFromCSV(HttpPostedFileBase csv)
+        public bool AddStudentFromCSV(string fileContent)
         {
-            string fileContent = new StreamReader(csv.InputStream).ReadToEnd();
             string pattern = "\"";
             string replacement = "";
             Regex regex = new Regex(pattern);
@@ -170,24 +169,40 @@ namespace LoginManagement
                 {
                     throw new DBException("Une erreur est survenue durant l'ajout d'un etudiant!");
                 }
-                this._userDao.SaveChanges();
+                try
+                {
+                    this._userDao.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("Exception catch pendant le SaveChanges()");
+                    Debug.WriteLine(e.Message);
+                }
             }     
             return true;
         }
 
         private string GetLogin(string firstName, string lastName)
         {
-            char beginning = (firstName.ToArray())[0];
-            string pattern = " ";
-            string replacement = "";
-            Regex regex = new Regex(pattern);
-            lastName = regex.Replace(lastName, replacement);
-            string end = lastName.Substring(0, Math.Min(lastName.Length, 6)); // Math.Min => si jamais le lastName est inférieur à 6 lettres 
-            string login = beginning + end;
-
-            if(this._userDao.Find(u => u.Login == login) != null)
+            //char beginning = (firstName.ToArray())[0];
+            //string pattern = " ";
+            //string replacement = "";
+            //Regex regex = new Regex(pattern);
+            int nbLettersFName = 1;
+            firstName = firstName.ToLower();
+            lastName = lastName.ToLower();
+            lastName.Replace(" ", "");
+            firstName.Replace(" ", "");
+            //lastName = regex.Replace(lastName, replacement);
+            //string end = lastName.Substring(0, Math.Min(lastName.Length, 6)); // Math.Min => si jamais le lastName est inférieur à 6 lettres 
+            //string login = beginning + end;
+            string login = firstName.Substring(0, Math.Min(nbLettersFName, firstName.Length - 1)) + lastName.Substring(0, Math.Min(lastName.Length, 7 - nbLettersFName));
+            
+            while(this._userDao.Find(u => u.Login.Equals(login)) != null)
             {
-               login = (firstName.Substring(0, 2)) + end;
+                nbLettersFName++;
+                Debug.WriteLine(login);
+                login = firstName.Substring(0, nbLettersFName) + lastName.Substring(0, 7 - nbLettersFName);
             }
 
             return login;
