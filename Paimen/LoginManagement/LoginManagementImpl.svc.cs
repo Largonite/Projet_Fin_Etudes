@@ -472,6 +472,11 @@ namespace LoginManagement
                 sendBack.Add(new Paragraph("\n"));
             }
 
+            Font titleFont = FontFactory.GetFont(FontFactory.TIMES_ROMAN);
+            Paragraph title = new Paragraph("Feuille de login", titleFont);
+            title.Alignment = Element.ALIGN_CENTER;
+            sendBack.Add(title);
+
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
             if (user.Email == null || user.Email.Equals(""))
