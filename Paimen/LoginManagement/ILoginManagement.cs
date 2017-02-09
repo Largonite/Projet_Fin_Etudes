@@ -98,6 +98,9 @@ namespace LoginManagement
         bool AddSoftware(Software s);
 
         [OperationContract]
+        bool DeleteUser(int id);
+
+        [OperationContract]
         List<User> GetAllUser();
 
         [OperationContract]
