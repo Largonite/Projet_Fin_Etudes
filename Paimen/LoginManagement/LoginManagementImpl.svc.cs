@@ -414,10 +414,6 @@ namespace LoginManagement
         {
             Software soft = this._softwareDao.Find(s => s.Id == id);
             bool res = this._softwareDao.Delete(soft);
-            if (res)
-            {
-                this._softwareDao.SaveChanges();
-            }
             return res;
         }
 
@@ -518,5 +514,11 @@ namespace LoginManagement
             return false;
         }
 
+        public bool DeleteUser(int id)
+        {
+            User us = this._userDao.Find(u=>u.Id == id);
+            bool res = this._userDao.Delete(us);
+            return res;
+        }
     }
 }

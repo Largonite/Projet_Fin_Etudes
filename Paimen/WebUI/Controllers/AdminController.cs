@@ -116,7 +116,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public ViewResult AddUser(string type, string lastName, string firstname,
+        public ActionResult AddUser(string type, string lastName, string firstname,
             string email, Nullable<int> regNumber, Nullable<int> year, Nullable<int> section, int profile)
         {
             bool ajout = false; 
@@ -130,7 +130,22 @@ namespace WebUI.Controllers
             }
             if (ajout)
                 TempData["SuccessMessage"] = "Ajout effectué";
-            return View("UserManagement");
+            return RedirectToAction("UserManagement");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteUser(int id,string fName, string lName)
+        {
+            bool res = this._service.DeleteUser(id);
+            if (res)
+            {
+                TempData["SuccessMessage"] = string.Format("{0} {1} avec l'id {2} à été supprimé", fName,lName, id);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible de supprimer {0} {1}! (Vérifier les dépendances)", fName,lName);
+            }
+            return RedirectToAction("UserManagement");
         }
 
         [HttpGet]
