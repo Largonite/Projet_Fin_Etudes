@@ -214,9 +214,9 @@ namespace LoginManagement
             return login;
         }
 
-        public string GetWindowsScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        public string GetWindowsScript(IDictionary<Section, List<int>> sections)
         {
-            List<User> users = this.GetUsers(d,sections);
+            List<User> users = this.GetUsers(sections);
             StringBuilder builder = new StringBuilder();
             foreach (User u in users)
             {
@@ -231,9 +231,9 @@ namespace LoginManagement
             return builder.ToString();
         }
 
-        public string GetNutrilogScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        public string GetNutrilogScript(IDictionary<Section, List<int>> sections)
         {
-            List<User> users = this.GetUsers(d, sections);
+            List<User> users = this.GetUsers(sections);
             StringBuilder builder = new StringBuilder();
             builder.Append("Nom;Prenom;Email;Mot de passe;\n");
             foreach (User u in users)
@@ -251,9 +251,9 @@ namespace LoginManagement
             
         }
 
-        public string GetClarolineScript(DateTime? d, IDictionary<Section, List<int>> sections)
+        public string GetClarolineScript(IDictionary<Section, List<int>> sections)
         {
-            List<User> users = this.GetUsers(d, sections);
+            List<User> users = this.GetUsers(sections);
             StringBuilder builder = new StringBuilder();
             builder.Append("Nom;Prenom;Email;Mot de passe;\n");
             foreach (User u in users)
@@ -316,25 +316,20 @@ namespace LoginManagement
             return true;
         }
 
-        private List<User> GetUsers(DateTime? d, IDictionary<Section, List<int>> sections)
+        private List<User> GetUsers(IDictionary<Section, List<int>> sections)
         {
             // Both params are null, return the whole list.
-            if (d == null && sections == null)
+            if (sections == null)
             {
                 return this._userDao.GetAll();
             }
 
-            if(sections == null)
-            {
-                return this._userDao.FindAll(user => d.Value.Date <= user.AddedDate.Date);
-            }
 
             List<User> users = new List<User>();
             foreach (KeyValuePair<Section, List<int>> entry in sections)
             {
-                users.AddRange(this._userDao.FindAll(user => (d == null ? true : DateTime.Compare(user.AddedDate, d.Value) <= 0)
-                                                             && user.Section1.Code.Equals(entry.Key.Code)
-                                                              && entry.Value.Contains(user.Year.Value)
+                users.AddRange(this._userDao.FindAll(user => user.Section1.Code.Equals(entry.Key.Code)
+                                                             && entry.Value.Contains(user.Year.Value)
                 ));
             }
             return users;
@@ -361,8 +356,8 @@ namespace LoginManagement
 
             foreach (User user in listUsers)
             {
-                Profile profile = this._profileDao.Find(p => p.Id == user.Id);
-                Section section = this._sectionDao.Find(s => s.Id == user.Section);
+                Profile profile = user.Profile1;
+                Section section = user.Section1;
 
                 vinci.SetAbsolutePosition(1, 700);
                 ipl.SetAbsolutePosition(450, 690);
@@ -452,10 +447,9 @@ namespace LoginManagement
         public byte[] GetPDFForStudent(int idStudent)
         {
             User user = this._userDao.Find(u => u.Id == idStudent);
-            Profile profile = this._profileDao.Find(p => p.Id == user.Id);
             Section section = this._sectionDao.Find(s => s.Id == user.Section);
 
-            if(user == null || profile == null)
+            if(user == null || user.Profile1 == null)
             {
                 throw new NoSuchUserException("Aucun utilisateur ou profil n'a été trouvé!");
             }
@@ -523,9 +517,9 @@ namespace LoginManagement
             sendBack.Add(new Paragraph("Login : " + user.Login ?? "/"));
             sendBack.Add(new Paragraph("Mot de passe : " + user.Password));
 
-            if (profile != null)
+            if (user.Profile1 != null)
             {
-                sendBack.Add(new Paragraph("Profil : " + profile.Name));
+                sendBack.Add(new Paragraph("Profil : " + user.Profile1.Name));
             }
             else
             {
@@ -554,6 +548,13 @@ namespace LoginManagement
             User us = this._userDao.Find(u=>u.Id == id);
             bool res = this._userDao.Delete(us);
             return res;
+        }
+
+        public void SetProfile(IDictionary<Section, List<int>> sections, Profile profile)
+        {
+            List<User> users = this.GetUsers(sections);
+            users.ForEach(u => u.Profile1 = profile);
+            users.ForEach(u => this._userDao.Update(u));
         }
     }
 }

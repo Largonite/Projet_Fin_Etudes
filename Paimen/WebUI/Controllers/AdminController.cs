@@ -202,7 +202,7 @@ namespace WebUI.Controllers
         public void DownloadBat(IDictionary<Section, List<int>> sections)
         {
             
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(null, sections));
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetWindowsScript(sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
@@ -213,7 +213,7 @@ namespace WebUI.Controllers
         [HttpGet]
         public void DownloadClaroline(IDictionary<Section, List<int>> sections)
         {
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(null, sections));
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetClarolineScript(sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=clarolineUsers.csv");
@@ -224,7 +224,7 @@ namespace WebUI.Controllers
         [HttpGet]
         public void DownloadNutriLog(IDictionary<Section, List<int>> sections)
         {
-            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(null, sections));
+            byte[] script = Encoding.ASCII.GetBytes(this._service.GetNutrilogScript(sections));
 
             this.Response.ContentType = "application/octet-stream";
             this.Response.AddHeader("Content-Disposition", "attachment; filename=nutrilogUsers.csv");
@@ -301,6 +301,14 @@ namespace WebUI.Controllers
             Response.AppendHeader("Content-Disposition", "attachment; filename=Users_login.pdf");
             Response.OutputStream.Write(pdf, 0, pdf.Length);
             Response.End();
+        }
+
+        public ViewResult SetProfile()
+        {
+            Profile profile = this._service.GetAllProfiles().FirstOrDefault(p => int.Parse(Request.QueryString["profile"]) == p.Id);
+            IDictionary<Section, List<int>> sections = this.GetConstraints();
+            this._service.SetProfile(sections, profile);
+            return View("ProfileManagement");
         }
 
     }
