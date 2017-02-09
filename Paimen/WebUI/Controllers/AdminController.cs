@@ -57,7 +57,7 @@ namespace WebUI.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = string.Format("Impossible de supprimer {0} !", name);
+                TempData["ErrorMessage"] = string.Format("Impossible de supprimer {0} ! (Vérifier les dépendances)", name);
             }
             return RedirectToAction("SoftwareManagement");
 
@@ -257,6 +257,35 @@ namespace WebUI.Controllers
         {
             this._service.RemoveProfileType(typeProfile);
             return RedirectToAction("ProfileManagement");
+        }
+
+        [HttpGet]
+        public void DownloadPDF(int idUser)
+        {
+            /*
+             *             this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=addUsers.bat");
+            this.Response.OutputStream.Write(script, 0, script.Length);
+            this.Response.Flush();*/
+
+            //String filename = _service.GetPDFForStudent(idUser);
+            //Debug.WriteLine(filename);
+            byte[] pdf = this._service.GetPDFForStudent(idUser);
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.OutputStream.Write(pdf, 0, pdf.Length);
+            Response.End();
+        }
+
+        public void DownloadAllPDF()
+        {
+            byte[] pdf = this._service.GetPDFForAllUsers();
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.OutputStream.Write(pdf, 0, pdf.Length);
+            Response.End();
         }
 
     }
