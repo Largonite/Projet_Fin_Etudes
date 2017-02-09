@@ -1,7 +1,11 @@
 ﻿$(function () {
     $(document).ready(function () {
         $('.dt').DataTable();
+        $(".dataTables_filter").addClass("pull-right");
+
     });
+
+    
 
     typeOfUserChanged("Guest");
     $("#typeOfUser").change(function () {

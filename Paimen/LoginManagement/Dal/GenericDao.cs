@@ -36,7 +36,15 @@ namespace LoginManagement.Dal
         {
             if (this.Exists(element))
             {
-                this._context.Set<T>().Remove(element);
+                T res = _context.Set<T>().Remove(element);
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
                 return true;
             }
             return false;
