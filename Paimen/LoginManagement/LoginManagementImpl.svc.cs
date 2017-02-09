@@ -36,6 +36,8 @@ namespace LoginManagement
                 throw new ArgumentException("Profile name already used");
             }
 
+            if (softwares == null || softwares.Count == 0) throw new ArgumentException("No softwares to add");
+
             Profile toAddProfile = new Profile();
 
             toAddProfile.Name = typeProfile;
@@ -50,6 +52,8 @@ namespace LoginManagement
 
         private void AddSoftwaresToProfile(Profile profile, List<string> softwares)
         {
+
+            if (softwares == null || softwares.Count == 0) throw new ArgumentException("No softwares to add");
 
             foreach (string software in softwares)
             {
@@ -68,6 +72,8 @@ namespace LoginManagement
 
         public void ModifyProfileType(string typeProfile, List<string> softwares)
         {
+
+            if (softwares == null || softwares.Count == 0) throw new ArgumentException("No softwares to modify");
 
             int typeProfileId = Convert.ToInt32(typeProfile);
             Profile profile = this._profileDao.Find(p => p.Id.Equals(typeProfileId));

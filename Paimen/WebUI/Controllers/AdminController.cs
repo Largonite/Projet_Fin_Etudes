@@ -248,6 +248,7 @@ namespace WebUI.Controllers
             {
                 TempData["ErrorMessage"] = "Echec de la création";
             }
+
             return RedirectToAction("ProfileManagement");
         }
 
@@ -258,11 +259,11 @@ namespace WebUI.Controllers
             {
                 this._service.ModifyProfileType(typeProfile, softwares);
                 TempData["SuccessMessage"] = "Modification réussie";
-            }catch (Exception exp)
+            }catch (ArgumentException exp)
             {
                 TempData["ErrorMessage"] = "Echec de la modification";
             }
-            
+
             return View("ProfileManagement");
         }
 
