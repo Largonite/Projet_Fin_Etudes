@@ -118,7 +118,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public ViewResult AddUser(string type, string lastName, string firstname,
+        public ActionResult AddUser(string type, string lastName, string firstname,
             string email, Nullable<int> regNumber, Nullable<int> year, Nullable<int> section, int profile)
         {
             bool ajout = false; 
@@ -132,7 +132,22 @@ namespace WebUI.Controllers
             }
             if (ajout)
                 TempData["SuccessMessage"] = "Ajout effectué";
-            return View("UserManagement");
+            return RedirectToAction("UserManagement");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteUser(int id,string fName, string lName)
+        {
+            bool res = this._service.DeleteUser(id);
+            if (res)
+            {
+                TempData["SuccessMessage"] = string.Format("{0} {1} avec l'id {2} à été supprimé", fName,lName, id);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = string.Format("Impossible de supprimer {0} {1}! (Vérifier les dépendances)", fName,lName);
+            }
+            return RedirectToAction("UserManagement");
         }
 
         [HttpGet]
@@ -264,7 +279,7 @@ namespace WebUI.Controllers
             byte[] pdf = this._service.GetPDFForStudent(idUser);
             Response.Clear();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.AppendHeader("Content-Disposition", "attachment; filename=login_"+u.FirstName+"_"+u.LastName+"_"+".pdf");
             Response.OutputStream.Write(pdf, 0, pdf.Length);
             Response.End();
         }
@@ -274,7 +289,7 @@ namespace WebUI.Controllers
             byte[] pdf = this._service.GetPDFForAllUsers();
             Response.Clear();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=login.pdf");
+            Response.AppendHeader("Content-Disposition", "attachment; filename=Users_login.pdf");
             Response.OutputStream.Write(pdf, 0, pdf.Length);
             Response.End();
         }
