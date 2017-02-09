@@ -7,7 +7,7 @@
         <div class="panel panel-default" style="margin-top:10px">
             <div class="panel-heading"><label>Sign In</label></div>
             <div class="panel-body">
-                @using (Html.BeginForm("UserFromReg", "Connection", FormMethod.Post, new {@class= "form-horizontal StudentConnection" }))
+                @using (Html.BeginForm("UserFromReg", "Connection", FormMethod.Post, new {@class= "form-inline StudentConnection" }))
                 {
                     <div class="form-group">
                         <label for="regNumber" >Matricule : </label>
@@ -17,13 +17,13 @@
                         <button type="submit" class="btn btn-success" style="width:70%;">Valider</button>
                     </div>
                 }
-                @using (Html.BeginForm("UserFromReg", "Connection", FormMethod.Post, new { @class = "form-inline AdminConnection hidden" }))
+                @using (Html.BeginForm("UserFromReg", "Connection", FormMethod.Post, new { @class = "form form-horizontal AdminConnection hidden" }))
                 {
-                    <div class="form-group">
+                    <div class="control-group">
                         <label for="regNumber">Matricule : </label>
                         @Html.TextBox("regNumber", null, new { @class = "form-control" })
                     </div>
-                    <div class="form-group">
+                    <div class="control-group">
                         <label for="password">Mot de passe : </label>
                         @Html.TextBox("password", null, new { @class = "form-control", @type = "password" })
                     </div>

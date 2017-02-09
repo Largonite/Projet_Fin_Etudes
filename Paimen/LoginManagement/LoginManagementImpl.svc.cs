@@ -364,7 +364,7 @@ namespace LoginManagement
                     sendBack.Add(new Paragraph("Email : " + user.Email));
                 }
 
-                if (user.RegNumber.Equals("") || user.RegNumber == null)
+                if (user.RegNumber == null || user.RegNumber.Equals(""))
                 {
                     sendBack.Add(new Paragraph("Matricule : /"));
                 }
@@ -398,6 +398,10 @@ namespace LoginManagement
 
                 sendBack.NewPage();
             }
+
+            sendBack.Close();
+            writer.Close();
+            
             return stream.ToArray();
         }
 
@@ -460,7 +464,7 @@ namespace LoginManagement
             
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
-            if(user.Email.Equals("") || user.Email == null)
+            if(user.Email == null || user.Email.Equals(""))
             {
                 sendBack.Add(new Paragraph("Email : /"));
             }else
@@ -468,7 +472,7 @@ namespace LoginManagement
                 sendBack.Add(new Paragraph("Email : " + user.Email));
             }
             
-            if(user.RegNumber.Equals("") || user.RegNumber == null)
+            if (user.RegNumber == null || user.RegNumber.Equals(""))
             {
                 sendBack.Add(new Paragraph("Matricule : /"));
             }else
