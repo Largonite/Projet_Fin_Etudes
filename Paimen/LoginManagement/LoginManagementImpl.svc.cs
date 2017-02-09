@@ -358,10 +358,18 @@ namespace LoginManagement
                 sendBack.Add(vinci);
                 sendBack.Add(ipl);
 
-                for (int i = 0; i < 7; i++)
-                {
-                    sendBack.Add(new Paragraph("\n"));
-                }
+                sendBack.Add(new Paragraph("\n"));
+                sendBack.Add(new Paragraph("\n"));
+                sendBack.Add(new Paragraph("\n"));
+
+                Font titleFont = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 30, Font.BOLD | Font.UNDERLINE);
+                Paragraph title = new Paragraph("Feuille de login", titleFont);
+                title.Alignment = Element.ALIGN_CENTER;
+                sendBack.Add(title);
+
+                sendBack.Add(new Paragraph("\n"));
+                sendBack.Add(new Paragraph("\n"));
+                sendBack.Add(new Paragraph("\n"));
 
                 sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
                 sendBack.Add(new Paragraph("Nom : " + user.LastName));
@@ -472,15 +480,18 @@ namespace LoginManagement
             sendBack.Add(vinci);
             sendBack.Add(ipl);
 
-            for (int i = 0; i < 7; i++)
-            {
-                sendBack.Add(new Paragraph("\n"));
-            }
+            sendBack.Add(new Paragraph("\n"));
+            sendBack.Add(new Paragraph("\n"));
+            sendBack.Add(new Paragraph("\n"));
 
-            Font titleFont = FontFactory.GetFont(FontFactory.TIMES_ROMAN);
+            Font titleFont = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 30 ,Font.BOLD | Font.UNDERLINE);
             Paragraph title = new Paragraph("Feuille de login", titleFont);
             title.Alignment = Element.ALIGN_CENTER;
             sendBack.Add(title);
+
+            sendBack.Add(new Paragraph("\n"));
+            sendBack.Add(new Paragraph("\n"));
+            sendBack.Add(new Paragraph("\n"));
 
             sendBack.Add(new Paragraph("Prénom : " + user.FirstName));
             sendBack.Add(new Paragraph("Nom : " + user.LastName));
